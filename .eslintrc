@@ -10,12 +10,9 @@
     "airbnb-typescript",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:storybook/recommended",
     "plugin:import/errors",
     "plugin:import/warnings",
-    "plugin:import/typescript",
-    "plugin:cypress/recommended",
-    "plugin:jsdoc/recommended"
+    "plugin:import/typescript"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -32,9 +29,7 @@
     "prettier",
     "jsx-a11y",
     "react-hooks",
-    "cypress",
-    "vitest",
-    "jsdoc"
+    "vitest"
   ],
   "rules": {
     "prettier/prettier": "error",
@@ -96,22 +91,6 @@
     "jsx-a11y/role-has-required-aria-props": "warn",
     "jsx-a11y/role-supports-aria-props": "warn"
   },
-  "overrides": [
-    {
-      "files": ["*.stories.@(ts|tsx|js|jsx|mjs|cjs)"],
-      "rules": {
-        "storybook/hierarchy-separator": "error",
-        "storybook/default-exports": "off",
-        "import/no-extraneous-dependencies": "off"
-      }
-    },
-    {
-      "files": ["**/services/**"],
-      "rules": {
-        "import/no-cycle": "off"
-      }
-    }
-  ],
   "settings": {
     "react": {
       "version": "detect"
