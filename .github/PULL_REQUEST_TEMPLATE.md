@@ -1,7 +1,9 @@
 # Description
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change.
+- add a description of the change
 
-Fixes # (trello_task_link)
+# Fixes
+
+- add a list of issues fixed by this PR
 
 # Screenshot (optional)
