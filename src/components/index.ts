@@ -1,3 +1,4 @@
+export * from '@/components/button'
 export * from '@/components/inputs'
 export * from '@/components/loading'
 export * from '@/components/text'
