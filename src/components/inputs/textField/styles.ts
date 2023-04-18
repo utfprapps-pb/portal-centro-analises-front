@@ -21,9 +21,9 @@ export const Container = styled.div`
   }
 `
 
+export const Input = styled(TextField)``
+
 export const Label = styled(Text)`
   color: ${({ theme }) =>
     lighten({ color: theme.colors.black, percentage: 0.2 })};
 `
-
-export const Input = styled(TextField)``

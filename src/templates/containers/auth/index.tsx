@@ -19,7 +19,7 @@ export const AuthContainerTemplate: React.FC<AuthContainerTemplateProps> = ({
       }}
     >
       <S.FormHeader>
-        <Text size="h4" color="black">
+        <Text size="h5" color="black">
           {title}
         </Text>
 

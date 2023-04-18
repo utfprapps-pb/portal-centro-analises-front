@@ -1,10 +1,6 @@
-import styled, { CSSProperties } from 'styled-components'
+import styled from 'styled-components'
 
 import { darken } from '@/utils'
-
-export const iconStyles: CSSProperties = {
-  alignSelf: 'center'
-}
 
 export const Container = styled.section`
   display: flex;
@@ -13,8 +9,7 @@ export const Container = styled.section`
   justify-content: center;
   align-items: center;
 
-  background: ${({ theme }) =>
-    darken({ color: theme.colors.primary, percentage: 0.3 })};
+  background: ${({ theme }) => darken({ color: theme.colors.primary })};
   min-height: 100vh;
 `
 
@@ -41,17 +36,6 @@ export const Form = styled.form`
   }
 `
 
-export const FormHeader = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  align-items: center;
-  justify-content: flex-start;
-
-  width: 100%;
-  gap: 4px;
-`
-
 export const FormBody = styled.div`
   display: flex;
   flex-direction: column;
@@ -76,4 +60,15 @@ export const FormFooter = styled.div`
   width: 100%;
   gap: 8px;
   margin-top: auto;
+`
+
+export const FormHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: flex-start;
+
+  width: 100%;
+  gap: 4px;
 `

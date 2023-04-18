@@ -1,28 +1,19 @@
-import React, { useCallback, useState } from 'react'
+import React from 'react'
 
-import { Button } from '@material-ui/core'
-
-import { TextField } from '@/components'
+import { useLoginPage } from './useLoginPage'
+import { Button, Loading, PasswordInput, TextField } from '@/components'
+import { useHandleChangeFormData } from '@/hooks'
+import { LoginParams } from '@/services/api/auth'
 import { AuthContainerTemplate } from '@/templates/containers/auth'
 
-export type LoginUserParams = {
-  email: string
-  password: string
-}
-
 export const LoginPage: React.FC = () => {
-  // const authHookData = useAuth()
-  //   const { loading, handleSignIn } = authHookData
-
-  const [formData, setFormData] = useState<LoginUserParams>({
-    email: '',
-    password: ''
+  const { loading, formData, setFormData, goToSignUp, handleSubmit } =
+    useLoginPage()
+  const { handleChange } = useHandleChangeFormData<LoginParams>({
+    formData,
+    setFormData
   })
 
-  const handleSubmit = useCallback(async () => {
-    // await handleSignIn(formData)
-    //   }, [formData, handleSignIn])
-  }, [formData])
   return (
     <AuthContainerTemplate
       title="Bem vindo!"
@@ -32,22 +23,28 @@ export const LoginPage: React.FC = () => {
           <TextField
             label="E-mail"
             placeholder="Digite seu e-mail"
-            value={formData?.email}
-            onChange={(value) => setFormData({ ...formData, email: value })}
+            value={formData.email}
+            onChangeValue={handleChange('email')}
+            disabled={loading}
           />
 
-          <TextField
+          <PasswordInput
             label="Senha"
             placeholder="Digite sua senha"
             value={formData.password}
-            onChange={(value) => setFormData({ ...formData, password: value })}
+            onChangeValue={handleChange('password')}
+            disabled={loading}
           />
         </>
       }
       footer={
         <>
-          <Button type="submit">Entrar</Button>
-          <Button type="submit">Cadastro</Button>
+          <Button type="submit" disabled={loading}>
+            {loading ? <Loading /> : 'Entrar'}
+          </Button>
+          <Button onClick={goToSignUp} variant="outlined" disabled={loading}>
+            Criar nova conta
+          </Button>
         </>
       }
       handleSubmit={handleSubmit}

@@ -8,7 +8,6 @@ type Props = {
   children: React.ReactNode
   variant?: MaterialButtonProps['variant']
   theme?: Themes
-  fullWidth?: boolean
   icon?: React.ReactNode
   disabled?: boolean
   type?: 'submit' | 'button'

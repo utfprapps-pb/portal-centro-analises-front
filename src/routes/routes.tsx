@@ -1,15 +1,16 @@
 import React from 'react'
 
-import { HomePage } from '@/pages/home'
-import { LoginPage } from '@/pages/login'
+import { HomePage, LoginPage } from '@/pages'
 
 type RouteProps = {
   path: () => string
   component: React.ReactNode
 }
 
+type Pages = 'login' | 'signUp' | 'home'
+
 type RoutesProps = {
-  [key: string]: RouteProps
+  [key in Pages]: RouteProps
 }
 
 export const ROUTES = Object.freeze<RoutesProps>({
@@ -17,8 +18,12 @@ export const ROUTES = Object.freeze<RoutesProps>({
     path: () => '/login',
     component: <LoginPage />
   },
+  signUp: {
+    path: () => '/sign-up',
+    component: <h1>SignUp</h1>
+  },
   home: {
-    path: () => '/home',
+    path: () => '/',
     component: <HomePage />
   }
 })

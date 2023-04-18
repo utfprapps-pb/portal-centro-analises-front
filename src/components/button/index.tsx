@@ -12,25 +12,22 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   type = 'button',
   sizeButton = 'large',
-  fullWidth = false,
   onClick = () => null
 }) => {
   const buttonTheme = buttonThemes[theme]
 
   return (
-    <S.Container buttonTheme={buttonTheme}>
-      <S.Button
-        variant={variant}
-        startIcon={icon}
-        size={sizeButton === 'medium' ? 'medium' : 'large'}
-        color={buttonTheme.materialUiColor}
-        type={type}
-        disabled={disabled}
-        fullWidth={fullWidth}
-        onClick={onClick}
-      >
-        {children}
-      </S.Button>
-    </S.Container>
+    <S.Button
+      buttontheme={buttonTheme}
+      variant={variant}
+      startIcon={icon}
+      size={sizeButton === 'medium' ? 'medium' : 'large'}
+      color={buttonTheme.materialUiColor}
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {children}
+    </S.Button>
   )
 }

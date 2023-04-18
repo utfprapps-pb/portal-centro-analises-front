@@ -10,10 +10,10 @@ type Props = {
   onClick?: () => void
 }
 
-export type TextProps = PropsWithChildren<Props>
-
 export type DesignSystemMapperProps = {
   [key in keyof Theme['fontSizes']]: {
     weight: keyof Theme['fontWeights']
   }
 }
+
+export type TextProps = PropsWithChildren<Props>

@@ -1,14 +1,14 @@
 import { theme } from '@/styles'
 import { darken } from '@/utils'
 
-export type Themes = 'primary' | 'error' | 'success' | 'white'
-
 export type ButtonTheme = {
   materialUiColor: 'primary' | 'secondary' | 'inherit'
   color?: string
   background?: string
   backgroundHover?: string
 }
+
+export type Themes = 'primary' | 'error' | 'success' | 'white'
 
 type ButtonThemes = {
   [key in Themes]: ButtonTheme
