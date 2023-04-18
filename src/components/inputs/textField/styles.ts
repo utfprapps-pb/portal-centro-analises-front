@@ -1,7 +1,7 @@
 import { TextField } from '@material-ui/core'
 import styled from 'styled-components'
 
-import { Text } from '@/components'
+import { Text } from '../../text'
 import { lighten } from '@/utils'
 
 export const Container = styled.div`

@@ -6,6 +6,8 @@ import * as S from './styles'
 import { TextFieldProps } from './types'
 import { Loading, Text } from '@/components'
 
+export * from './types'
+
 export const TextField: React.FC<TextFieldProps> = ({
   label,
   placeholder,
