@@ -1,13 +1,14 @@
 import React from 'react'
 
 import { HomePage, LoginPage } from '@/pages'
+import { EmailConfirmationPage } from '@/pages/emailConfirmation'
 
 type RouteProps = {
   path: () => string
   component: React.ReactNode
 }
 
-type Pages = 'login' | 'signUp' | 'home'
+type Pages = 'login' | 'signUp' | 'home' | 'emailConfirm'
 
 type RoutesProps = {
   [key in Pages]: RouteProps
@@ -25,5 +26,9 @@ export const ROUTES = Object.freeze<RoutesProps>({
   home: {
     path: () => '/',
     component: <HomePage />
+  },
+  emailConfirm: {
+    path: () => '/email-confirm/:hashKey',
+    component: <EmailConfirmationPage />
   }
 })
