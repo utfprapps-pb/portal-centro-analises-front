@@ -33,7 +33,7 @@ export const theme = Object.freeze<Theme>({
     h5: '36px',
     h6: '30px',
     b1: '24px',
-    b2: '28px',
+    b2: '20px',
     b3: '16px',
     b4: '14px',
     b5: '10px'
