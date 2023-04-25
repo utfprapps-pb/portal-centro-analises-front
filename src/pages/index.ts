@@ -1,2 +1,3 @@
+export * from '@/pages/emailConfirmation'
 export * from '@/pages/home'
 export * from '@/pages/login'
