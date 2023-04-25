@@ -7,7 +7,8 @@ import {
   PasswordValidation,
   PhoneValidation,
   RequiredFieldValidation,
-  YearValidation
+  YearValidation,
+  SpaceOnlyValidation
 } from '@/validation/validators'
 
 export class ValidationBuilder {
@@ -59,6 +60,11 @@ export class ValidationBuilder {
 
   cpf(): ValidationBuilder {
     this.validations.push(new CpfValidation(this.fieldName))
+    return this
+  }
+
+  spaceOnly(): ValidationBuilder {
+    this.validations.push(new SpaceOnlyValidation(this.fieldName))
     return this
   }
 
