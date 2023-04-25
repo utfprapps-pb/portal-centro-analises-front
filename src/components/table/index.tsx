@@ -13,7 +13,7 @@ import {
 
 import * as S from './styles'
 import { TableProps } from './types'
-import { Pagination } from '../pagination'
+import { Pagination } from '@/components'
 
 export const Table = <T,>({
   columns,
