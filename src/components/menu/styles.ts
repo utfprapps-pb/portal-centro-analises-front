@@ -69,6 +69,7 @@ export const Container = styled.div`
     text-decoration: none;
     cursor: pointer;
     padding-left: 0.5rem;
+    width: 100%;
   }
   a:hover {
     background-color: #f5f5f5;
@@ -124,7 +125,6 @@ export const Container = styled.div`
       letter-spacing: 0.2rem;
       padding: 1rem;
       cursor: pointer;
-      border-bottom: 1px solid #e8e8e8;
       color: #000;
       animation-name: ${changeWeight};
       animation-duration: 0.5s;
