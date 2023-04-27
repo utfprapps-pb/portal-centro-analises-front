@@ -30,6 +30,21 @@ export interface Theme {
     bold: string
   }
   media: {
+    sm: Interpolation<
+      ThemedStyledProps<
+        Omit<
+          DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>,
+          'ref'
+        > & {
+          ref?:
+            | ((instance: HTMLDivElement | null) => void)
+            | RefObject<HTMLDivElement>
+            | null
+            | undefined
+        },
+        DefaultTheme
+      >
+    >
     lessThan: (breakpoint: number) => string
     between: (first: number, second: number) => string
     greaterThan: (breakpoint: number) => string
