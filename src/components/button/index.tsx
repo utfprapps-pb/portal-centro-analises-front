@@ -4,6 +4,8 @@ import * as S from './styles'
 import { buttonThemes } from './theme'
 import { ButtonProps } from './types'
 
+export * from './types'
+
 export const Button: React.FC<ButtonProps> = ({
   children,
   variant = 'contained',
