@@ -16,24 +16,21 @@ export const Container = styled.div`
   height: 50px;
   align-items: center;
   text-align: center;
-  padding: 1rem 2rem;
+  padding: 10px 20px;
   background-color: #fff;
   border-radius: 5px;
   h2 {
-    font-size: 0.7rem;
+    font-size: 14px;
     font-weight: 400;
     cursor: pointer;
     margin: 0;
     padding: 0;
   }
-  p {
-    font-size: 1rem;
-  }
 
   ${theme.media.md} {
     height: 70px;
     h2 {
-      font-size: 1rem;
+      font-size: 14px;
     }
   }
 `
