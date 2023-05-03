@@ -8,7 +8,7 @@ export const emailConfirm: EmailConfirm = async ({ hashKey }) => {
   const api = new ApiHttpClient<boolean>()
 
   const { statusCode, body } = await api.request({
-    url: `/emailconfirm/${hashKey}`,
+    url: `/v1/emailconfirm/code/${hashKey}`,
     method: 'get'
   })
 
