@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react'
 
+import { IconButton } from '@material-ui/core'
 import { NavigateBefore, NavigateNext } from '@material-ui/icons'
 
 import * as S from './styles'
 import { PaginationProps } from './types'
+import { Button } from '@/components'
 
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
@@ -24,41 +26,41 @@ export const Pagination: React.FC<PaginationProps> = ({
 
   return (
     <S.Pagination>
-      <S.ButtonGoPage onClick={handlePreviousPage} disabled={!hasPreviousPage}>
+      <IconButton onClick={handlePreviousPage} disabled={!hasPreviousPage}>
         <NavigateBefore />
-      </S.ButtonGoPage>
+      </IconButton>
 
       {showInitialHaveMore ? (
         <>
-          <S.PaginationItem
+          <Button
             onClick={() => handleSetPageIndex(0)}
             disabled={!hasPreviousPage}
           >
             1
-          </S.PaginationItem>
+          </Button>
 
           {isLongerThanSecondPage ? <S.HaveMore>...</S.HaveMore> : null}
         </>
       ) : null}
 
-      <S.PaginationItem disabled>{currentPage}</S.PaginationItem>
+      <Button disabled>{currentPage}</Button>
 
       {isBeforeLastPage ? (
         <>
           {showFinalHaveMore ? <S.HaveMore>...</S.HaveMore> : null}
 
-          <S.PaginationItem
+          <Button
             onClick={() => handleSetPageIndex(totalPages - 1)}
             disabled={!hasNextPage}
           >
             {totalPages}
-          </S.PaginationItem>
+          </Button>
         </>
       ) : null}
 
-      <S.ButtonGoPage onClick={handleNextPage} disabled={!hasNextPage}>
+      <IconButton onClick={handleNextPage} disabled={!hasNextPage}>
         <NavigateNext />
-      </S.ButtonGoPage>
+      </IconButton>
     </S.Pagination>
   )
 }
