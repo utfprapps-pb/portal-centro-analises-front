@@ -17,8 +17,10 @@ export const Modal: React.FC<ModalProps> = ({
         <S.Container>
           <S.CloseIcon onClick={handleClickOnClose} />
 
-          <S.Title size="h6">{title}</S.Title>
-          <S.Description size="b2">{description}</S.Description>
+          <S.Header>
+            <S.Title size="h6">{title}</S.Title>
+            <S.Description size="b2">{description}</S.Description>
+          </S.Header>
 
           <S.ButtonGroup>
             {buttons.map((props) => (

@@ -1,6 +1,8 @@
 import { ButtonProps } from '@/components'
 
-type Buttons = ButtonProps[]
+type Button = ButtonProps & { key: string }
+
+type Buttons = Button[]
 
 export type ModalProps = {
   title: string

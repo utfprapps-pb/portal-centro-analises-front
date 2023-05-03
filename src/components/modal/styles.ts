@@ -1,7 +1,7 @@
 import { Close } from '@material-ui/icons'
 import styled from 'styled-components'
 
-import { Text } from '../text'
+import { Text } from '@/components'
 import { lighten } from '@/utils'
 
 export const ButtonGroup = styled.div`
@@ -38,7 +38,8 @@ export const Container = styled.div`
   text-align: center;
 
   padding: 28px;
-  margin: 10px;
+  gap: 32px;
+  border-radius: 8px;
   width: 100%;
   max-width: 560px;
 `
@@ -48,20 +49,28 @@ export const Description = styled(Text)`
     lighten({ color: theme.colors.black, percentage: 0.2 })};
 `
 
+export const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 22px;
+`
+
 export const Overlay = styled.div<{ isVisible?: boolean }>`
-  position: absolute;
-  visibility: ${({ isVisible }) => (isVisible ? 'visible' : 'hidden')};
-  cursor: pointer;
-  background: ${({ theme }) =>
-    lighten({ color: theme.colors.black, percentage: 0.8 })};
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: ${({ theme }) => `${theme.colors.black}4c`};
+  z-index: 2;
+
   width: 100%;
   height: 100%;
-  left: 0;
-  top: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2;
 `
 
 export const Title = styled(Text)`
