@@ -7,6 +7,7 @@ export interface Theme {
     background: string
     error: string
     success: string
+    blue: string
   }
   fontFamily: {
     primary: string

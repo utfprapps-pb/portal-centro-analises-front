@@ -19,7 +19,8 @@ export const theme = Object.freeze<Theme>({
     black: '#000000',
     background: '#F7F7F7',
     error: colors.red[400],
-    success: colors.green[400]
+    success: colors.green[400],
+    blue: colors.blue[400]
   },
   fontFamily: {
     primary:
