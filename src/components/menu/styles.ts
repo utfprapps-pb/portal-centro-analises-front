@@ -22,7 +22,7 @@ export const Container = styled.div`
   justify-content: left;
   text-transform: inherit !important;
   font-weight: bold !important;
-  width: 25%;
+  width: 18%;
   height: 100vh;
   align-items: center;
   text-align: center;

@@ -8,19 +8,19 @@ export const Menu: React.FC = () => (
   <S.Container>
     <h1>PORTAL CA</h1>
     <section>
-      <a href="/">
+      <a href="/solicitar">
         <PlaylistAdd style={{ color: '#e0bb00' }} />
         <h2>Solicitar</h2>
       </a>
-      <a href="/">
+      <a href="/historico">
         <History style={{ color: '#e0bb00' }} />
         <h2>Histórico</h2>
       </a>
-      <a href="/">
+      <a href="/aprovacoes">
         <Check style={{ color: '#e0bb00' }} />
         <h2>Aprovações</h2>
       </a>
-      <a href="/">
+      <a href="/projeto">
         <BusinessCenter style={{ color: '#e0bb00' }} />
         <h2>Projetos</h2>
       </a>

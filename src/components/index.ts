@@ -5,3 +5,5 @@ export * from '@/components/loading'
 export * from '@/components/menu'
 export * from '@/components/text'
 export * from '@/components/typography'
+export * from '@/components/solicitar'
+
