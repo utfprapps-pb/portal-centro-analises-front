@@ -1,6 +1,7 @@
 import { PropsWithChildren } from 'react'
 
 type Props = {
+  title: string
   open: boolean
   onClose: () => void
 }
