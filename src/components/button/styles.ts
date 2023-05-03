@@ -15,13 +15,15 @@ export const Button = styled(UIButton)<ButtonProps>`
   ${({ buttontheme }) =>
     buttontheme.background &&
     css`
-      button {
-        color: ${buttontheme.color};
-        background: ${buttontheme.background};
+      color: ${buttontheme.color} !important;
+      background: ${buttontheme.background} !important;
 
-        &:hover {
-          background: ${buttontheme.backgroundHover};
-        }
+      &:hover {
+        background: ${buttontheme.backgroundHover} !important;
       }
     `}
+
+  .MuiButton-label {
+    gap: 12px;
+  }
 `
