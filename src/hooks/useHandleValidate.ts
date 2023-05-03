@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { ValidationComposite } from '@/main/composite'
+import { ValidationComposite } from '@/validation/validationComposite'
 
 type UseHandleValidateProps<FD extends object> = {
   formData: FD
@@ -16,7 +16,7 @@ export const useHandleValidate = <K extends string, FD extends object>({
       const valid =
         validation.validate({
           fieldName: field,
-          input: formData
+          formData
         }) || ''
 
       return valid
@@ -29,7 +29,7 @@ export const useHandleValidate = <K extends string, FD extends object>({
       Object.keys(formData).every(
         (key) =>
           !validation.validate({
-            input: formData,
+            formData,
             fieldName: key
           })
       ),

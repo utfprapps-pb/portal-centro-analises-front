@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 
-import { api } from './apiSingleton'
 import { HttpClient, HttpRequest, HttpResponse } from './types'
+import { api } from '@/libs'
 
 export class ApiHttpClient<T = unknown> implements HttpClient<T> {
   async request(data: HttpRequest): Promise<HttpResponse<T>> {
