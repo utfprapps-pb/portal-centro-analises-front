@@ -15,6 +15,8 @@ import * as S from './styles'
 import { TableProps } from './types'
 import { Pagination } from '@/components'
 
+export * from './types'
+
 export const Table = <T,>({
   columns,
   data,
