@@ -60,6 +60,7 @@ export const listDeleteHook = <TTableData extends Id>(
     return {
       ...listHookData,
       resourceToExclude,
+      setResourceIdToExclude,
       handleDeleteResource
     }
   }

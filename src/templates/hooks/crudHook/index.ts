@@ -3,16 +3,18 @@ import { useCallback, useMemo, useState } from 'react'
 import { AxiosError } from 'axios'
 import { toast } from 'react-hot-toast'
 
-import { Props } from './types'
+import { CrudHookProps } from './types'
 import { listDeleteHook } from '../listDeleteHook'
 import { Id } from '../types'
 import { useHandleValidate, useModal } from '@/hooks'
+
+export * from './types'
 
 export const crudHook = <
   TTableData extends Id,
   TFormData extends Record<string, unknown>
 >(
-  params: Props<TTableData, TFormData>
+  params: CrudHookProps<TTableData, TFormData>
 ) => {
   const useListDeleteHook = listDeleteHook<TTableData>({
     services: {
@@ -41,10 +43,15 @@ export const crudHook = <
 
     const { resources, setLoading, fetchResources } = listDeleteHookData
 
-    const [resourceIdToEdit, setResourceIdToEdit] = useState('')
-    const resourceToEdit = useMemo<TTableData | undefined>(
-      () => resources.find(({ id }) => id === resourceIdToEdit),
-      [resourceIdToEdit, resources]
+    const [resourceIdToUpdate, setResourceIdToUpdate] = useState('')
+    const resourceToUpdate = useMemo<TTableData | undefined>(
+      () => resources.find(({ id }) => id === resourceIdToUpdate),
+      [resourceIdToUpdate, resources]
+    )
+
+    const isUpdating = useMemo(
+      () => !!resourceToUpdate?.id,
+      [resourceToUpdate?.id]
     )
 
     const handleCreateResource = useCallback(
@@ -102,9 +109,9 @@ export const crudHook = <
             return
           }
 
-          await update(resourceIdToEdit, formData)
+          await update(resourceIdToUpdate, formData)
 
-          setResourceIdToEdit('')
+          setResourceIdToUpdate('')
 
           toast.success(updateSuccessMessage)
 
@@ -117,7 +124,7 @@ export const crudHook = <
         }
       },
       [
-        resourceIdToEdit,
+        resourceIdToUpdate,
         updateSuccessMessage,
         validation,
         fetchResources,
@@ -130,10 +137,11 @@ export const crudHook = <
     return {
       ...listDeleteHookData,
       createDrawer,
-      resourceToEdit,
+      resourceToUpdate,
+      isUpdating,
       handleCreateResource,
       handleUpdateResource,
-      setResourceIdToEdit
+      setResourceIdToUpdate
     }
   }
 }

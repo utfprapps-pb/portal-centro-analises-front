@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { PaginationState, SortingState } from '@tanstack/react-table'
 import { AxiosError } from 'axios'
 import { toast } from 'react-hot-toast'
 
@@ -16,11 +17,16 @@ export const listHook =
 
     const [resources, setResources] = useState<TTableData[]>([])
     const [loading, setLoading] = useState(true)
-    // ToDo @Minozzzi: Implementar ordenação para o http client
-    // const [sort, setSort] = useState({ field: '', asc: false })
     const [filters, setFilters] = useState<HttpRequest['filters']>([])
 
-    const [currentPage, setCurrentPage] = useState(1)
+    const [sorting, setSorting] = useState<SortingState>([])
+    const [pagination, setPagination] = useState<PaginationState>({
+      pageIndex: 0,
+      pageSize: 10
+    })
+
+    const currentPage = useMemo(() => pagination.pageIndex + 1, [pagination])
+
     const [totalPages, setTotalPages] = useState(1)
 
     const fetchResources = useCallback(async () => {
@@ -41,7 +47,8 @@ export const listHook =
       } finally {
         setLoading(false)
       }
-    }, [currentPage, filters, list])
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentPage, filters])
 
     useEffect(() => {
       fetchResources()
@@ -51,13 +58,16 @@ export const listHook =
       currentPage,
       filters,
       loading,
+      pagination,
       resources,
+      sorting,
       totalPages,
       fetchResources,
-      setCurrentPage,
       setFilters,
       setLoading,
+      setPagination,
       setResources,
+      setSorting,
       setTotalPages
     }
   }

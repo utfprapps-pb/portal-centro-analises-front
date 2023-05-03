@@ -12,7 +12,7 @@ interface Services<
   delete: ListDeleteHookProps<TTableData>['services']['delete']
 }
 
-export type Props<
+export type CrudHookProps<
   TTableData extends Id,
   TFormData extends Record<string, unknown>
 > = {
