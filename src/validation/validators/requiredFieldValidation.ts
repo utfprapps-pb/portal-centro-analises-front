@@ -11,6 +11,8 @@ export class RequiredFieldValidation implements FieldValidation {
 
     if (value) return null
 
+    if (Array.isArray(value) && value.length) return null
+
     return new RequiredFieldError()
   }
 }
