@@ -3,6 +3,8 @@ import { AxiosResponse } from 'axios'
 import { HttpClient, HttpRequest, HttpResponse } from './types'
 import { api } from '@/libs'
 
+export * from './types'
+
 export class ApiHttpClient<T = unknown> implements HttpClient<T> {
   async request(data: HttpRequest): Promise<HttpResponse<T>> {
     let axiosResponse: AxiosResponse
@@ -27,7 +29,10 @@ export class ApiHttpClient<T = unknown> implements HttpClient<T> {
 
     return {
       statusCode: axiosResponse.status,
-      body: axiosResponse.data
+      body: axiosResponse.data,
+      totalPages: Array.isArray(axiosResponse.data)
+        ? Math.ceil(axiosResponse.data.length / 10)
+        : undefined
     }
   }
 
@@ -50,7 +55,7 @@ export class ApiHttpClient<T = unknown> implements HttpClient<T> {
         ([key, value]) => `${esc(key)}=${esc(String(value))}`
       ),
       ...Object.entries(filters).map(
-        ([key, value]) => `${esc(key)}=${esc(value)}`
+        ([key, value]) => `${esc(key)}=${esc(String(value))}`
       )
     ]
 
