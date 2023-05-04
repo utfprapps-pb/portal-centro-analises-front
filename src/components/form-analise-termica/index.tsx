@@ -189,7 +189,7 @@ export const FormAnaliseTermica: React.FC = () => (
                 </div>
               </div>
             </div>
-          </div>limites
+          </div>
           <div className='term_box'>
             <p>
               Ao clicar em SOLICITAR, você concorda com nossos <a>Termos</a>,
