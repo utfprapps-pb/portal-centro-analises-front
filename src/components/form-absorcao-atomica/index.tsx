@@ -34,7 +34,7 @@ async function handleClickForm(values: {
 
 export const FormAbsorcaoAtomica: React.FC = () => (
   <S.Container>
-    <h2>Absorção Atômica</h2>
+    <h1 className='title'>Absorção Atômica</h1>
     <div>
       <Formik
         initialValues={{

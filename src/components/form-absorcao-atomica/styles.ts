@@ -31,6 +31,12 @@ export const Container = styled.div`
   margin-top: 10px;
   gap: 1rem;
 
+  h1 {
+    font-weight: 300;
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+  }
+
   .row_box {
     display: flex;
     flex-direction: row;
