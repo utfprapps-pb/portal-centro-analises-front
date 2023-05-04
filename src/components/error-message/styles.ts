@@ -59,7 +59,7 @@ export const Container = styled.div`
 			text-align: right !important;
 			align-items: flex-end;
 			color: #3f51b5;
-			width: 270px;
+			width: 290px;
 			border-radius: 0.5rem;
 			display: flex;
 			justify-content: flex-end;
@@ -70,7 +70,7 @@ export const Container = styled.div`
 		.tooltip_text span {
 			background-color: white;
 			margin: 0;
-			padding: 0 0.5rem;
+			padding: 0 0.2rem;
 			position: relative;
 			left: 0.3rem;
 			text-align: right;

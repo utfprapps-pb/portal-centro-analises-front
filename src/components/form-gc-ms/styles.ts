@@ -31,10 +31,17 @@ export const Container = styled.div`
   margin-top: 10px;
   gap: 1rem;
 
+  .title {
+    font-weight: 300;
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+  }
+
   .row_box {
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    align-items: end;
   }
 
   .inputs_box {
@@ -77,9 +84,14 @@ export const Container = styled.div`
     border-radius: 0.2rem;
     text-align: top;
     align-items: top;
+    resize: none;
   }
 
-
+  h3 {
+    font-size: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
 
   .field_box {
     display: flex;
@@ -89,13 +101,60 @@ export const Container = styled.div`
     width: 100%;
   }
 
+  .field_box_2 {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: left;
+    width: 100%;
+    gap: 1rem;
+  }
+
+  .radio_box {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    width: 100%;
+    gap: 1rem;
+    align-items: left;
+    text-align: left;
+  }
+
+  .radio_box label {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .field_box p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #525252;
+  }
+
+  .field_box_2 p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+    color: #525252;
+  }
+
   .input_box {
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
     text-align: center;
-    border: 1px solid gray;
+    border: 1px solid #d1d1d1;
     border-radius: 5px
+  }
+
+  .input_box > span {
+    position: absolute;
+    font-size: 0.8rem;
+    width: 100%;
+    text-align: right;
+    align-items: top;
+    padding-right: 1rem;
   }
 
   .field_box h2 {
@@ -112,6 +171,11 @@ export const Container = styled.div`
     text-align: center;
     margin: 0;
     padding: 0;
+  }
+
+  a {
+    text-decoration: underline;
+    cursor: pointer;
   }
 
   ${theme.media.sm} {

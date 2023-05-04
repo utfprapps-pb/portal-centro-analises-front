@@ -30,6 +30,7 @@ async function handleClickForm(values: {
   naturezaProjeto: string;
   descricao: string;
   limites: string;
+  condicoes: string;
   elementos: string;
   concentracao: string;
   observacoes: string;
@@ -291,8 +292,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
           </div>
           <div className='term_box'>
             <p>
-              Ao clicar em SOLICITAR, você concorda com nossos <a>Termos</a>,
-              Política de Privacidade e Política de Cookies.
+              Ao clicar em SOLICITAR, você concorda com nossos <a>Termos</a> e <a>Política de Privacidade</a>.
             </p>
           </div>
           <div className='button_box'>

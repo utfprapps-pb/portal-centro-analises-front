@@ -41,6 +41,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: row;
     gap: 1rem;
+    align-items: end;
   }
 
   .inputs_box {
@@ -163,6 +164,11 @@ export const Container = styled.div`
     text-align: center;
     margin: 0;
     padding: 0;
+  }
+
+  a {
+    text-decoration: underline;
+    cursor: pointer;
   }
 
   ${theme.media.sm} {
