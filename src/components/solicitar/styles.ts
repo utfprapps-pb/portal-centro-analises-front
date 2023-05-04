@@ -39,6 +39,32 @@ export const Container = styled.div`
     margin-top: 1rem;
   }
 
+  h2 {
+    font-weight: 300;
+    font-size: 1.5rem;
+    letter-spacing: 0.2rem;
+  }
+
+  .importante {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-size: 1rem;
+    max-width: 60%;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .comprometem {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    font-size: 1rem;
+    max-width: 60%;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
   .row_box {
     display: flex;
     flex-direction: row;
@@ -55,6 +81,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .inputs_container a {

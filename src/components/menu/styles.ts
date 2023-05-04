@@ -23,7 +23,6 @@ export const Container = styled.div`
   text-transform: inherit !important;
   font-weight: bold !important;
   width: 18%;
-  height: 100vh;
   align-items: center;
   text-align: center;
   padding: 1rem 0;

@@ -1,11 +1,14 @@
 import React from 'react'
 
 import * as S from './styles'
-import { Header, Menu } from '@/components'
+import { Header, Menu, Welcome } from '@/components'
 
 export const HomePage: React.FC = () => (
   <S.Container>
     <Menu />
-    <Header />
+    <div className='middle'>
+      <Header />
+      <Welcome />
+    </div>
   </S.Container>
 )

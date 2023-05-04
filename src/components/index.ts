@@ -19,4 +19,5 @@ export * from '@/components/form-mev'
 export * from '@/components/form-nir'
 export * from '@/components/form-uv-vis'
 export * from '@/components/error-message'
+export * from '@/components/welcome'
 
