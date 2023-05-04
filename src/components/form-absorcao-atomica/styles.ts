@@ -31,7 +31,7 @@ export const Container = styled.div`
   margin-top: 10px;
   gap: 1rem;
 
-  h1 {
+  .title {
     font-weight: 300;
     font-size: 1.5rem;
     letter-spacing: 0.2rem;
@@ -83,6 +83,7 @@ export const Container = styled.div`
     border-radius: 0.2rem;
     text-align: top;
     align-items: top;
+    resize: none;
   }
 
   .radio_box {
@@ -127,6 +128,7 @@ export const Container = styled.div`
     font-size: 0.9rem;
     font-weight: 600;
     margin-bottom: 0.3rem;
+    color: #525252;
   }
 
   .input_box {
@@ -134,11 +136,12 @@ export const Container = styled.div`
     flex-direction: row-reverse;
     align-items: center;
     text-align: center;
-    border: 1px solid gray;
+    border: 1px solid #d1d1d1;
     border-radius: 5px
   }
 
   .input_box > span {
+    position: absolute;
     font-size: 0.8rem;
     width: 100%;
     text-align: right;

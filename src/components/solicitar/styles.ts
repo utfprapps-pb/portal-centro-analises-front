@@ -31,6 +31,13 @@ export const Container = styled.div`
   margin-top: 10px;
   gap: 1rem;
 
+  h1 {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #3f51b5;
+    cursor: pointer;
+  }
+
   .row_box {
     display: flex;
     flex-direction: row;
@@ -106,7 +113,7 @@ export const Container = styled.div`
     flex-direction: row-reverse;
     align-items: center;
     text-align: center;
-    border: 1px solid gray;
+    border: 1px solid #d1d1d1;
     border-radius: 5px
   }
 

@@ -1,16 +1,16 @@
 import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { PlaylistAdd, History, Check, BusinessCenter } from '@material-ui/icons'
 import * as yup from "yup";
 import * as S from './styles'
-import { Button } from '../button';
+import { Button, CustomErrorMessage } from '@/components'
+
 
 const validationForm = yup.object().shape({
   nomeAluno: yup.string().required("Informe seu nome"),
   emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
   telefone: yup.string().required("Informe seu telefone"),
   nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
-  emailOrientador: yup.string().required("Informe o email do seu orientador"),
+  emailOrientador: yup.string().email("Email inválido").required("Informe o email do seu orientador"),
   departamento: yup.string().required("Informe o departamento"),
   naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
   descricao: yup.string().required("Informe a descrição"),
@@ -71,7 +71,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 <p>Nome do Aluno</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="nomeAluno"
                   />
                   <Field
@@ -85,7 +85,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 <p>Email do Aluno</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="emailAluno"
                   />
                   <Field
@@ -101,7 +101,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
               <p>Telefone</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="telefone"
                   />
                   <Field
@@ -115,7 +115,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 <p>Natureza do Projeto</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="naturezaProjeto"
                     className='form_error'
                   />
@@ -132,7 +132,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 <p>Nome do Orientador</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="nomeOrientador"
                     className='form_error'
                   />
@@ -147,7 +147,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 <p>Email do Orientador</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="emailOrientador"
                     className='form_error'
                   />
@@ -164,7 +164,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 <p>Departamento</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="departamento"
                     className='form_error'
                   />
@@ -181,7 +181,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 <p>Descrição</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="descricao"
                     className='form_error'
                   />
@@ -200,7 +200,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 <p>Limites</p>
                 <div className='input_box'>
                   <ErrorMessage
-                    component='span'
+                    component={CustomErrorMessage}
                     name="limites"
                     className='form_error'
                   />
@@ -237,7 +237,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
               <p>Elementos</p>
               <div className='input_box'>
                 <ErrorMessage
-                  component='span'
+                  component={CustomErrorMessage}
                   name="elementos"
                   className='form_error'
                 />
@@ -256,7 +256,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
               <p>Concetração</p>
               <div className='input_box'>
                 <ErrorMessage
-                  component='span'
+                  component={CustomErrorMessage}
                   name="concentracao"
                   className='form_error'
                 />
@@ -275,7 +275,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
               <p>Observações</p>
               <div className='input_box'>
                 <ErrorMessage
-                  component='span'
+                  component={CustomErrorMessage}
                   name="observacoes"
                   className='form_error'
                 />
