@@ -138,6 +138,14 @@ export const Container = styled.div`
     border-radius: 5px
   }
 
+  .input_box > span {
+    font-size: 0.8rem;
+    width: 100%;
+    text-align: right;
+    align-items: top;
+    padding-right: 1rem;
+  }
+
   .field_box h2 {
     font-size: 1rem;
     font-weight: 400;

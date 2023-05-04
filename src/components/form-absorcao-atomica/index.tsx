@@ -6,9 +6,18 @@ import * as S from './styles'
 import { Button } from '../button';
 
 const validationForm = yup.object().shape({
-  firstName: yup.string().required("Informe seu nome"),
-  surname: yup.string().required("Informe seu sobrenome"),
-  email: yup.string().email("Email inválido").required("Informe um email!"),
+  nomeAluno: yup.string().required("Informe seu nome"),
+  emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
+  telefone: yup.string().required("Informe seu telefone"),
+  nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
+  emailOrientador: yup.string().required("Informe o email do seu orientador"),
+  departamento: yup.string().required("Informe o departamento"),
+  naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
+  descricao: yup.string().required("Informe a descrição"),
+  limites: yup.string().required("Informe os limites"),
+  elementos: yup.string().required("Informe os elementos"),
+  concentracao: yup.string().required("Informe a concentração"),
+  observacoes: yup.string().required("Informe uma observação")
 });
 
 async function handleClickForm(values: {
