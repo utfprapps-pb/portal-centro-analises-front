@@ -36,6 +36,7 @@ export const Container = styled.div`
     font-weight: 900;
     color: #3f51b5;
     cursor: pointer;
+    margin-top: 1rem;
   }
 
   .row_box {
