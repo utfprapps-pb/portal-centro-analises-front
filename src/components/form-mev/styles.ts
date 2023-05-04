@@ -79,19 +79,7 @@ export const Container = styled.div`
     align-items: top;
   }
 
-  .input_form_select {
-    width: 100%;
-    background-color: var(--white);
-    border-color: none;
-    color: var(--black);
-    border: none;
-    outline: none;
-    height: 2rem;
-    padding: 0.3rem;
-    border-radius: 0.2rem;
-    text-align: top;
-    align-items: top;
-  }
+
 
   .field_box {
     display: flex;
@@ -114,6 +102,16 @@ export const Container = styled.div`
     font-size: 1rem;
     font-weight: 400;
     margin: 0px 0px 3px 0px;
+  }
+
+  .term_box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
   }
 
   ${theme.media.sm} {

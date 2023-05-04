@@ -41,7 +41,7 @@ export const Container = styled.div`
   h1 {
     font-size: 0.7rem;
     font-weight: 900;
-    color: #e0bb00;
+    color: #3f51b5;
     cursor: pointer;
   }
   svg {
@@ -74,7 +74,7 @@ export const Container = styled.div`
   a:hover {
     background-color: #f5f5f5;
     transition: 0.5s;
-    border-right: 5px solid #fcba03;
+    border-right: 5px solid #3f51b5;
   }
   a:hover > h2 {
     font-weight: 700;
@@ -87,7 +87,6 @@ export const Container = styled.div`
     h1 {
       font-size: 1rem;
       font-weight: 1000;
-      color: #e0bb00;
       letter-spacing: 0.2rem;
       cursor: pointer;
     }
@@ -114,7 +113,6 @@ export const Container = styled.div`
     h1 {
       font-size: 2rem;
       font-weight: 1000;
-      color: #e0bb00;
       letter-spacing: 0.2rem;
       cursor: pointer;
     }
