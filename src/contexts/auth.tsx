@@ -10,7 +10,7 @@ import { AxiosError } from 'axios'
 import toast from 'react-hot-toast'
 
 import { useHistory, useLocalStorage } from '@/hooks'
-import { api } from '@/services/api/apiSingleton'
+import { api } from '@/libs'
 import { LoginParams, LoginResponseProps, login } from '@/services/api/auth'
 import { InvalidCredentialsError } from '@/services/api/errors'
 

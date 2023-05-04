@@ -11,7 +11,7 @@ const breakpoints = Object.freeze({
 
 const extractBreakpointValue = (breakpoint: number) => `${breakpoint}px`
 
-export const theme: Theme = Object.freeze({
+export const theme = Object.freeze<Theme>({
   colors: {
     primary: '#0D2C54',
     secondary: '#7FB800',

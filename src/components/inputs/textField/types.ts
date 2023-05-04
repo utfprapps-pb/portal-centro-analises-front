@@ -11,6 +11,8 @@ export type TextFieldProps = {
   loading?: boolean
   materialInputProps?: Partial<InputProps>
   labelType?: 'outside' | 'inside' | 'without'
+  error?: string
 
-  onChangeValue: (value: string) => void
+  onChange: (value: string) => void
+  validator?: () => string
 }

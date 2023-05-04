@@ -1,3 +1,11 @@
 import React from 'react'
 
-export const HomePage: React.FC = () => <h1>Home</h1>
+import * as S from './styles'
+import { Header, Menu } from '@/components'
+
+export const HomePage: React.FC = () => (
+  <S.Container>
+    <Menu />
+    <Header />
+  </S.Container>
+)
