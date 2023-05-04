@@ -11,6 +11,7 @@ export function Welcome() {
         <h2>PODE TESTAR AS COISAS.</h2>
         <h2>SE FUNCIONOU É PORQUE FUNCIONA.</h2>
         <h2>PODE ESCREVER OS CÓDIGOS COMO VOCÊ SABE.</h2>
+        <h2>NÃO VAMOS REPROVAR O SEU PULL REQUEST POR NÃO SEGUIR 15971928 NORMAS, FIQUE TRANQUILO!</h2>
         <h2>NÃO É PORQUE O SEU JEITO É DIFERENTE DE OUTRAS PESSOAS QUE ESTÁ ERRADO!</h2>
         <h2>&lt;FREEDOM /&gt;</h2>
         <h2>&lt;FREEDOM /&gt;</h2>
