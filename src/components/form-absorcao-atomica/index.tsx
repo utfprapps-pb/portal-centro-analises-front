@@ -21,6 +21,9 @@ async function handleClickForm(values: {
   naturezaProjeto: string;
   descricao: string;
   limites: string;
+  elementos: string;
+  concentracao: string;
+  observacoes: string;
 }) {
   try {
 
@@ -44,6 +47,10 @@ export const FormAbsorcaoAtomica: React.FC = () => (
           naturezaProjeto: "",
           descricao: "",
           limites: "",
+          condicoes: "",
+          elementos: "", 
+          concentracao: "",
+          observacoes: ""
         }}
         onSubmit={handleClickForm}
         validationSchema={validationForm}
@@ -52,6 +59,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
           <div className='inputs_box'>
             <div className='row_box'>
               <div className='field_box'>
+                <p>Nome do Aluno</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -59,12 +67,13 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                   />
                   <Field
                     name="nomeAluno"
-                    placeholder="Nome do Aluno"
+                    placeholder=""
                     className='input_form'
                   />
                 </div>
               </div>
               <div className='field_box'>
+                <p>Email do Aluno</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -72,7 +81,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                   />
                   <Field
                     name="emailAluno"
-                    placeholder="Email do Aluno"
+                    placeholder=""
                     className='input_form'
                   />
                 </div>
@@ -80,6 +89,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
             </div>
             <div className='row_box'>
               <div className='field_box'>
+              <p>Telefone</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -87,12 +97,13 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                   />
                   <Field
                     name="telefone"
-                    placeholder='Telefone'
+                    placeholder=''
                     className='input_form'
                   />
                 </div>
               </div>
               <div className='field_box'>
+                <p>Natureza do Projeto</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -101,7 +112,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                   />
                   <Field
                     name="naturezaProjeto"
-                    placeholder='Naturza do Projeto'
+                    placeholder=''
                     className='input_form'
                   />
                 </div>
@@ -109,6 +120,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
             </div>
             <div className='row_box'>
               <div className='field_box'>
+                <p>Nome do Orientador</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -117,12 +129,13 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                   />
                   <Field
                     name="nomeOrientador"
-                    placeholder='Nome do Orientador'
+                    placeholder=''
                     className='input_form'
                   />
                 </div>
               </div>
               <div className='field_box'>
+                <p>Email do Orientador</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -131,7 +144,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                   />
                   <Field
                     name="emailOrientador"
-                    placeholder='Email do Orientador'
+                    placeholder=''
                     className='input_form'
                   />
                 </div>
@@ -139,6 +152,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
             </div>
             <div className='row_box'>
               <div className='field_box'>
+                <p>Departamento</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -147,7 +161,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                   />
                   <Field
                     name="departamento"
-                    placeholder='Departamento'
+                    placeholder=''
                     className='input_form'
                   />
                 </div>
@@ -155,6 +169,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
             </div>
             <div className='row_box'>
               <div className='field_box'>
+                <p>Descrição</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -173,6 +188,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
             </div>
             <div className='row_box'>
               <div className='field_box'>
+                <p>Limites</p>
                 <div className='input_box'>
                   <ErrorMessage
                     component='span'
@@ -187,6 +203,80 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                     className='input_form_text_area'
                   />
                 </div>
+              </div>
+            </div>
+          </div>
+          <div className='radio_box'>
+            <h3>METODOLOGIA ANALÍTICA: CONDIÇÕES A SEREM UTILIZADAS </h3>
+            <div role="group" aria-labelledby="my-radio-group">
+              <label>
+                <Field type="radio" name="condicoes" value="chama" />
+                Chama
+              </label>
+              <label>
+                <Field type="radio" name="condicoes" value="geradorHidretos" />
+                Gerador de Hidretos
+              </label>
+              <label>
+                <Field type="radio" name="condicoes" value="fornoGrafite" />
+                Forno de Grafite
+              </label>
+            </div>
+          </div>
+          <div className='row_box'>
+            <div className='field_box'>
+              <p>Elementos</p>
+              <div className='input_box'>
+                <ErrorMessage
+                  component='span'
+                  name="elementos"
+                  className='form_error'
+                />
+                <Field
+                  component="textarea"
+                  name="elementos"
+                  type="textarea"
+                  placeholder='Elementos a serem analisados'
+                  className='input_form_text_area'
+                />
+              </div>
+            </div>
+          </div>
+          <div className='row_box'>
+            <div className='field_box'>
+              <p>Concetração</p>
+              <div className='input_box'>
+                <ErrorMessage
+                  component='span'
+                  name="concentracao"
+                  className='form_error'
+                />
+                <Field
+                  component="textarea"
+                  name="concentracao"
+                  type="textarea"
+                  placeholder='Concentrações da curva de calibração'
+                  className='input_form_text_area'
+                />
+              </div>
+            </div>
+          </div>
+          <div className='row_box'>
+            <div className='field_box'>
+              <p>Observações</p>
+              <div className='input_box'>
+                <ErrorMessage
+                  component='span'
+                  name="observacoes"
+                  className='form_error'
+                />
+                <Field
+                  component="textarea"
+                  name="observacoes"
+                  type="textarea"
+                  placeholder=''
+                  className='input_form_text_area'
+                />
               </div>
             </div>
           </div>

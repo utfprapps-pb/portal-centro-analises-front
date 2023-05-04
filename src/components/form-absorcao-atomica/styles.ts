@@ -79,7 +79,35 @@ export const Container = styled.div`
     align-items: top;
   }
 
+  .radio_box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    align-items: center;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
 
+  h3 {
+    font-size: 1rem;
+  }
+
+  .radio_box > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    gap: 1rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .radio_box > div > label {
+    display: flex;
+    gap: 0.5rem;
+  }
 
   .field_box {
     display: flex;
@@ -87,6 +115,12 @@ export const Container = styled.div`
     align-items: left;
     text-align: left;
     width: 100%;
+  }
+
+  .field_box p {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 0.3rem;
   }
 
   .input_box {
