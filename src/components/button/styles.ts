@@ -1,4 +1,4 @@
-import UIButton from '@material-ui/core/Button'
+import { Button as UIButton } from '@mui/material'
 import styled, { css } from 'styled-components'
 
 import { ButtonTheme } from './theme'
@@ -23,7 +23,5 @@ export const Button = styled(UIButton)<ButtonProps>`
       }
     `}
 
-  .MuiButton-label {
-    gap: 12px;
-  }
+  gap: 12px;
 `
