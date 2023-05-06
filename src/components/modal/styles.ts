@@ -1,8 +1,5 @@
-import { Close } from '@material-ui/icons'
+import { X } from 'phosphor-react'
 import styled from 'styled-components'
-
-import { Text } from '@/components'
-import { lighten } from '@/utils'
 
 export const ButtonGroup = styled.div`
   display: flex;
@@ -16,7 +13,7 @@ export const ButtonGroup = styled.div`
   }
 `
 
-export const CloseIcon = styled(Close)`
+export const CloseIcon = styled(X)`
   cursor: pointer;
   position: absolute;
   top: 0;
@@ -44,11 +41,6 @@ export const Container = styled.div`
   max-width: 560px;
 `
 
-export const Description = styled(Text)`
-  color: ${({ theme }) =>
-    lighten({ color: theme.colors.black, percentage: 0.2 })};
-`
-
 export const Header = styled.div`
   display: flex;
   flex-direction: column;
@@ -71,9 +63,4 @@ export const Overlay = styled.div<{ isVisible?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
-`
-
-export const Title = styled(Text)`
-  color: ${({ theme }) =>
-    lighten({ color: theme.colors.black, percentage: 0.2 })};
 `

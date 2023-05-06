@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react'
 
-import { IconButton } from '@material-ui/core'
-import { VisibilityOutlined, VisibilityOffOutlined } from '@material-ui/icons'
+import { IconButton } from '@mui/material'
+import { Eye, EyeSlash } from 'phosphor-react'
 
 import { TextField, TextFieldProps } from '@/components'
 
@@ -13,7 +13,7 @@ export const PasswordInput: React.FC<PasswordInputProps> = (props) => {
 
     return (
       <IconButton onClick={onClick}>
-        {showPassword ? <VisibilityOutlined /> : <VisibilityOffOutlined />}
+        {showPassword ? <Eye /> : <EyeSlash />}
       </IconButton>
     )
   }, [showPassword])

@@ -1,3 +1,3 @@
-import { PopoverProps as MuiPopoverProps } from '@material-ui/core'
+import { PopoverProps as MuiPopoverProps } from '@mui/material'
 
 export type PopoverProps = MuiPopoverProps

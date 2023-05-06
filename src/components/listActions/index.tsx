@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 
-import { IconButton } from '@material-ui/core'
-import { MoreHoriz } from '@material-ui/icons'
+import { IconButton } from '@mui/material'
+import { DotsThree } from 'phosphor-react'
 
 import * as S from './styles'
 import { ListActionsProps } from './type'
@@ -15,7 +15,7 @@ export const ListActions: React.FC<ListActionsProps> = ({ actions }) => {
   return (
     <S.Container>
       <IconButton onClick={() => setOpen(!open)}>
-        <MoreHoriz ref={ref} />
+        <DotsThree ref={ref} />
       </IconButton>
 
       <Popover

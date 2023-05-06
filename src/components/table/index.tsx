@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 
-import { Tooltip } from '@material-ui/core'
-import { ArrowDownward, ArrowUpward } from '@material-ui/icons'
+import { Tooltip } from '@mui/material'
 import {
   flexRender,
   getCoreRowModel,
@@ -10,6 +9,7 @@ import {
   useReactTable,
   getSortedRowModel
 } from '@tanstack/react-table'
+import { SortAscending, SortDescending } from 'phosphor-react'
 
 import * as S from './styles'
 import { TableProps } from './types'
@@ -62,27 +62,32 @@ export const Table = <T,>({
     <S.Container>
       <S.Table>
         <S.TableHead>
-          {getFlatHeaders().map((header) => (
-            <S.TableHeadCell
-              key={header.id}
-              colSpan={header.colSpan}
-              onClick={header.column.getToggleSortingHandler()}
-            >
-              {flexRender(header.column.columnDef.header, header.getContext())}
-              {{
-                asc: (
-                  <Tooltip title="Ordenar ascendente">
-                    <ArrowUpward />
-                  </Tooltip>
-                ),
-                desc: (
-                  <Tooltip title="Ordenar decrescente">
-                    <ArrowDownward />
-                  </Tooltip>
-                )
-              }[header.column.getIsSorted() as string] ?? null}
-            </S.TableHeadCell>
-          ))}
+          <S.TableRow>
+            {getFlatHeaders().map((header) => (
+              <S.TableHeadCell
+                key={header.id}
+                colSpan={header.colSpan}
+                onClick={header.column.getToggleSortingHandler()}
+              >
+                {flexRender(
+                  header.column.columnDef.header,
+                  header.getContext()
+                )}
+                {{
+                  asc: (
+                    <Tooltip title="Ordenar ascendente">
+                      <SortAscending />
+                    </Tooltip>
+                  ),
+                  desc: (
+                    <Tooltip title="Ordenar decrescente">
+                      <SortDescending />
+                    </Tooltip>
+                  )
+                }[header.column.getIsSorted() as string] ?? null}
+              </S.TableHeadCell>
+            ))}
+          </S.TableRow>
         </S.TableHead>
 
         <S.TableBody>

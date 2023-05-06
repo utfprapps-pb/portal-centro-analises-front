@@ -2,7 +2,7 @@ import { createPortal } from 'react-dom'
 
 import * as S from './styles'
 import { ModalProps } from './types'
-import { Button } from '@/components'
+import { Button, Text } from '@/components'
 
 export const Modal: React.FC<ModalProps> = ({
   title,
@@ -18,8 +18,12 @@ export const Modal: React.FC<ModalProps> = ({
           <S.CloseIcon onClick={handleClickOnClose} />
 
           <S.Header>
-            <S.Title size="h6">{title}</S.Title>
-            <S.Description size="b2">{description}</S.Description>
+            <Text size="h6" color="text">
+              {title}
+            </Text>
+            <Text size="b2" color="text">
+              {description}
+            </Text>
           </S.Header>
 
           <S.ButtonGroup>

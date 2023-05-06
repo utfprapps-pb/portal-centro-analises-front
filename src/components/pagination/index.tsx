@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
-import { IconButton } from '@material-ui/core'
-import { NavigateBefore, NavigateNext } from '@material-ui/icons'
+import { IconButton } from '@mui/material'
+import { CaretLeft, CaretRight } from 'phosphor-react'
 
 import * as S from './styles'
 import { PaginationProps } from './types'
@@ -27,7 +27,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   return (
     <S.Pagination>
       <IconButton onClick={handlePreviousPage} disabled={!hasPreviousPage}>
-        <NavigateBefore />
+        <CaretLeft />
       </IconButton>
 
       {showInitialHaveMore ? (
@@ -59,7 +59,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       ) : null}
 
       <IconButton onClick={handleNextPage} disabled={!hasNextPage}>
-        <NavigateNext />
+        <CaretRight />
       </IconButton>
     </S.Pagination>
   )

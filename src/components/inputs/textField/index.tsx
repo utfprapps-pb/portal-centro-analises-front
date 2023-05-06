@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { InputAdornment } from '@material-ui/core'
+import { InputAdornment } from '@mui/material'
 
 import * as S from './styles'
 import { TextFieldProps } from './types'
 import { useTextField } from './useTextField'
-import { Loading } from '@/components'
+import { Loading, Text } from '@/components'
 
 export * from './types'
 
@@ -16,6 +16,7 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
     value,
     icon,
     iconPosition = 'end',
+    inputElementProps = {},
     materialInputProps = {},
     labelType = 'inside'
   } = props
@@ -33,7 +34,7 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
 
   return (
     <S.Container>
-      {labelType === 'outside' && <S.Label size="b4">{label}</S.Label>}
+      {labelType === 'outside' && <Text size="b4">{label}</Text>}
       <S.Input
         key={label}
         id={label}
@@ -48,11 +49,10 @@ export const TextField: React.FC<TextFieldProps> = (props) => {
         helperText={inputTouched && !isLoading && inputError}
         focused={isFocused}
         fullWidth
+        inputProps={inputElementProps}
+        // eslint-disable-next-line react/jsx-no-duplicate-props
         InputProps={{
           ...materialInputProps,
-          inputProps: {
-            ...materialInputProps.inputProps
-          },
           disabled: isDisabled,
           startAdornment: materialInputProps.startAdornment || (
             <InputAdornment position="start">

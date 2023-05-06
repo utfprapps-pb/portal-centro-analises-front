@@ -1,13 +1,12 @@
 import styled from 'styled-components'
 
-import { lighten } from '@/utils'
-
 export const Container = styled.section`
   display: flex;
   flex-direction: column;
   gap: 24px;
 
   height: 100%;
+  overflow-y: scroll;
 `
 
 export const Table = styled.table`
@@ -18,8 +17,7 @@ export const Table = styled.table`
 
 export const TableBody = styled.tbody`
   background-color: ${({ theme }) => theme.colors.white};
-  color: ${({ theme }) =>
-    lighten({ color: theme.colors.black, percentage: 0.2 })};
+  color: ${({ theme }) => theme.colors.text};
 
   tr {
     box-shadow: 0px 2px 2px rgba(50, 50, 71, 0.06),
@@ -39,8 +37,7 @@ export const TableCell = styled.td<{ align?: string }>`
 export const TableFoot = styled.tfoot`
   font-size: ${({ theme }) => theme.fontSizes.b3};
   font-weight: bold;
-  color: ${({ theme }) =>
-    lighten({ color: theme.colors.black, percentage: 0.2 })};
+  color: ${({ theme }) => theme.colors.text};
 
   td {
     padding: 0px 12px;
@@ -50,8 +47,7 @@ export const TableFoot = styled.tfoot`
 export const TableHead = styled.thead`
   font-size: ${({ theme }) => theme.fontSizes.b4};
   font-weight: bold;
-  color: ${({ theme }) =>
-    lighten({ color: theme.colors.black, percentage: 0.2 })};
+  color: ${({ theme }) => theme.colors.text};
 `
 
 export const TableHeadCell = styled.th<TableHeadCellProps>`

@@ -5,6 +5,7 @@ export interface Theme {
     white: string
     black: string
     background: string
+    text: string
     error: string
     success: string
     blue: string

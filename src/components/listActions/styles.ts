@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-import { darken, lighten } from '@/utils'
+import { darken } from '@/utils'
 
 export const Action = styled.div<{
   color: string
@@ -30,8 +30,7 @@ export const Action = styled.div<{
   }
 
   &:not(:last-child) {
-    border-bottom: 1px solid
-      ${({ theme }) => lighten({ color: theme.colors.black, percentage: 0.2 })};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.black};
   }
 
   svg {

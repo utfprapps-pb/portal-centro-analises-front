@@ -1,6 +1,7 @@
-import { colors } from '@material-ui/core'
+import { colors } from '@mui/material'
 
 import { Theme } from '@/styles'
+import { lighten } from '@/utils'
 
 const breakpoints = Object.freeze({
   xsmall: 600,
@@ -17,6 +18,10 @@ export const theme = Object.freeze<Theme>({
     secondary: '#7FB800',
     white: '#FFFFFF',
     black: '#000000',
+    text: lighten({
+      color: '#000000',
+      percentage: 0.2
+    }),
     background: '#F7F7F7',
     error: colors.red[400],
     success: colors.green[400],

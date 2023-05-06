@@ -1,11 +1,9 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 
-import { Delete, Edit } from '@material-ui/icons'
+import { Trash, PencilSimple } from 'phosphor-react'
 
-import { projectValidation } from './projectValidation'
 import { BaseTableProps, ListActions } from '@/components'
 import { ListActionsProps } from '@/components/listActions/type'
-import { useHandleChangeFormData } from '@/hooks'
 import {
   ProjectCrudIntegration,
   ProjectFormData,
@@ -16,16 +14,15 @@ import { crudHook } from '@/templates'
 
 export const useProjectPage = () => {
   const projectApi = new ProjectCrudIntegration()
-  const validation = projectValidation()
 
   const useCrudHook = crudHook<ProjectTableData, ProjectFormData>({
     services: {
       list: projectApi.list,
       create: projectApi.create,
       update: projectApi.update,
-      delete: projectApi.delete
+      delete: projectApi.delete,
+      getOne: projectApi.getOne
     },
-    validation,
     texts: {
       delete: {
         success: 'Projeto deletado com sucesso!'
@@ -41,18 +38,6 @@ export const useProjectPage = () => {
 
   const hookData = useCrudHook()
 
-  const [formData, setFormData] = useState<ProjectFormData>({
-    description: '',
-    subject: '',
-    teacherId: '',
-    studentsIds: []
-  })
-
-  const { handleChange } = useHandleChangeFormData({
-    formData,
-    setFormData
-  })
-
   const table = useMemo<BaseTableProps<ProjectTableData>>(
     () => ({
       columns: [
@@ -66,13 +51,13 @@ export const useProjectPage = () => {
         },
         {
           header: 'Professor',
-          accessorKey: 'teacher.name'
+          accessorKey: 'teacher.label'
         },
         {
           header: 'Alunos',
           accessorKey: 'students',
           accessorFn: ({ students }) =>
-            students.map(({ name }) => name).join(', ')
+            students.map(({ label }) => label).join(', ')
         },
         {
           id: 'actions',
@@ -84,14 +69,14 @@ export const useProjectPage = () => {
               {
                 color: theme.colors.white,
                 background: theme.colors.blue,
-                icon: <Edit />,
+                icon: <PencilSimple />,
                 text: 'Editar',
                 onClick: () => hookData.setResourceIdToUpdate(id)
               },
               {
                 color: theme.colors.white,
                 background: theme.colors.error,
-                icon: <Delete />,
+                icon: <Trash />,
                 text: 'Excluir',
                 onClick: () => hookData.setResourceIdToExclude(id)
               }
@@ -109,8 +94,6 @@ export const useProjectPage = () => {
 
   return {
     ...hookData,
-    formData,
-    table,
-    handleChange
+    table
   }
 }
