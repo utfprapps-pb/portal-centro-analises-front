@@ -2,6 +2,16 @@ import { HttpStatusCode } from 'axios'
 
 type Filter = Record<string, string>
 
+type Pagination = {
+  page: number
+  perPage?: number
+}
+
+type Sort = {
+  field: string
+  order: 'asc' | 'desc'
+}
+
 export interface CrudIntegration<
   TCreateFn,
   TDeleteFn,
@@ -30,10 +40,8 @@ export type HttpRequest<TFilters extends Filter[] = Filter[]> = {
   method: HttpMethod
   body?: unknown
   filters?: TFilters
-  pagination?: {
-    page: number
-    perPage?: number
-  }
+  pagination?: Pagination
+  sort?: Sort
 }
 
 export type HttpResponse<TData = unknown> = {
@@ -42,4 +50,4 @@ export type HttpResponse<TData = unknown> = {
   totalPages?: number
 }
 
-export type ListParams = Pick<HttpRequest, 'filters' | 'pagination'>
+export type ListParams = Pick<HttpRequest, 'filters' | 'pagination' | 'sort'>

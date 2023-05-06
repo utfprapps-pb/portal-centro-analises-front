@@ -16,7 +16,14 @@ export const CrudPage = <
   props: CrudPageProps<TTableData, TFormData>
 ) => {
   const { texts, hookData, table, form, title, notFoundResourceName } = props
-  const { loading, deleteLoading, getOneLoading, resources } = hookData
+  const {
+    loading,
+    deleteLoading,
+    getOneLoading,
+    resources,
+    sorting,
+    setSorting
+  } = hookData
 
   if (loading) {
     return (
@@ -49,6 +56,8 @@ export const CrudPage = <
         <Table<TTableData>
           {...table}
           data={hookData.resources}
+          sorting={sorting}
+          setSorting={setSorting}
           pagination={{
             totalPages: hookData.totalPages,
             paginationTable: hookData.pagination,

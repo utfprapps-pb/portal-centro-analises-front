@@ -51,7 +51,8 @@ export const useProjectPage = () => {
         },
         {
           header: 'Professor',
-          accessorKey: 'teacher.label'
+          accessorKey: 'teacher',
+          accessorFn: ({ teacher }) => teacher.label
         },
         {
           header: 'Alunos',

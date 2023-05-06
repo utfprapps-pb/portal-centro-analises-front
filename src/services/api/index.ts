@@ -9,13 +9,14 @@ export class ApiHttpClient<T = unknown> implements HttpClient<T> {
   async request(data: HttpRequest): Promise<HttpResponse<T>> {
     let axiosResponse: AxiosResponse
 
-    const { url: rawUrl, pagination, filters } = data
+    const { url: rawUrl, pagination, filters, sort } = data
 
     try {
       const url = this.makeUrlWithFiltersAndPagination({
         url: rawUrl,
         filters,
-        pagination
+        pagination,
+        sort
       })
 
       axiosResponse = await api.request({
@@ -41,25 +42,30 @@ export class ApiHttpClient<T = unknown> implements HttpClient<T> {
     url: string
     filters: HttpRequest['filters']
     pagination: HttpRequest['pagination']
+    sort: HttpRequest['sort']
   }) {
-    const { url, filters = {}, pagination = {} } = params
+    const { url, filters = {}, pagination = {}, sort = {} } = params
 
     const paginationKeys = Object.keys(pagination)
     const filtersKeys = Object.keys(filters)
+    const sortKeys = Object.keys(sort)
 
-    if (!filtersKeys.length && !paginationKeys.length) return url
+    if (!filtersKeys.length && !paginationKeys.length && !sortKeys) return url
 
     const esc = encodeURIComponent
-    const filtersAndPagination = [
+    const queryParams = [
       ...Object.entries(pagination).map(
         ([key, value]) => `${esc(key)}=${esc(String(value))}`
       ),
       ...Object.entries(filters).map(
         ([key, value]) => `${esc(key)}=${esc(String(value))}`
+      ),
+      ...Object.entries(sort).map(
+        ([key, value]) => `${esc(key)}=${esc(String(value))}`
       )
     ]
 
-    const query = filtersAndPagination.join('&')
+    const query = queryParams.join('&')
     return `${url}?${query}`
   }
 }

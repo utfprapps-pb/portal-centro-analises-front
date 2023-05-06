@@ -17,8 +17,8 @@ export const listHook =
 
     const [resources, setResources] = useState<TTableData[]>([])
     const [loading, setLoading] = useState(true)
-    const [filters, setFilters] = useState<HttpRequest['filters']>([])
 
+    const [filters, setFilters] = useState<HttpRequest['filters']>([])
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState<PaginationState>({
       pageIndex: 0,
@@ -26,6 +26,7 @@ export const listHook =
     })
 
     const currentPage = useMemo(() => pagination.pageIndex + 1, [pagination])
+    const currentSort = useMemo(() => sorting[0], [sorting])
 
     const [totalPages, setTotalPages] = useState(1)
 
@@ -35,7 +36,14 @@ export const listHook =
           pagination: {
             page: currentPage
           },
-          filters
+          filters,
+          ...(currentSort?.id &&
+            currentSort?.desc && {
+              sort: {
+                field: currentSort.id,
+                order: currentSort.desc ? 'desc' : 'asc'
+              }
+            })
         })
 
         setResources(response.resources)
@@ -48,7 +56,7 @@ export const listHook =
         setLoading(false)
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage, filters])
+    }, [currentPage, currentSort, filters])
 
     useEffect(() => {
       fetchResources()

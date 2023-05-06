@@ -44,6 +44,7 @@ export const Table = <T,>({
     },
     pageCount: totalPages,
     manualPagination: true,
+    manualSorting: true,
     onPaginationChange: setPaginationTable,
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),

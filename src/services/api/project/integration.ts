@@ -70,7 +70,7 @@ export class ProjectCrudIntegration
     throw new UnexpectedError()
   }
 
-  list: GetProjects = async ({ filters, pagination }) => {
+  list: GetProjects = async ({ filters, pagination, sort }) => {
     const api = new ApiHttpClient<ProjectTableData[]>()
 
     const {
@@ -81,7 +81,8 @@ export class ProjectCrudIntegration
       url: '/v1/project',
       method: 'get',
       filters,
-      pagination
+      pagination,
+      sort
     })
 
     if (statusCode === HttpStatusCode.Ok && !!projects) {
