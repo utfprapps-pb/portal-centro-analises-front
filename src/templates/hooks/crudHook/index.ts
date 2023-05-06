@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { AxiosError } from 'axios'
 import { toast } from 'react-hot-toast'
@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast'
 import { CrudHookProps } from './types'
 import { listDeleteHook } from '../listDeleteHook'
 import { Id } from '../types'
-import { useHandleValidate, useModal } from '@/hooks'
+import { useModal } from '@/hooks'
 
 export * from './types'
 
@@ -28,41 +28,35 @@ export const crudHook = <
 
   return () => {
     const {
-      validation,
-      services: { create, update },
+      services: { create, update, getOne },
       texts: {
         create: { success: createSuccessMessage },
         update: { success: updateSuccessMessage }
       }
     } = params
 
-    const handleValidate = useHandleValidate
-
     const createDrawer = useModal()
     const listDeleteHookData = useListDeleteHook()
 
-    const { resources, setLoading, fetchResources } = listDeleteHookData
+    const { fetchResources } = listDeleteHookData
+
+    const [touched, setTouched] = useState(false)
+    const [getOneLoading, setGetOneLoading] = useState(false)
+    const [createLoading, setCreateLoading] = useState(false)
+    const [updateLoading, setUpdateLoading] = useState(false)
 
     const [resourceIdToUpdate, setResourceIdToUpdate] = useState('')
-    const resourceToUpdate = useMemo<TTableData | undefined>(
-      () => resources.find(({ id }) => id === resourceIdToUpdate),
-      [resourceIdToUpdate, resources]
-    )
-
-    const isUpdating = useMemo(
-      () => !!resourceToUpdate?.id,
-      [resourceToUpdate?.id]
+    const [resourceToUpdate, setResourceToUpdate] = useState<TFormData | null>(
+      null
     )
 
     const handleCreateResource = useCallback(
-      async (formData: TFormData) => {
+      async (props: { formData: TFormData; formIsValid: boolean }) => {
         try {
-          setLoading(true)
+          const { formData, formIsValid } = props
 
-          const { formIsValid } = handleValidate({
-            formData,
-            validation
-          })
+          setCreateLoading(true)
+          setTouched(true)
 
           if (!formIsValid) {
             toast.error('Preencha os dados do formulário corretamente')
@@ -80,29 +74,19 @@ export const crudHook = <
           const axiosError = error as AxiosError
           toast.error(axiosError.message)
         } finally {
-          setLoading(false)
+          setCreateLoading(false)
         }
       },
-      [
-        createDrawer,
-        createSuccessMessage,
-        validation,
-        create,
-        fetchResources,
-        handleValidate,
-        setLoading
-      ]
+      [createDrawer, createSuccessMessage, create, fetchResources]
     )
 
     const handleUpdateResource = useCallback(
-      async (formData: TFormData) => {
+      async (props: { formData: TFormData; formIsValid: boolean }) => {
         try {
-          setLoading(true)
+          const { formData, formIsValid } = props
 
-          const { formIsValid } = handleValidate({
-            formData,
-            validation
-          })
+          setUpdateLoading(true)
+          setTouched(true)
 
           if (!formIsValid) {
             toast.error('Preencha os dados do formulário corretamente')
@@ -120,25 +104,41 @@ export const crudHook = <
           const axiosError = error as AxiosError
           toast.error(axiosError.message)
         } finally {
-          setLoading(false)
+          setUpdateLoading(false)
         }
       },
-      [
-        resourceIdToUpdate,
-        updateSuccessMessage,
-        validation,
-        fetchResources,
-        handleValidate,
-        setLoading,
-        update
-      ]
+      [resourceIdToUpdate, updateSuccessMessage, fetchResources, update]
     )
+
+    useEffect(() => {
+      const getOneProject = async () => {
+        try {
+          setGetOneLoading(true)
+
+          const resource = await getOne(resourceIdToUpdate)
+          setResourceToUpdate(resource)
+        } catch (error) {
+          const axiosError = error as AxiosError
+          toast.error(axiosError.message)
+        } finally {
+          setGetOneLoading(false)
+        }
+      }
+
+      if (resourceIdToUpdate) getOneProject()
+      else setResourceToUpdate(null)
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [resourceIdToUpdate])
 
     return {
       ...listDeleteHookData,
       createDrawer,
+      createLoading,
+      getOneLoading,
+      resourceIdToUpdate,
       resourceToUpdate,
-      isUpdating,
+      touched,
+      updateLoading,
       handleCreateResource,
       handleUpdateResource,
       setResourceIdToUpdate
