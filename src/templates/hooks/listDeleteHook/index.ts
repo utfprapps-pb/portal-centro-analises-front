@@ -24,7 +24,9 @@ export const listDeleteHook = <TTableData extends Id>(
     } = params
 
     const listHookData = useListHook()
-    const { resources, setLoading, fetchResources } = listHookData
+    const { resources, fetchResources } = listHookData
+
+    const [deleteLoading, setDeleteLoading] = useState(false)
 
     const [resourceIdToExclude, setResourceIdToExclude] = useState('')
     const resourceToExclude = useMemo<TTableData | undefined>(
@@ -34,7 +36,7 @@ export const listDeleteHook = <TTableData extends Id>(
 
     const handleDeleteResource = useCallback(async () => {
       try {
-        setLoading(true)
+        setDeleteLoading(true)
 
         await deleteCallback(resourceIdToExclude)
 
@@ -47,18 +49,19 @@ export const listDeleteHook = <TTableData extends Id>(
         const axiosError = error as AxiosError
         toast.error(axiosError.message)
       } finally {
-        setLoading(false)
+        setDeleteLoading(false)
       }
     }, [
-      deleteCallback,
       deleteSuccess,
-      fetchResources,
       resourceIdToExclude,
-      setLoading
+      deleteCallback,
+      fetchResources,
+      setDeleteLoading
     ])
 
     return {
       ...listHookData,
+      deleteLoading,
       resourceToExclude,
       setResourceIdToExclude,
       handleDeleteResource
