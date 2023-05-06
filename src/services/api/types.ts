@@ -2,11 +2,18 @@ import { HttpStatusCode } from 'axios'
 
 type Filter = Record<string, string>
 
-export interface CrudIntegration<TCreateFn, TDeleteFn, TListFn, TUpdateFn> {
+export interface CrudIntegration<
+  TCreateFn,
+  TDeleteFn,
+  TListFn,
+  TUpdateFn,
+  TGetOne
+> {
   create: TCreateFn
   delete: TDeleteFn
   list: TListFn
   update: TUpdateFn
+  getOne: TGetOne
 }
 
 export interface HttpClient<

@@ -1,14 +1,5 @@
 import { ListParams } from '@/services/api'
-
-type Teacher = {
-  id: string
-  name: string
-}
-
-type Student = {
-  id: string
-  name: string
-}
+import { Option } from '@/types'
 
 export type GetProjects = (params: ListParams) => Promise<GetProjectsResponse>
 
@@ -21,6 +12,6 @@ export type ProjectTableData = {
   id: string
   description: string
   subject: string
-  teacher: Teacher
-  students: Student[]
+  teacher: Option
+  students: Option[]
 }

@@ -1,17 +1,17 @@
 import { faker } from '@faker-js/faker/locale/en'
 
-import { GetProjectsResponse, ProjectTableData } from './types'
+import { GetProjectsResponse, ProjectFormData, ProjectTableData } from './types'
 
 export class RandomProjects {
   static getProjects(): GetProjectsResponse {
-    const totalOfProjects = Number(faker.random.numeric(2))
+    const totalOfProjects = 10
     const totalOfStudents = Number(faker.random.numeric(1))
 
     const students: ProjectTableData['students'] = Array.from(
       { length: totalOfStudents },
       () => ({
         id: faker.datatype.uuid(),
-        name: faker.name.fullName()
+        label: faker.name.fullName()
       })
     )
 
@@ -24,7 +24,7 @@ export class RandomProjects {
         students,
         teacher: {
           id: faker.datatype.uuid(),
-          name: faker.name.fullName()
+          label: faker.name.fullName()
         }
       })
     )
@@ -34,6 +34,21 @@ export class RandomProjects {
     return {
       resources: projects,
       totalPages
+    }
+  }
+
+  static getProject(): ProjectFormData {
+    return {
+      subject: faker.lorem.word(),
+      description: faker.lorem.paragraph(),
+      teacher: {
+        id: faker.datatype.uuid(),
+        label: faker.name.fullName()
+      },
+      students: Array.from({ length: 3 }, () => ({
+        id: faker.datatype.uuid(),
+        label: faker.name.fullName()
+      }))
     }
   }
 }

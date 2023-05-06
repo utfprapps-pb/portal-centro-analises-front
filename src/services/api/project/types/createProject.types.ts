@@ -1,8 +1,3 @@
-export type CreateProject = (data: ProjectFormData) => Promise<void>
+import { ProjectFormData } from './shared.types'
 
-export type ProjectFormData = {
-  description: string
-  subject: string
-  teacherId: string
-  studentsIds: string[]
-}
+export type CreateProject = (data: ProjectFormData) => Promise<void>

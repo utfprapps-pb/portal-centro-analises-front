@@ -5,22 +5,51 @@ import {
   ProjectTableData,
   CreateProject,
   UpdateProject,
-  DeleteProject
+  DeleteProject,
+  GetOneProject,
+  ProjectFormData
 } from './types'
 import { ApiHttpClient, CrudIntegration } from '..'
 import { UnexpectedError } from '../errors'
 
 export class ProjectCrudIntegration
   implements
-    CrudIntegration<CreateProject, DeleteProject, GetProjects, UpdateProject>
+    CrudIntegration<
+      CreateProject,
+      DeleteProject,
+      GetProjects,
+      UpdateProject,
+      GetOneProject
+    >
 {
+  getOne: GetOneProject = async (id) => {
+    const api = new ApiHttpClient<ProjectFormData>()
+
+    const { statusCode, body } = await api.request({
+      url: `/v1/project/${id}`,
+      method: 'get'
+    })
+
+    if (statusCode === HttpStatusCode.Ok && !!body) {
+      return body
+    }
+
+    throw new UnexpectedError()
+  }
+
   create: CreateProject = async (data) => {
     const api = new ApiHttpClient()
+
+    const payload = {
+      ...data,
+      students: data.students.map((student) => student.id),
+      teacher: data.teacher.id
+    }
 
     const { statusCode } = await api.request({
       url: '/v1/project',
       method: 'post',
-      body: data
+      body: payload
     })
 
     if (statusCode === HttpStatusCode.Created) return
@@ -68,10 +97,16 @@ export class ProjectCrudIntegration
   update: UpdateProject = async (id, data) => {
     const api = new ApiHttpClient()
 
+    const payload = {
+      ...data,
+      students: data.students.map((student) => student.id),
+      teacher: data.teacher.id
+    }
+
     const { statusCode } = await api.request({
       url: `/v1/project/${id}`,
       method: 'patch',
-      body: data
+      body: payload
     })
 
     if (statusCode === HttpStatusCode.NoContent) return
