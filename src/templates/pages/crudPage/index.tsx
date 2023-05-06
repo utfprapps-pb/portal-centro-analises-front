@@ -1,11 +1,11 @@
 import React from 'react'
 
-import { IconButton, Tooltip } from '@material-ui/core'
-import { Add, Delete, FilterList } from '@material-ui/icons'
+import { IconButton, Tooltip } from '@mui/material'
+import { Plus, Trash, Funnel, MagnifyingGlass, X } from 'phosphor-react'
 
 import * as S from './styles'
 import { CrudPageProps } from './types'
-import { Button, Modal, Table } from '@/components'
+import { Button, Loading, Modal, Table, Text } from '@/components'
 import { Drawer } from '@/components/drawer'
 import { Id } from '@/templates/hooks'
 
@@ -15,7 +15,16 @@ export const CrudPage = <
 >(
   props: CrudPageProps<TTableData, TFormData>
 ) => {
-  const { texts, hookData, table, form, title } = props
+  const { texts, hookData, table, form, title, notFoundResourceName } = props
+  const { loading, deleteLoading, getOneLoading, resources } = hookData
+
+  if (loading) {
+    return (
+      <S.LoadingContainer>
+        <Loading size={24} />
+      </S.LoadingContainer>
+    )
+  }
 
   return (
     <S.Container>
@@ -27,46 +36,58 @@ export const CrudPage = <
         <S.HeaderRight>
           <Tooltip title="Filtros">
             <IconButton>
-              <FilterList />
+              <Funnel />
             </IconButton>
           </Tooltip>
           <Button onClick={hookData.createDrawer.open}>
-            <Add /> Adicionar
+            <Plus /> Adicionar
           </Button>
         </S.HeaderRight>
       </S.Header>
 
-      <Table<TTableData>
-        {...table}
-        data={hookData.resources}
-        pagination={{
-          totalPages: hookData.totalPages,
-          paginationTable: hookData.pagination,
-          setPaginationTable: hookData.setPagination
-        }}
-      />
+      {resources.length ? (
+        <Table<TTableData>
+          {...table}
+          data={hookData.resources}
+          pagination={{
+            totalPages: hookData.totalPages,
+            paginationTable: hookData.pagination,
+            setPaginationTable: hookData.setPagination
+          }}
+        />
+      ) : (
+        <S.NotFoundContainer>
+          <MagnifyingGlass size={64} />
+
+          <Text size="h6" color="text">
+            Nenhum resultado encontrado
+          </Text>
+
+          <Text size="b3" color="text">
+            Não foram encontrados {notFoundResourceName} para os filtros
+            aplicados
+          </Text>
+        </S.NotFoundContainer>
+      )}
 
       <Drawer
-        title={
-          hookData.isUpdating ? `Editar ${form.title}` : `Criar ${form.title}`
-        }
         open={hookData.createDrawer.isOpen}
         onClose={hookData.createDrawer.close}
       >
-        <S.Form
-          onSubmit={(event) => {
-            event.preventDefault()
-            hookData.handleCreateResource(form.data)
-          }}
-        >
-          <S.FormBody>{form.render()}</S.FormBody>
+        {form.renderCreateContainer()}
+      </Drawer>
 
-          <Button type="submit">
-            {hookData.isUpdating
-              ? `Editar ${form.title}`
-              : `Criar ${form.title}`}
-          </Button>
-        </S.Form>
+      <Drawer
+        open={!!hookData.resourceIdToUpdate}
+        onClose={() => hookData.setResourceIdToUpdate('')}
+      >
+        {!getOneLoading && hookData.resourceToUpdate ? (
+          form.renderUpdateContainer(hookData.resourceToUpdate)
+        ) : (
+          <S.LoadingContainer>
+            <Loading size={32} />
+          </S.LoadingContainer>
+        )}
       </Drawer>
 
       {hookData.resourceToExclude && (
@@ -79,13 +100,17 @@ export const CrudPage = <
               key: 'delete',
               children: 'Não, cancelar.',
               variant: 'outlined',
+              icon: <X />,
+              disabled: deleteLoading,
               onClick: () => hookData.setResourceIdToExclude('')
             },
             {
               key: 'confirm',
               children: 'Sim, excluir.',
               theme: 'error',
-              icon: <Delete />,
+              icon: <Trash />,
+              loading: deleteLoading,
+              disabled: deleteLoading,
               onClick: hookData.handleDeleteResource
             }
           ]}

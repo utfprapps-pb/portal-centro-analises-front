@@ -23,10 +23,8 @@ type Texts<TTableData extends Id> = {
 }
 
 type FormProps<T> = {
-  title: string
-  data: T
-  submitButtonText: string
-  render: () => React.ReactNode
+  renderCreateContainer: () => React.ReactNode
+  renderUpdateContainer: (initialData: T) => React.ReactNode
 }
 
 type WrapperFnType<
@@ -48,4 +46,5 @@ export type CrudPageProps<
   table: BaseTableProps<TTableData>
   form: FormProps<TFormData>
   title: string
+  notFoundResourceName: string
 }

@@ -7,29 +7,18 @@ export const Container = styled.section`
   flex-direction: column;
 
   height: 100%;
-`
 
-export const Form = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
-  height: 100%;
-`
-
-export const FormBody = styled.div`
-  display: flex;
-  flex-direction: column;
-
-  gap: 24px;
+  table {
+    margin-top: 18px;
+  }
 `
 
 export const Header = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  margin-bottom: 64px;
+  padding-bottom: 64px;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.black};
 `
 
 export const HeaderLeft = styled.div`
@@ -45,16 +34,19 @@ export const LoadingContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  height: 50%;
+  height: 100%;
 `
 
 export const NotFoundContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 
-  height: 50%;
+  gap: 8px;
+  text-align: center;
+
+  height: 100%;
 `
 
 export const Title = styled(Text)`
