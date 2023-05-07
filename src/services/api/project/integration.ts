@@ -7,9 +7,11 @@ import {
   UpdateProject,
   DeleteProject,
   GetOneProject,
-  ProjectFormData
+  ProjectFormData,
+  GetProjectDependences,
+  DependencesResult
 } from './types'
-import { ApiHttpClient, CrudIntegration } from '..'
+import { ApiHttpClient, CrudIntegration, DependencesIntegration } from '..'
 import { UnexpectedError } from '../errors'
 
 export class ProjectCrudIntegration
@@ -20,8 +22,41 @@ export class ProjectCrudIntegration
       GetProjects,
       UpdateProject,
       GetOneProject
-    >
+    >,
+    DependencesIntegration<GetProjectDependences>
 {
+  getDependences: GetProjectDependences = async () => {
+    const api = new ApiHttpClient<DependencesResult[]>()
+
+    const { statusCode, body } = await api.request({
+      url: '/v1/users',
+      method: 'get'
+    })
+
+    if (statusCode === HttpStatusCode.Ok && !!body) {
+      const teachers = body
+        .filter((user) => user.role === 'professor')
+        .map((user) => ({
+          id: String(user.id),
+          label: user.name
+        }))
+
+      const students = body
+        .filter((user) => user.role === 'student')
+        .map((user) => ({
+          id: String(user.id),
+          label: user.name
+        }))
+
+      return {
+        teachers,
+        students
+      }
+    }
+
+    throw new UnexpectedError()
+  }
+
   getOne: GetOneProject = async (id) => {
     const api = new ApiHttpClient<ProjectFormData>()
 

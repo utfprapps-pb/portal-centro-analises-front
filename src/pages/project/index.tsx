@@ -1,22 +1,26 @@
 import { ProjectForm } from './form'
 import { ProjectModalFilter } from './modalFilter'
 import { useProjectPage } from './useProjectPage'
-import { ProjectTableData } from '@/services/api/project'
+import { ProjectFormData, ProjectTableData } from '@/services/api/project'
 import { CrudPage } from '@/templates'
 
 export const ProjectPage: React.FC = () => {
   const projectData = useProjectPage()
   const {
     createLoading,
+    dependences,
+    dependencesLoading,
     modalFilter,
     table,
     touched,
     updateLoading,
+    handleCreateResource,
+    handleUpdateResource,
     setFilters
   } = projectData
 
   return (
-    <CrudPage
+    <CrudPage<ProjectTableData, ProjectFormData>
       title="Projetos"
       notFoundResourceName="projetos"
       table={table}
@@ -28,7 +32,9 @@ export const ProjectPage: React.FC = () => {
             submitButtonText="Criar projeto"
             touched={touched}
             loading={createLoading}
-            onSubmit={projectData.handleCreateResource}
+            dependences={dependences}
+            dependencesLoading={dependencesLoading}
+            onSubmit={handleCreateResource}
           />
         ),
         renderUpdateContainer: (data) => (
@@ -38,7 +44,9 @@ export const ProjectPage: React.FC = () => {
             initialData={data}
             touched={touched}
             loading={updateLoading}
-            onSubmit={projectData.handleUpdateResource}
+            dependences={dependences}
+            dependencesLoading={dependencesLoading}
+            onSubmit={handleUpdateResource}
           />
         ),
         renderFilterContainer: () => (

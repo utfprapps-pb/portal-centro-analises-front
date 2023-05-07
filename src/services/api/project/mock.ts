@@ -3,10 +3,11 @@ import {
   CreateProject,
   DeleteProject,
   GetOneProject,
+  GetProjectDependences,
   GetProjects,
   UpdateProject
 } from './types'
-import { CrudIntegration } from '../types'
+import { CrudIntegration, DependencesIntegration } from '../types'
 import { freeze } from '@/utils'
 
 export class ProjectCrudIntegration
@@ -17,8 +18,15 @@ export class ProjectCrudIntegration
       GetProjects,
       UpdateProject,
       GetOneProject
-    >
+    >,
+    DependencesIntegration<GetProjectDependences>
 {
+  getDependences: GetProjectDependences = async () => {
+    await freeze()
+
+    return RandomProjects.getDependences()
+  }
+
   getOne: GetOneProject = async () => {
     await freeze()
 

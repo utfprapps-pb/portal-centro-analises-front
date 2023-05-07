@@ -11,6 +11,8 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
   initialData,
   loading,
   touched,
+  dependences,
+  dependencesLoading,
   onSubmit
 }) => {
   const { formData, handleChange, handleSubmit, handleValidate } =
@@ -51,24 +53,11 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
       <Autocomplete
         label="Professor"
         value={formData.teacher}
-        options={[
-          {
-            id: '1',
-            label: 'Professor 1'
-          },
-          {
-            id: '2',
-            label: 'Professor 2'
-          },
-          {
-            id: '3',
-            label: 'Professor 3'
-          }
-        ]}
+        options={dependences?.teachers || []}
         onSelectOption={handleChange('teacher')}
         onChange={() => null}
-        disabled={loading}
-        loading={loading}
+        disabled={loading || dependencesLoading}
+        loading={loading || dependencesLoading}
         touched={touched}
         noOptionsText="Nenhum professor encontrado"
         validator={handleValidate('teacher')}
@@ -77,23 +66,10 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
       <MultSelect
         label="Estudantes"
         value={formData.students}
-        options={[
-          {
-            id: '1',
-            label: 'Estudante 1'
-          },
-          {
-            id: '2',
-            label: 'Estudante 2'
-          },
-          {
-            id: '3',
-            label: 'Estudante 3'
-          }
-        ]}
+        options={dependences?.students || []}
         onSelectOption={handleChange('students')}
-        disabled={loading}
-        loading={loading}
+        disabled={loading || dependencesLoading}
+        loading={loading || dependencesLoading}
         touched={touched}
         noOptionsText="Nenhum estudante encontrado"
         validator={handleValidate('students')}

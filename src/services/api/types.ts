@@ -26,6 +26,10 @@ export interface CrudIntegration<
   getOne: TGetOne
 }
 
+export interface DependencesIntegration<TGetDependencesFn> {
+  getDependences: TGetDependencesFn
+}
+
 export interface HttpClient<TData = unknown, TFilters extends Filter = Filter> {
   request: (data: HttpRequest<TFilters>) => Promise<HttpResponse<TData>>
 }

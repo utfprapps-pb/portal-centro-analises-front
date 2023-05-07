@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { Trash, PencilSimple } from 'phosphor-react'
 
@@ -6,37 +6,44 @@ import { BaseTableProps, ListActions } from '@/components'
 import { ListActionsProps } from '@/components/listActions/type'
 import {
   ProjectCrudIntegration,
+  ProjectDependences,
   ProjectFormData,
   ProjectTableData
 } from '@/services/api/project'
 import { theme } from '@/styles'
-import { crudHook } from '@/templates'
+import { crudHook, dependencesHook } from '@/templates'
+
+const projectApi = new ProjectCrudIntegration()
+
+const useDependencesHook = dependencesHook<ProjectDependences>({
+  getDependences: projectApi.getDependences
+})
+
+const useCrudHook = crudHook<ProjectTableData, ProjectFormData>({
+  services: {
+    list: projectApi.list,
+    create: projectApi.create,
+    update: projectApi.update,
+    delete: projectApi.delete,
+    getOne: projectApi.getOne
+  },
+  texts: {
+    delete: {
+      success: 'Projeto deletado com sucesso!'
+    },
+    create: {
+      success: 'Projeto criado com sucesso!'
+    },
+    update: {
+      success: 'Projeto atualizado com sucesso!'
+    }
+  }
+})
 
 export const useProjectPage = () => {
-  const projectApi = new ProjectCrudIntegration()
-
-  const useCrudHook = crudHook<ProjectTableData, ProjectFormData>({
-    services: {
-      list: projectApi.list,
-      create: projectApi.create,
-      update: projectApi.update,
-      delete: projectApi.delete,
-      getOne: projectApi.getOne
-    },
-    texts: {
-      delete: {
-        success: 'Projeto deletado com sucesso!'
-      },
-      create: {
-        success: 'Projeto criado com sucesso!'
-      },
-      update: {
-        success: 'Projeto atualizado com sucesso!'
-      }
-    }
-  })
-
   const hookData = useCrudHook()
+  const { dependences, dependencesLoading, fetchDependences } =
+    useDependencesHook()
 
   const table = useMemo<BaseTableProps<ProjectTableData>>(
     () => ({
@@ -93,8 +100,19 @@ export const useProjectPage = () => {
     [hookData]
   )
 
+  useEffect(() => {
+    if (hookData.resourceIdToUpdate || hookData.createDrawer.isOpen)
+      fetchDependences()
+  }, [
+    fetchDependences,
+    hookData.createDrawer.isOpen,
+    hookData.resourceIdToUpdate
+  ])
+
   return {
     ...hookData,
+    dependences,
+    dependencesLoading,
     table
   }
 }

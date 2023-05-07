@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker/locale/en'
 
-import { GetProjectsResponse, ProjectFormData, ProjectTableData } from './types'
+import {
+  GetProjectsResponse,
+  ProjectDependences,
+  ProjectFormData,
+  ProjectTableData
+} from './types'
 
 export class RandomProjects {
   static getProjects(): GetProjectsResponse {
@@ -46,6 +51,22 @@ export class RandomProjects {
         label: faker.name.fullName()
       },
       students: Array.from({ length: 3 }, () => ({
+        id: faker.datatype.uuid(),
+        label: faker.name.fullName()
+      }))
+    }
+  }
+
+  static getDependences(): ProjectDependences {
+    const totalOfStudents = Number(faker.random.numeric(2))
+    const totalOfTeachers = Number(faker.random.numeric(2))
+
+    return {
+      students: Array.from({ length: totalOfStudents }, () => ({
+        id: faker.datatype.uuid(),
+        label: faker.name.fullName()
+      })),
+      teachers: Array.from({ length: totalOfTeachers }, () => ({
         id: faker.datatype.uuid(),
         label: faker.name.fullName()
       }))
