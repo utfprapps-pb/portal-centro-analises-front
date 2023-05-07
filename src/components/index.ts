@@ -1,5 +1,6 @@
 export * from '@/components/button'
 export * from '@/components/inputs'
+export * from '@/components/inputs/inputGroup'
 export * from '@/components/listActions'
 export * from '@/components/loading'
 export * from '@/components/modal'
