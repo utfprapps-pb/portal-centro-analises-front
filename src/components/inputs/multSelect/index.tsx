@@ -13,6 +13,7 @@ export const MultSelect: React.FC<MultSelectProps> = (props) => {
     value,
     disabled = false,
     autocomplete = false,
+    loading = false,
     noOptionsText,
     onSelectOption
   } = props
@@ -24,7 +25,7 @@ export const MultSelect: React.FC<MultSelectProps> = (props) => {
   }, [options, value])
 
   return (
-    <S.Container disabled={disabled}>
+    <S.Container>
       <Autocomplete
         id={label}
         options={cleanOptions}
@@ -32,6 +33,8 @@ export const MultSelect: React.FC<MultSelectProps> = (props) => {
         onChange={(_, option) => onSelectOption(option)}
         value={value}
         multiple
+        loading={loading}
+        loadingText="Carregando..."
         autoComplete={autocomplete}
         disabled={disabled}
         noOptionsText={noOptionsText}
