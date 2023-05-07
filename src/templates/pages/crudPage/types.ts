@@ -25,6 +25,7 @@ type Texts<TTableData extends Id> = {
 type FormProps<T> = {
   renderCreateContainer: () => React.ReactNode
   renderUpdateContainer: (initialData: T) => React.ReactNode
+  renderFilterContainer: () => React.ReactNode
 }
 
 type WrapperFnType<

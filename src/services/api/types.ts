@@ -26,16 +26,13 @@ export interface CrudIntegration<
   getOne: TGetOne
 }
 
-export interface HttpClient<
-  TData = unknown,
-  TFilters extends Filter[] = Filter[]
-> {
+export interface HttpClient<TData = unknown, TFilters extends Filter = Filter> {
   request: (data: HttpRequest<TFilters>) => Promise<HttpResponse<TData>>
 }
 
 export type HttpMethod = 'get' | 'post' | 'delete' | 'patch'
 
-export type HttpRequest<TFilters extends Filter[] = Filter[]> = {
+export type HttpRequest<TFilters extends Filter = Filter> = {
   url: string
   method: HttpMethod
   body?: unknown

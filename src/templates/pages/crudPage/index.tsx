@@ -17,9 +17,10 @@ export const CrudPage = <
 ) => {
   const { texts, hookData, table, form, title, notFoundResourceName } = props
   const {
-    loading,
     deleteLoading,
     getOneLoading,
+    loading,
+    modalFilter,
     resources,
     sorting,
     setSorting
@@ -41,11 +42,15 @@ export const CrudPage = <
         </S.HeaderLeft>
 
         <S.HeaderRight>
-          <Tooltip title="Filtros">
-            <IconButton>
-              <Funnel />
-            </IconButton>
-          </Tooltip>
+          <S.ModalContainer>
+            <Tooltip title="Filtros">
+              <IconButton onClick={modalFilter.open}>
+                <Funnel />
+              </IconButton>
+            </Tooltip>
+
+            {modalFilter.isOpen && form.renderFilterContainer()}
+          </S.ModalContainer>
           <Button onClick={hookData.createDrawer.open}>
             <Plus /> Adicionar
           </Button>
@@ -79,25 +84,29 @@ export const CrudPage = <
         </S.NotFoundContainer>
       )}
 
-      <Drawer
-        open={hookData.createDrawer.isOpen}
-        onClose={hookData.createDrawer.close}
-      >
-        {form.renderCreateContainer()}
-      </Drawer>
+      {hookData.createDrawer.isOpen && (
+        <Drawer
+          open={hookData.createDrawer.isOpen}
+          onClose={hookData.createDrawer.close}
+        >
+          {form.renderCreateContainer()}
+        </Drawer>
+      )}
 
-      <Drawer
-        open={!!hookData.resourceIdToUpdate}
-        onClose={() => hookData.setResourceIdToUpdate('')}
-      >
-        {!getOneLoading && hookData.resourceToUpdate ? (
-          form.renderUpdateContainer(hookData.resourceToUpdate)
-        ) : (
-          <S.LoadingContainer>
-            <Loading size={32} />
-          </S.LoadingContainer>
-        )}
-      </Drawer>
+      {hookData.resourceIdToUpdate && (
+        <Drawer
+          open={!!hookData.resourceIdToUpdate}
+          onClose={() => hookData.setResourceIdToUpdate('')}
+        >
+          {!getOneLoading && hookData.resourceToUpdate ? (
+            form.renderUpdateContainer(hookData.resourceToUpdate)
+          ) : (
+            <S.LoadingContainer>
+              <Loading size={32} />
+            </S.LoadingContainer>
+          )}
+        </Drawer>
+      )}
 
       {hookData.resourceToExclude && (
         <Modal

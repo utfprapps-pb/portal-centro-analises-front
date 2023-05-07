@@ -1,11 +1,19 @@
 import { ProjectForm } from './form'
+import { ProjectModalFilter } from './modalFilter'
 import { useProjectPage } from './useProjectPage'
 import { ProjectTableData } from '@/services/api/project'
 import { CrudPage } from '@/templates'
 
 export const ProjectPage: React.FC = () => {
   const projectData = useProjectPage()
-  const { createLoading, table, touched, updateLoading } = projectData
+  const {
+    createLoading,
+    modalFilter,
+    table,
+    touched,
+    updateLoading,
+    setFilters
+  } = projectData
 
   return (
     <CrudPage
@@ -31,6 +39,17 @@ export const ProjectPage: React.FC = () => {
             touched={touched}
             loading={updateLoading}
             onSubmit={projectData.handleUpdateResource}
+          />
+        ),
+        renderFilterContainer: () => (
+          <ProjectModalFilter
+            onCancel={modalFilter.close}
+            onApply={({ formData }) => {
+              setFilters({
+                ...formData
+              })
+              modalFilter.close()
+            }}
           />
         )
       }}

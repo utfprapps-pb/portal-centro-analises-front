@@ -36,9 +36,11 @@ export const crudHook = <
     } = params
 
     const createDrawer = useModal()
+    const modalFilter = useModal()
+
     const listDeleteHookData = useListDeleteHook()
 
-    const { fetchResources } = listDeleteHookData
+    const { fetchResources, setFilters } = listDeleteHookData
 
     const [touched, setTouched] = useState(false)
     const [getOneLoading, setGetOneLoading] = useState(false)
@@ -135,13 +137,15 @@ export const crudHook = <
       createDrawer,
       createLoading,
       getOneLoading,
+      modalFilter,
       resourceIdToUpdate,
       resourceToUpdate,
       touched,
       updateLoading,
       handleCreateResource,
       handleUpdateResource,
-      setResourceIdToUpdate
+      setResourceIdToUpdate,
+      setFilters
     }
   }
 }

@@ -37,7 +37,6 @@ export class ApiHttpClient<T = unknown> implements HttpClient<T> {
     }
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private makeUrlWithFiltersAndPagination(params: {
     url: string
     filters: HttpRequest['filters']
@@ -52,17 +51,29 @@ export class ApiHttpClient<T = unknown> implements HttpClient<T> {
 
     if (!filtersKeys.length && !paginationKeys.length && !sortKeys) return url
 
+    const cleanFilters = Object.fromEntries(
+      Object.entries(filters).filter(([, value]) => value)
+    )
+
+    const cleanPagination = Object.fromEntries(
+      Object.entries(pagination).filter(([, value]) => value)
+    )
+
+    const cleanSort = Object.fromEntries(
+      Object.entries(sort).filter(([, value]) => value)
+    )
+
     const esc = encodeURIComponent
-    const queryParams = [
-      ...Object.entries(pagination).map(
-        ([key, value]) => `${esc(key)}=${esc(String(value))}`
-      ),
-      ...Object.entries(filters).map(
-        ([key, value]) => `${esc(key)}=${esc(String(value))}`
-      ),
-      ...Object.entries(sort).map(
+
+    const getQueryParams = (queryParams: Record<string, unknown>) =>
+      Object.entries(queryParams).map(
         ([key, value]) => `${esc(key)}=${esc(String(value))}`
       )
+
+    const queryParams = [
+      ...getQueryParams(cleanFilters),
+      ...getQueryParams(cleanPagination),
+      ...getQueryParams(cleanSort)
     ]
 
     const query = queryParams.join('&')

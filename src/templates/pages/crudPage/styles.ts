@@ -37,6 +37,10 @@ export const LoadingContainer = styled.div`
   height: 100%;
 `
 
+export const ModalContainer = styled.div`
+  position: relative;
+`
+
 export const NotFoundContainer = styled.div`
   display: flex;
   flex-direction: column;

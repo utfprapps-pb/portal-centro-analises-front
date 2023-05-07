@@ -18,7 +18,7 @@ export const listHook =
     const [resources, setResources] = useState<TTableData[]>([])
     const [loading, setLoading] = useState(true)
 
-    const [filters, setFilters] = useState<HttpRequest['filters']>([])
+    const [filters, setFilters] = useState<HttpRequest['filters']>({})
     const [sorting, setSorting] = useState<SortingState>([])
     const [pagination, setPagination] = useState<PaginationState>({
       pageIndex: 0,
