@@ -132,6 +132,10 @@ export const crudHook = <
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [resourceIdToUpdate])
 
+    useEffect(() => {
+      if (!createDrawer.isOpen && !resourceIdToUpdate) setTouched(false)
+    }, [createDrawer.isOpen, resourceIdToUpdate])
+
     return {
       ...listDeleteHookData,
       createDrawer,
