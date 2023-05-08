@@ -1,0 +1,25 @@
+version: "3.9"
+
+networks:
+  web:
+    name: web
+    driver: bridge
+    external: false
+    attachable: true
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: portal-centro-analises-front
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portal-centro-analises-front.rule=Host(`portal-centro-analises-front.app.pb.utfpr.edu.br`)"
+      - "traefik.http.routers.portal-centro-analises-front.entrypoints=websecure"
+      - "traefik.http.routers.portal-centro-analises-front.tls.certresolver=letsencrypt"
+    ports:
+      - "5173:80"
+    networks:
+      - web
