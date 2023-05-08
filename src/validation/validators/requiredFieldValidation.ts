@@ -9,8 +9,14 @@ export class RequiredFieldValidation implements FieldValidation {
       Object.entries(input).find(([fieldName]) => fieldName === this.field) ||
       []
 
-    if (Array.isArray(value) && value.length) return null
-    if (value) return null
+    const valueHasProps =
+      typeof value === 'object' &&
+      !!value &&
+      !!Object.values(value).some(Boolean)
+
+    if (valueHasProps) return null
+    if (Array.isArray(value) && !!value.length) return null
+    if (typeof value === 'string' && !!value) return null
 
     return new RequiredFieldError()
   }
