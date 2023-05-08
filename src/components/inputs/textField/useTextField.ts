@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react'
 
 import { TextFieldProps } from './types'
@@ -53,19 +54,19 @@ export const useTextField = (props: TextFieldProps) => {
     if (loading !== undefined) {
       if (isLoading !== loading) setLoading(loading)
     }
-  }, [isLoading, loading])
+  }, [loading])
 
   useEffect(() => {
     if (touched !== undefined) {
       if (inputTouched !== touched) setInputTouched(touched)
     }
-  }, [inputTouched, touched])
+  }, [touched])
 
   useEffect(() => {
     if (disabled !== undefined) {
       if (isDisabled !== disabled) setDisabled(disabled)
     }
-  }, [disabled, isDisabled])
+  }, [isDisabled])
 
   return {
     inputError,
