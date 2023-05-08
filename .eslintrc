@@ -39,7 +39,6 @@
     "react/prop-types": "off",
     "react/require-default-props": "off",
     "react/react-in-jsx-scope": "off",
-    "class-methods-use-this": "off",
     "react/jsx-props-no-spreading": "off",
     "sort-exports/sort-exports": ["error", {"sortDir": "asc"}],
     "react/function-component-definition": [

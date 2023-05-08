@@ -1,4 +1,4 @@
-import { InputBaseComponentProps, InputProps } from '@mui/material'
+import { InputProps } from '@material-ui/core'
 
 export type TextFieldProps = {
   label: string
@@ -9,7 +9,6 @@ export type TextFieldProps = {
   disabled?: boolean
   touched?: boolean
   loading?: boolean
-  inputElementProps?: InputBaseComponentProps
   materialInputProps?: Partial<InputProps>
   labelType?: 'outside' | 'inside' | 'without'
   error?: string

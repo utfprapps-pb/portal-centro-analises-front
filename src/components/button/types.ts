@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react'
 
-import { ButtonProps as MaterialButtonProps } from '@mui/material'
+import { ButtonProps as MaterialButtonProps } from '@material-ui/core'
 
 import { Themes } from './theme'
 
@@ -12,7 +12,6 @@ type Props = {
   disabled?: boolean
   type?: 'submit' | 'button'
   sizeButton?: 'large' | 'medium'
-  loading?: boolean
   onClick?: () => void
 }
 

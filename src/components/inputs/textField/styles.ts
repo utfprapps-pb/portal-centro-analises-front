@@ -1,6 +1,9 @@
-import { TextField } from '@mui/material'
-import { Check, WarningCircle } from 'phosphor-react'
+import { TextField } from '@material-ui/core'
+import { Check, Error } from '@material-ui/icons'
 import styled from 'styled-components'
+
+import { Text } from '../../text'
+import { lighten } from '@/utils'
 
 export const Container = styled.div`
   width: 100%;
@@ -21,8 +24,13 @@ export const Container = styled.div`
 
 export const Input = styled(TextField)``
 
-export const InvalidIcon = styled(WarningCircle)`
+export const InvalidIcon = styled(Error)`
   color: ${({ theme }) => theme.colors.error};
+`
+
+export const Label = styled(Text)`
+  color: ${({ theme }) =>
+    lighten({ color: theme.colors.black, percentage: 0.2 })};
 `
 
 export const ValidIcon = styled(Check)`

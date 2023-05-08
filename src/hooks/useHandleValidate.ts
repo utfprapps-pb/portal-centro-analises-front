@@ -2,20 +2,17 @@ import { useCallback, useMemo } from 'react'
 
 import { ValidationComposite } from '@/validation/validationComposite'
 
-type UseHandleValidateProps<TFormData extends object> = {
-  formData: TFormData
+type UseHandleValidateProps<FD extends object> = {
+  formData: FD
   validation: ValidationComposite
 }
 
-export const useHandleValidate = <
-  TKey extends string,
-  TFormData extends object
->({
+export const useHandleValidate = <K extends string, FD extends object>({
   formData,
   validation
-}: UseHandleValidateProps<TFormData>) => {
+}: UseHandleValidateProps<FD>) => {
   const handleValidate = useCallback(
-    (field: TKey) => (): string => {
+    (field: K) => (): string => {
       const valid =
         validation.validate({
           fieldName: field,

@@ -1,4 +1,4 @@
-import { Button as UIButton } from '@mui/material'
+import UIButton from '@material-ui/core/Button'
 import styled, { css } from 'styled-components'
 
 import { ButtonTheme } from './theme'
@@ -15,13 +15,13 @@ export const Button = styled(UIButton)<ButtonProps>`
   ${({ buttontheme }) =>
     buttontheme.background &&
     css`
-      color: ${buttontheme.color} !important;
-      background: ${buttontheme.background} !important;
+      button {
+        color: ${buttontheme.color};
+        background: ${buttontheme.background};
 
-      &:hover {
-        background: ${buttontheme.backgroundHover} !important;
+        &:hover {
+          background: ${buttontheme.backgroundHover};
+        }
       }
     `}
-
-  gap: 12px;
 `
