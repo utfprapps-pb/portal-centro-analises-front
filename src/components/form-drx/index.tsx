@@ -10,6 +10,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { Add } from '@material-ui/icons'
 
 function createData(name: string, calories: number, fat: number, carbs: number, protein: number) {
   return { name, calories, fat, carbs, protein };
@@ -26,6 +27,22 @@ const rows = [
 const validationForm = yup.object().shape({
 
 });
+
+function addInTable(values: {
+  firstName: string;
+  surname: string;
+  email: string;
+  password: string;
+  birthdayDay: number;
+  birthdayMonth: number;
+  birthdayYear: number;
+}) {
+  try {
+
+  } catch (error) {
+    console.error("error", error);
+  }
+}
 
 async function handleClickForm(values: {
 
@@ -302,6 +319,11 @@ export const FormDrx: React.FC = () => (
                   />
                 </div>
               </div>
+              <div className='button_box'>
+                <button onClick={addInTable(values)}>
+					        <Add style={{ color: '#3f51b5' }} />
+                </button>
+              </div>
             </div>
             <TableContainer component={Paper}>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -320,9 +342,7 @@ export const FormDrx: React.FC = () => (
                       key={row.name}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
-                      <TableCell component="th" scope="row">
-                        {row.name}
-                      </TableCell>
+                      <TableCell component="th" scope="row">{row.name}</TableCell>
                       <TableCell align="right">{row.calories}</TableCell>
                       <TableCell align="right">{row.fat}</TableCell>
                       <TableCell align="right">{row.carbs}</TableCell>
