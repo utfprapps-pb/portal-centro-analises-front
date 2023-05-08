@@ -16,7 +16,8 @@ export class RequiredFieldValidation implements FieldValidation {
 
     if (valueHasProps) return null
     if (Array.isArray(value) && !!value.length) return null
-    if (typeof value === 'string' && !!value) return null
+    if (typeof value === 'string' && !!value && !!value.trim()) return null
+    if (value && !!value.trim()) return null
 
     return new RequiredFieldError()
   }

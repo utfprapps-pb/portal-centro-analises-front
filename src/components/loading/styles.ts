@@ -11,8 +11,8 @@ const spin = keyframes`
 export const Loading = styled.section<LoadingProps>`
   ::before {
     content: '';
-    display: block;
-    width: ${({ size }) => size}px;
+    display: block;${({ size }) => size}px;
+    width: 
     height: ${({ size }) => size}px;
     animation: ${spin} 0.5s infinite linear;
     border: 5px ${({ theme }) => theme.colors.primary} solid;
