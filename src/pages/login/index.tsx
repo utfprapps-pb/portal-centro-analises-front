@@ -10,10 +10,6 @@ export const LoginPage: React.FC = () => {
   const { loading, handleSignIn } = useAuth()
   const navigate = useNavigate();
 
-  // async function handleClickLogin(values: { email: string; password: string }) {
-  //   await handleSignIn(values)
-  // }
-
   function goToSignUp() {
     navigate('/sign-up')
   }
