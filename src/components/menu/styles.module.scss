@@ -1,0 +1,140 @@
+@keyframes changeWeight {
+  0% { font-weight: 200; }
+  25% { font-weight: 300; } 
+  50% { font-weight: 400; }
+  75% { font-weight: 500; }
+  100% { font-weight: 700; }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  text-transform: inherit !important;
+  font-weight: bold !important;
+  width: 18%;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 0;
+  gap: 1rem;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  text-align: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.title a {
+  text-decoration: none;
+}
+
+.title h1 {
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: #3f51b5;
+  cursor: pointer;
+}
+
+.tab svg {
+  display: none;
+}
+
+.tab h2 {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 200;
+  padding: 0.1rem;
+  cursor: pointer;
+  color: #000;
+}
+
+.tab h2:hover {
+  font-weight: 700;
+}
+
+.tab {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  text-decoration: none;
+  cursor: pointer;
+  padding-left: 0.5rem;
+  width: 100%;
+}
+
+.tab:hover {
+  background-color: #f5f5f5;
+  transition: 0.5s;
+  border-right: 5px solid #3f51b5;
+}
+
+.tab:hover > h2 {
+  font-weight: 700;
+}
+
+@media (min-width: 600px) {
+  .tab svg {
+    display: block;
+  }
+
+  .title .title h1 {
+    font-size: 1rem;
+    font-weight: 1000;
+    letter-spacing: 0.2rem;
+    cursor: pointer;
+  }
+
+  .tab h2 {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 200;
+    padding: 0.1rem;
+    cursor: pointer;
+    color: #000;
+  }
+
+  .tabs {
+    width: 100%;
+    gap: 0.8rem;
+    align-items: start;
+    text-align: left;
+    justify-content: start;
+  }
+}
+
+@media (min-width: 960px) {
+  .container {
+    flex-direction: coluns;
+  }
+
+  .title h1 {
+    font-size: 2rem;
+    font-weight: 1000;
+    letter-spacing: 0.2rem;
+    
+    cursor: pointer;
+  }
+  .tab h2 {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 300;
+    letter-spacing: 0.2rem;
+    padding: 1rem;
+    cursor: pointer;
+    color: #000;
+    animation-name: changeWeight;
+    animation-duration: 0.5s;
+    animation-timing-function: forwards;
+  }
+
+  .title {
+    padding-left: 1rem;
+  }
+}

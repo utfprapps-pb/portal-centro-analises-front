@@ -292,13 +292,13 @@ export const FormAbsorcaoAtomica: React.FC = () => (
             </div>
             <div className={styles.term_box}>
               <p>
-                Ao clicar em SOLICITAR, você concorda com nossos <a>Termos</a> e <a>Política de Privacidade</a>.
+                Ao clicar em SOLICITAR, você concorda com nossos <a className={styles.link}>Termos</a> e <a className={styles.link}>Política de Privacidade</a>.
               </p>
             </div>
             <div className={styles.button_box}>
-              <Button type="submit">
+              {/* <Button type="submit">
                 SOLICITAR
-              </Button>
+              </Button> */}
             </div>
           </Form>
         </Formik>
