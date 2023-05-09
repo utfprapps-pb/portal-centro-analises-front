@@ -28,21 +28,21 @@ const validationForm = yup.object().shape({
 
 });
 
-function addInTable(values: {
-  firstName: string;
-  surname: string;
-  email: string;
-  password: string;
-  birthdayDay: number;
-  birthdayMonth: number;
-  birthdayYear: number;
-}) {
-  try {
+// function addInTable(values: {
+//   firstName: string;
+//   surname: string;
+//   email: string;
+//   password: string;
+//   birthdayDay: number;
+//   birthdayMonth: number;
+//   birthdayYear: number;
+// }) {
+//   try {
 
-  } catch (error) {
-    console.error("error", error);
-  }
-}
+//   } catch (error) {
+//     console.error("error", error);
+//   }
+// }
 
 async function handleClickForm(values: {
 
@@ -320,7 +320,7 @@ export const FormDrx: React.FC = () => (
                 </div>
               </div>
               <div className='button_box'>
-                <button onClick={addInTable(values)}>
+                <button>
 					        <Add style={{ color: '#3f51b5' }} />
                 </button>
               </div>
