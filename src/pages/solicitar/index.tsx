@@ -1,14 +1,13 @@
 import React from 'react'
-
-import * as S from './styles'
+import styles from "./styles.module.scss";
 import { Header, Menu, Solicitar } from '@/components'
 
 export const SolicitarPage: React.FC = () => (
-  <S.Container>
+  <div className={styles.container}>
     <Menu />
-    <div className='middle'>
+    <div className={styles.middle}>
       <Header />
       <Solicitar />
     </div>
-  </S.Container>
+  </div>
 )

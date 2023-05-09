@@ -38,7 +38,7 @@ export function Solicitar() {
   return(
     <>
       <div className={styles.container}>
-        <h1>SOLICITAÇÃO</h1>
+        <h1 className={styles.title}>SOLICITAÇÃO</h1>
         <Formik
             initialValues={{ selectedOption: "" }}
             onSubmit={handleClickForm}
@@ -64,12 +64,12 @@ export function Solicitar() {
           </Formik>
           {activeForm == '' && 
             <>
-              <h2>IMPORTANTE</h2> 
+              <h2 className={styles.sub_title}>IMPORTANTE</h2> 
               <div className={styles.importante}>
                 <p>a)	Solicita-se que o nome CENTRAL DE ANÁLISES – UTFPR Campus Pato Branco seja mencionado nos agradecimentos em todos os tipos de publicações que resultarem da utilização de suas instalações. </p>
                 <p>b)	Solicita-se que os arquivos com as referências de todos os tipos de trabalhos (comunicações em congressos, trabalhos completos, monografias, etc.) sejam enviados para o e-mail da Central de Análises. </p>
               </div>
-              <h2>OS USUÁRIOS SE COMPROMETEM EM</h2> 
+              <h2 className={styles.sub_title}>OS USUÁRIOS SE COMPROMETEM EM</h2> 
               <div className={styles.comprometem}>
                 <p>1)	Providenciar a preparação das amostras (verificar os métodos de preparação para a amostra de interesse, etc.) antecipadamente na Central de Análises ou em outro local; </p>
                 <p>2)	Interpretar os resultados fornecidos; </p>

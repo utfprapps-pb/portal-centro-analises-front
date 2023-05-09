@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, useState } from 'react';
 import { Error } from '@material-ui/icons'
-import * as S from './styles'
+import styles from "./styles.module.scss";
 
 export const CustomErrorMessage: React.FC<PropsWithChildren> = ({ children }) => {
 
@@ -15,17 +15,17 @@ export const CustomErrorMessage: React.FC<PropsWithChildren> = ({ children }) =>
 	};
 
 	return (
-		<S.Container>
-			<span className='form_error'>
-				<div className='tooltip_container' onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+		<div className={styles.container}>
+			<span className={styles.form_error}>
+				<div className={styles.tooltip_container} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
 					<Error style={{ color: '#3f51b5' }} />
 					{isHovering && (
-						<div className='tooltip_text'>
+						<div className={styles.tooltip_text}>
 							<span>{children}</span>
 						</div>
 					)}
 				</div>
 			</span>
-		</S.Container>
+		</div>
 	)
 }

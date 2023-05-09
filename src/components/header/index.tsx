@@ -1,9 +1,8 @@
 import React from 'react'
-
-import * as S from './styles'
+import styles from "./styles.module.scss";
 
 export const Header: React.FC = () => (
-  <S.Container>
+  <div className={styles.container}>
     <h2>Seja bem vindo, Leonardo</h2>
-  </S.Container>
+  </div>
 )

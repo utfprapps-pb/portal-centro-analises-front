@@ -1,0 +1,14 @@
+.term_box {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.link {
+    text-decoration: underline;
+    cursor: pointer;
+}

@@ -7,7 +7,13 @@ body {
   margin: 0;
   font-family: 'Roboto Condensed', sans-serif;
   color: var(--white);
-  background: var(--primary-background);
+  background: $primary-background;
+  height: 100vh;
+}
+
+h2, p, h1 {
+  margin: 0;
+  padding: 0;
 }
 
 a {

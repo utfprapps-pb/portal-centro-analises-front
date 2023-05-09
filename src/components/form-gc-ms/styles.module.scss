@@ -1,4 +1,3 @@
-
 .container {
   position: relative;
   display: flex;
@@ -16,43 +15,16 @@
 }
 
 .title {
-  font-size: 1.8rem;
-  font-weight: 900;
-  color: #3f51b5;
-  cursor: pointer;
-  margin-top: 1rem;
-}
-
-.sub_title {
   font-weight: 300;
   font-size: 1.5rem;
   letter-spacing: 0.2rem;
-}
-
-.importante {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  font-size: 1rem;
-  max-width: 60%;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.comprometem {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  font-size: 1rem;
-  max-width: 60%;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
 }
 
 .row_box {
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  align-items: end;
 }
 
 .inputs_box {
@@ -95,20 +67,35 @@
   border-radius: 0.2rem;
   text-align: top;
   align-items: top;
+  resize: none;
 }
 
-.input_form_select {
+.radio_box {
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  background-color: var(--white);
-  border-color: none;
-  color: var(--black);
-  border: none;
-  outline: none;
-  height: 2rem;
-  padding: 0.3rem;
-  border-radius: 0.2rem;
-  text-align: top;
-  align-items: top;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.sub_title {
+  font-size: 1rem;
+}
+
+.radio_box > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.radio_box > div > label {
+  display: flex;
+  gap: 0.5rem;
 }
 
 .field_box {
@@ -119,6 +106,31 @@
   width: 100%;
 }
 
+.field_box p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #525252;
+}
+
+.field_box_2 {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  text-align: left;
+  width: 100%;
+  gap: 1rem;
+}
+
+.field_box_2 p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+  color: #525252;
+}
+
+
+
 .input_box {
   display: flex;
   flex-direction: row-reverse;
@@ -126,6 +138,15 @@
   text-align: center;
   border: 1px solid #d1d1d1;
   border-radius: 5px
+}
+
+.input_box > span {
+  position: absolute;
+  font-size: 0.8rem;
+  width: 100%;
+  text-align: right;
+  align-items: top;
+  padding-right: 1rem;
 }
 
 .field_box h2 {

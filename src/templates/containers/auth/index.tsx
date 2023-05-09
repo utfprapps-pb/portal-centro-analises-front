@@ -1,6 +1,5 @@
 import React from 'react'
-
-import * as S from './styles'
+import styles from "./styles.module.scss";
 import { AuthContainerTemplateProps } from './types'
 import { Text } from '@/components'
 
@@ -11,26 +10,27 @@ export const AuthContainerTemplate: React.FC<AuthContainerTemplateProps> = ({
   footer,
   handleSubmit
 }) => (
-  <S.Container>
-    <S.Form
+  <section className={styles.container}>
+    <form
+      className={styles.form_box}
       onSubmit={(e) => {
         e.preventDefault()
         handleSubmit()
       }}
     >
-      <S.FormHeader>
-        <Text size="h5" color="black">
+      <div className={styles.form_body}>
+        <Text>
           {title}
         </Text>
 
-        <Text size="b3" color="black">
+        <Text>
           {description}
         </Text>
-      </S.FormHeader>
+      </div>
 
-      <S.FormBody>{body}</S.FormBody>
+      <div className={styles.form_body}>{body}</div>
 
-      <S.FormFooter>{footer}</S.FormFooter>
-    </S.Form>
-  </S.Container>
+      <div className={styles.form_footer}>{footer}</div>
+    </form>
+  </section>
 )

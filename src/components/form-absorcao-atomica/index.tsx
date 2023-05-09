@@ -1,15 +1,16 @@
 import React from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from "yup";
-import { Button, CustomErrorMessage } from '@/components'
+import { CustomErrorMessage, FormFooter, FormHeader } from '@/components'
 import styles from "./styles.module.scss";
 
 const validationForm = yup.object().shape({
   nomeAluno: yup.string().required("Informe seu nome"),
   emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
-  telefone: yup.string().required("Informe seu telefone"),
+  telefoneAluno: yup.string().required("Informe seu telefone"),
   nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
   emailOrientador: yup.string().email("Email inválido").required("Informe o email do seu orientador"),
+  telefoneOrientador: yup.string().required("Informe o telefone"),
   departamento: yup.string().required("Informe o departamento"),
   naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
   descricao: yup.string().required("Informe a descrição"),
@@ -22,9 +23,10 @@ const validationForm = yup.object().shape({
 async function handleClickForm(values: {
   nomeAluno: string;
   emailAluno: string;
-  telefone: string;
+  telefoneAluno: string;
   nomeOrientador: string;
   emailOrientador: string;
+  telefoneOrientador: string;
   departamento: string;
   naturezaProjeto: string;
   descricao: string;
@@ -50,9 +52,10 @@ export const FormAbsorcaoAtomica: React.FC = () => (
           initialValues={{
             nomeAluno: "",
             emailAluno: "",
-            telefone: "",
+            telefoneAluno: "",
             nomeOrientador: "",
             emailOrientador: "",
+            telefoneOrientador: "",
             departamento: "",
             naturezaProjeto: "",
             descricao: "",
@@ -67,135 +70,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
         >
           <Form className={styles.inputs_container}>
             <div className={styles.inputs_box}>
-              <div className={styles.row_box}>
-                <div className={styles.field_box}>
-                  <p>Nome do Aluno</p>
-                  <div className={styles.input_box}>
-                    <ErrorMessage
-                      component={CustomErrorMessage}
-                      name="nomeAluno"
-                    />
-                    <Field
-                      name="nomeAluno"
-                      placeholder=""
-                      className={styles.input_form}
-                    />
-                  </div>
-                </div>
-                <div className={styles.field_box}>
-                  <p>Email do Aluno</p>
-                  <div className={styles.input_box}>
-                    <ErrorMessage
-                      component={CustomErrorMessage}
-                      name="emailAluno"
-                    />
-                    <Field
-                      name="emailAluno"
-                      placeholder=""
-                      className={styles.input_form}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.row_box}>
-                <div className={styles.field_box}>
-                <p>Telefone</p>
-                  <div className={styles.input_box}>
-                    <ErrorMessage
-                      component={CustomErrorMessage}
-                      name="telefone"
-                    />
-                    <Field
-                      name="telefone"
-                      placeholder=''
-                      className={styles.input_form}
-                    />
-                  </div>
-                </div>
-                <div className={styles.field_box}>
-                  <p>Natureza do Projeto</p>
-                  <div className={styles.input_box}>
-                    <ErrorMessage
-                      component={CustomErrorMessage}
-                      name="naturezaProjeto"
-                      className={styles.form_error}
-                    />
-                    <Field
-                      name="naturezaProjeto"
-                      placeholder=''
-                      className={styles.input_form}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.row_box}>
-                <div className={styles.field_box}>
-                  <p>Nome do Orientador</p>
-                  <div className={styles.input_box}>
-                    <ErrorMessage
-                      component={CustomErrorMessage}
-                      name="nomeOrientador"
-                      className={styles.form_error}
-                    />
-                    <Field
-                      name="nomeOrientador"
-                      placeholder=''
-                      className={styles.input_form}
-                    />
-                  </div>
-                </div>
-                <div className={styles.field_box}>
-                  <p>Email do Orientador</p>
-                  <div className={styles.input_box}>
-                    <ErrorMessage
-                      component={CustomErrorMessage}
-                      name="emailOrientador"
-                      className={styles.form_error}
-                    />
-                    <Field
-                      name="emailOrientador"
-                      placeholder=''
-                      className={styles.input_form}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.row_box}>
-                <div className={styles.field_box}>
-                  <p>Departamento</p>
-                  <div className={styles.input_box}>
-                    <ErrorMessage
-                      component={CustomErrorMessage}
-                      name="departamento"
-                      className={styles.form_error}
-                    />
-                    <Field
-                      name="departamento"
-                      placeholder=''
-                      className={styles.input_form}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className={styles.row_box}>
-                <div className={styles.field_box}>
-                  <p>Descrição</p>
-                  <div className={styles.input_box}>
-                    <ErrorMessage
-                      component={CustomErrorMessage}
-                      name="descricao"
-                      className={styles.form_error}
-                    />
-                    <Field
-                      component="textarea"
-                      name="descricao"
-                      type="textarea"
-                      placeholder='DESCREVER A METODOLOGIA DE PREPARO DAS AMOSTRAS A SEREM ANALISADAS:'
-                      className={styles.input_form_text_area}
-                    />
-                  </div>
-                </div>
-              </div>
+              <FormHeader />
               <div className={styles.row_box}>
                 <div className={styles.field_box}>
                   <p>Limites</p>
@@ -217,7 +92,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
               </div>
             </div>
             <div className={styles.radio_box}>
-              <h3>METODOLOGIA ANALÍTICA: CONDIÇÕES A SEREM UTILIZADAS </h3>
+              <h3 className={styles.sub_title}>METODOLOGIA ANALÍTICA: CONDIÇÕES A SEREM UTILIZADAS </h3>
               <div role="group" aria-labelledby="my-radio-group">
                 <label>
                   <Field type="radio" name="condicoes" value="chama" />
@@ -290,16 +165,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
                 </div>
               </div>
             </div>
-            <div className={styles.term_box}>
-              <p>
-                Ao clicar em SOLICITAR, você concorda com nossos <a className={styles.link}>Termos</a> e <a className={styles.link}>Política de Privacidade</a>.
-              </p>
-            </div>
-            <div className={styles.button_box}>
-              {/* <Button type="submit">
-                SOLICITAR
-              </Button> */}
-            </div>
+            <FormFooter />
           </Form>
         </Formik>
       </div>
