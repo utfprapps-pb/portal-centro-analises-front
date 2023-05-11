@@ -49,7 +49,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setLoading(true)
 
         const loggedUser = await login(params)
-
         setAuthData(loggedUser)
         navigateToSignedBasePath()
       } catch (error) {

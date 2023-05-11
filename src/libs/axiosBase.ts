@@ -10,3 +10,5 @@ export const api = axios.create({
   timeout: 30 * 1000,
   validateStatus: (status: number) => status >= 200 && status < 300
 })
+
+console.log(env.API_BASE_URL)

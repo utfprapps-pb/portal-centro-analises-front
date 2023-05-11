@@ -19,7 +19,7 @@ export const LoginPage: React.FC = () => {
   }, [handleSignIn])
 
   const validationForm = yup.object().shape({
-    email: yup.string().email("Email inválido").required("Informe seu email"),
+    email: yup.string().required("Informe seu email"),
     password: yup.string().required("Informe sua senha"),
   });
 
