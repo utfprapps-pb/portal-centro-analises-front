@@ -234,7 +234,7 @@ export function FormDrx() {
                     <TableBody>
                       {rows.map((row) => (
                         <TableRow
-                          key={row.amostra}
+                          key={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                           <TableCell component="th" scope="row">{row.amostra}</TableCell>
