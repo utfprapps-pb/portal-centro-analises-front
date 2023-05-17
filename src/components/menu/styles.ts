@@ -59,7 +59,7 @@ export const Container = styled.div`
     font-weight: 700;
   }
   p {
-    font-size: 1rem;
+    font-size: $b3;
   }
   a {
     display: flex;
@@ -85,7 +85,7 @@ export const Container = styled.div`
       display: block;
     }
     h1 {
-      font-size: 1rem;
+      font-size: $b3;
       font-weight: 1000;
       color: #e0bb00;
       letter-spacing: 0.2rem;
@@ -120,7 +120,7 @@ export const Container = styled.div`
     }
     h2 {
       display: block;
-      font-size: 1rem;
+      font-size: $b3;
       font-weight: 200;
       letter-spacing: 0.2rem;
       padding: 1rem;
