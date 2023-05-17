@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { HomePage, LoginPage, SolicitarPage } from '@/pages'
-import { SignUpPage } from '@/pages/signUp'
+import { HomePage, LoginPage, SolicitarPage, SignUpPage } from '@/pages'
 
 type RouteProps = {
   path: () => string
