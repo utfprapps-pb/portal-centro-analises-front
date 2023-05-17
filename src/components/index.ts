@@ -21,4 +21,7 @@ export * from '@/components/error-message'
 export * from '@/components/welcome'
 export * from '@/components/form-header'
 export * from '@/components/form-footer'
+export * from '@/components/historico'
+export * from '@/components/custom-status'
+export * from '@/components/download-file'
 
