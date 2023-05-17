@@ -5,3 +5,4 @@ import { env } from '@/config'
 export * from './types'
 
 export const { login } = env.USE_MOCKS ? mock : integration
+export const { signUp } = env.USE_MOCKS ? mock : integration
