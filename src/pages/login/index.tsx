@@ -1,22 +1,52 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { CustomButton, CustomErrorMessage } from '@/components'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useAuth } from '@/hooks'
 import { useNavigate } from 'react-router-dom';
 import * as yup from "yup";
 import styles from "./styles.module.scss";
+import { AuthContext } from "../../contexts/auth";
+import AuthService from "../../services/AuthService"
+import { UserLogin } from "../../commons/type";
 
 export const LoginPage: React.FC = () => {
-  const { loading, handleSignIn } = useAuth()
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [apiError, setApiError] = useState("");
+  const [pendingApiCall, setPendingApiCall] = useState(false);;
+  const [disableSubmit, setDisableSubmit] = useState(true);
   const navigate = useNavigate();
-
+  const { handleLogin, loading } = useContext(AuthContext);
+  
   function goToSignUp() {
     navigate('/sign-up')
   }
 
-  const handleSubmit = useCallback(async (values: { email: string; password: string }) => {
-    await handleSignIn(values)
-  }, [handleSignIn])
+  async function handleSubmit (values: { email: string; password: string }) {
+    const userLogin: UserLogin = {
+      email: values.email,
+      password: values.password,
+    };
+    console.log(userLogin)
+    AuthService.login(userLogin)
+      .then((response) => {
+        console.log(response)
+        handleLogin(response.data);
+        setPendingApiCall(false);
+        navigate("/");
+      })
+      .catch((apiError) => {
+        console.log(apiError)
+        setApiError("Usuário ou senha inválidos!");
+        setPendingApiCall(false);
+      });
+    }
+
+
+  // const handleSubmit = useCallback(async (values: { email: string; password: string }) => {
+  //   await handleLogin(values)
+  //   navigate('/home')
+  // }, [handleLogin])
 
   const validationForm = yup.object().shape({
     email: yup.string().required("Informe seu email"),
