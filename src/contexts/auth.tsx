@@ -80,11 +80,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     async (params: SignUpParams) => {
       try {
         setLoading(true)
-        console.log(params)
 
         const registerUser = await signUp(params)
-        console.log('registerUser')
-        console.log(registerUser)
 
         if (registerUser != null) {
           navigate('/login')
