@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { HomePage, LoginPage, SolicitarPage, SignUpPage } from '@/pages'
+import { HomePage, LoginPage, SolicitarPage, SignUpPage, HistoricoPage} from '@/pages'
 
 type RouteProps = {
   path: () => string
@@ -29,5 +29,9 @@ export const ROUTES = Object.freeze<RoutesProps>({
   solicitar: {
     path: () => '/solicitar',
     component: <SolicitarPage />
+  },
+  historico: {
+    path: () => '/historico',
+    component: <HistoricoPage />
   }
 })
