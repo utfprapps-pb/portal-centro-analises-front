@@ -19,7 +19,6 @@ export function App() {
   const { handleVerifyAuthentication } = useContext(AuthContext);
   useEffect(() => {
     handleVerifyAuthentication();
-     
   }, []);
 
   return (

@@ -10,9 +10,6 @@ export function RequireAuth({ allowedRoles }: RequireAuthProps) {
   const { authenticated, authenticatedUser, verifyAuthentication, handleVerifyAuthentication } = useContext(AuthContext);
   const location = useLocation();
 
-
-
-
   return authenticatedUser  && allowedRoles?.includes(authenticatedUser?.role) ? (
     <Outlet />
   ) : authenticated ? (
