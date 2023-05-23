@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import { CustomButton, CustomErrorMessage } from '@/components'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useAuth } from '@/hooks'
@@ -10,8 +10,6 @@ import AuthService from "../../services/AuthService"
 import { UserLogin } from "../../commons/type";
 
 export const LoginPage: React.FC = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
   const [apiError, setApiError] = useState("");
   const [pendingApiCall, setPendingApiCall] = useState(false);;
   const [disableSubmit, setDisableSubmit] = useState(true);
@@ -22,31 +20,25 @@ export const LoginPage: React.FC = () => {
     navigate('/sign-up')
   }
 
-  async function handleSubmit (values: { email: string; password: string }) {
+
+  function handleSubmit (values: { email: string; password: string }) {
+    setPendingApiCall(true);
     const userLogin: UserLogin = {
       email: values.email,
       password: values.password,
     };
-    console.log(userLogin)
     AuthService.login(userLogin)
       .then((response) => {
-        console.log(response)
         handleLogin(response.data);
         setPendingApiCall(false);
         navigate("/");
       })
       .catch((apiError) => {
-        console.log(apiError)
         setApiError("Usuário ou senha inválidos!");
         setPendingApiCall(false);
       });
     }
 
-
-  // const handleSubmit = useCallback(async (values: { email: string; password: string }) => {
-  //   await handleLogin(values)
-  //   navigate('/home')
-  // }, [handleLogin])
 
   const validationForm = yup.object().shape({
     email: yup.string().required("Informe seu email"),

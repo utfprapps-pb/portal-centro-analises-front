@@ -17,7 +17,7 @@ export interface AuthenticationResponse {
 export interface AuthenticatedUser {
   displayName: string;
   email: string;
-  authorities: Authorities[];
+  role: string;
 }
 
 export interface Authorities {

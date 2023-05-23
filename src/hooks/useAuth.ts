@@ -7,37 +7,19 @@ export function useAuth() {
   const [authenticated, setAuthenticated] = useState(false);
   const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUser>();
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
-    if (token && user) {
+
+    if (token) {
       api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
         token
-      )}`; 
-      setAuthenticatedUser(JSON.parse(user));     
+      )}`;      
       setAuthenticated(true);
-      navigate("/");
     }
 
     setLoading(false);
   }, []);
-
-  async function handleLoginSocial(idToken: string) {
-    setLoading(true);
-    api.defaults.headers.common["Auth-Id-Token"] = `Bearer ${idToken}`;
-    const response = await api.post("/auth-social");
-    console.log(response);
-    setLoading(false);
-    api.defaults.headers.common["Auth-Id-Token"] = "";
-    localStorage.setItem("token", JSON.stringify(response.data.token));
-    localStorage.setItem("user", JSON.stringify(response.data.user));
-    api.defaults.headers.common["Authorization"] = `Bearer ${response.data.token}`;
-    setAuthenticatedUser(response.data.user);
-    setAuthenticated(true);
-    navigate("/");
-  }
 
   function handleLogout() {
     setAuthenticated(false);
@@ -46,16 +28,16 @@ export function useAuth() {
     setAuthenticatedUser(undefined);
   }
 
-  function handleLogin(response: AuthenticationResponse) {
-    console.log("LOGIN HEIN")
+  async function handleLogin(response: AuthenticationResponse) {
     localStorage.setItem("token", JSON.stringify(response.token));
       api.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${response.token}`;
-      console.log(response);
+      console.log(response.user)
       setAuthenticatedUser(response.user);
       setAuthenticated(true);
-      console.log(authenticated)
+      console.log("===")
+      console.log(authenticatedUser)
   }
 
   return {
@@ -63,7 +45,6 @@ export function useAuth() {
     authenticatedUser,
     loading,
     handleLogin,
-    handleLoginSocial,
     handleLogout,
   };
 }
