@@ -4,14 +4,14 @@ import { Login, LoginResponseProps } from './types'
 import { ApiHttpClient } from '..'
 import { InvalidCredentialsError, UnexpectedError } from '../errors'
 
-export const login: Login = async ({ email: username, password }) => {
+export const login: Login = async ({ email, password }) => {
   const api = new ApiHttpClient<LoginResponseProps>()
 
   const { statusCode, body } = await api.request({
     url: '/login',
     method: 'post',
     body: {
-      username,
+      email,
       password
     }
   })
