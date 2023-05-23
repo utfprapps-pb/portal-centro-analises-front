@@ -7,6 +7,7 @@ export function useAuth() {
   const [authenticated, setAuthenticated] = useState(false);
   const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUser>();
   const [loading, setLoading] = useState(true);
+  const [verifyAuthentication, setVerifyAuthentication] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -30,15 +31,34 @@ export function useAuth() {
 
   function handleLogin(response: AuthenticationResponse) {
     localStorage.setItem("token", JSON.stringify(response.token));
+    localStorage.setItem("user", JSON.stringify(response.user));
       api.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${response.token}`;
-      console.log(response.user)
       setAuthenticatedUser(response.user);
-      setAuthenticated(true);
-      console.log("===")
       console.log(authenticatedUser)
+      setAuthenticated(true);
   }
+
+  function handleVerifyAuthentication() {
+    if (authenticated && authenticatedUser) {
+      setVerifyAuthentication(true)
+      // return true;
+    } else {
+      var token = localStorage.getItem("token");
+      var user  = localStorage.getItem("user");
+      console.log("aa" + token)
+      if (user !== null) {
+        const obj = JSON.parse(user);
+        setAuthenticatedUser(obj);
+        console.log(obj)
+        setAuthenticated(true);
+        setVerifyAuthentication(true)
+        // return true;
+      }
+    }
+  }
+
 
   return {
     authenticated,
@@ -46,5 +66,7 @@ export function useAuth() {
     loading,
     handleLogin,
     handleLogout,
+    handleVerifyAuthentication,
+    verifyAuthentication
   };
 }

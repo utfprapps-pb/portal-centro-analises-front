@@ -5,6 +5,8 @@ import { HomePage } from "./pages/home";
 import { HistoricoPage } from "./pages/historico";
 import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./contexts";
 
 const ROLES = {
   'Admin': 'ADMIN',
@@ -14,6 +16,12 @@ const ROLES = {
 }
 
 export function App() {
+  const { handleVerifyAuthentication } = useContext(AuthContext);
+  useEffect(() => {
+    handleVerifyAuthentication();
+     
+  }, []);
+
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
