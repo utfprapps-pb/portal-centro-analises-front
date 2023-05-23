@@ -9,6 +9,7 @@ interface RequireAuthProps {
 export function RequireAuth({ allowedRoles }: RequireAuthProps) {
   const { authenticated, authenticatedUser } = useContext(AuthContext);
   const location = useLocation();
+  console.log("bbbb")
   console.log(authenticatedUser?.role)
   console.log(authenticated)
   console.log(allowedRoles)

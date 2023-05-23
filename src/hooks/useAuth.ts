@@ -28,7 +28,7 @@ export function useAuth() {
     setAuthenticatedUser(undefined);
   }
 
-  async function handleLogin(response: AuthenticationResponse) {
+  function handleLogin(response: AuthenticationResponse) {
     localStorage.setItem("token", JSON.stringify(response.token));
       api.defaults.headers.common[
         "Authorization"
