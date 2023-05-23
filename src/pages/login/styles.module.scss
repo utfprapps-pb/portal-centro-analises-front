@@ -33,7 +33,7 @@
 
   .title {
     font-weight: 300;
-    font-size: 1.5rem;
+    font-size: $b2;
     letter-spacing: 0.2rem;
   }
   
@@ -89,7 +89,7 @@
   }
 
   .sub_title {
-    font-size: 1rem;
+    font-size: $b3;
   }
   
   .field_box {
@@ -126,7 +126,7 @@
   }
   
   .field_box h2 {
-    font-size: 1rem;
+    font-size: $b3;
     font-weight: 400;
     margin: 0px 0px 3px 0px;
   }
