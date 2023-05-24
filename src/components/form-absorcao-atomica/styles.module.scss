@@ -100,6 +100,11 @@
 .radio_box > div > label {
   display: flex;
   gap: 0.5rem;
+  cursor: pointer;
+}
+
+.radio_box > div > label > input {
+  cursor: pointer;
 }
 
 .field_box {
