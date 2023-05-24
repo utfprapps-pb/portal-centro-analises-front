@@ -16,11 +16,6 @@ const ROLES = {
 }
 
 export function App() {
-  const { handleVerifyAuthentication } = useContext(AuthContext);
-  useEffect(() => {
-    handleVerifyAuthentication();
-  }, []);
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

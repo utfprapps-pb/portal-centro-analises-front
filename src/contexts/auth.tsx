@@ -1,6 +1,8 @@
-import { createContext, ReactNode } from 'react';
+import { createContext, ReactNode, useContext, useEffect } from 'react';
 import { AuthenticatedUser, AuthenticationResponse} from '../commons/type';
 import { useAuth } from '@/hooks/useAuth';
+// import { AuthContextContext } from "@/contexts/index";
+
 
 interface AuthContextType {
   authenticated: boolean;
@@ -8,21 +10,20 @@ interface AuthContextType {
   loading: boolean;
   handleLogin: (response: AuthenticationResponse) => void;
   handleLogout: () => void;
-  handleVerifyAuthentication: () => void;
-  verifyAuthentication: boolean;
 }
 
 interface AuthProviderProps {
   children: ReactNode
 }
 
+
 export const AuthContext = createContext({} as AuthContextType);
 
 export function AuthProvider({ children }: AuthProviderProps) {
-  const {authenticated, authenticatedUser, loading, handleLogin, handleLogout, handleVerifyAuthentication, verifyAuthentication} = useAuth();
+  const {authenticated, authenticatedUser, loading, handleLogin, handleLogout} = useAuth();
 
   return (
-    <AuthContext.Provider value={{loading, authenticated, authenticatedUser, handleLogin, handleLogout, handleVerifyAuthentication, verifyAuthentication}}>
+    <AuthContext.Provider value={{loading, authenticated, authenticatedUser, handleLogin, handleLogout}}>
       {children}
     </AuthContext.Provider>
   )

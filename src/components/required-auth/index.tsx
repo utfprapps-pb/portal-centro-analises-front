@@ -7,8 +7,16 @@ interface RequireAuthProps {
 }
 
 export function RequireAuth({ allowedRoles }: RequireAuthProps) {
-  const { authenticated, authenticatedUser, verifyAuthentication, handleVerifyAuthentication } = useContext(AuthContext);
+  let { authenticated, authenticatedUser } = useContext(AuthContext);
   const location = useLocation();
+
+  var token = localStorage.getItem("token");
+  var user  = localStorage.getItem("user");
+  if (token && user !== null) {
+    const obj = JSON.parse(user);
+    (authenticated = true);
+    (authenticatedUser = obj);
+  }
 
   return authenticatedUser  && allowedRoles?.includes(authenticatedUser?.role) ? (
     <Outlet />
