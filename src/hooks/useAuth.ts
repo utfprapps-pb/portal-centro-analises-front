@@ -10,12 +10,14 @@ export function useAuth() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const user = localStorage.getItem("user");
 
-    if (token) {
+    if (token && user) {
       api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
         token
       )}`;      
       setAuthenticated(true);
+      setAuthenticatedUser(JSON.parse(user));
     }
 
     setLoading(false);
