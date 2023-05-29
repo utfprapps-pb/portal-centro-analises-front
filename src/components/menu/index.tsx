@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from "./styles.module.scss";
 import { PlaylistAdd, History, Check, BusinessCenter } from '@material-ui/icons'
+import { Link } from 'react-router-dom';
 
 export const Menu: React.FC = () => (
   <div className={styles.container}>
@@ -8,22 +9,22 @@ export const Menu: React.FC = () => (
       <h1>PORTAL CA</h1>
     </a>
     <section className={styles.tabs}>
-      <a className={styles.tab} href="/solicitar">
-        <PlaylistAdd style={{ color: '#3f51b5' }} />
+      <Link className={styles.tab} to="/solicitar">
+      <PlaylistAdd style={{ color: '#3f51b5' }} />
         <h2>Solicitar</h2>
-      </a>
-      <a className={styles.tab} href="/historico">
+      </Link>
+      <Link className={styles.tab} to="/historico">
         <History style={{ color: '#3f51b5' }} />
         <h2>Histórico</h2>
-      </a>
-      <a className={styles.tab} href="/aprovacoes">
+      </Link>
+      <Link className={styles.tab} to="/aprovacoes">
         <Check style={{ color: '#3f51b5' }} />
         <h2>Aprovações</h2>
-      </a>
-      <a className={styles.tab} href="/projeto">
+      </Link>
+      <Link className={styles.tab} to="/projeto">
         <BusinessCenter style={{ color: '#3f51b5' }} />
         <h2>Projetos</h2>
-      </a>
+      </Link>
     </section>
   </div>
 )

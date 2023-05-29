@@ -14,6 +14,7 @@ const validationForm = yup.object().shape({
   departamento: yup.string().required("Informe o departamento"),
   naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
   descricao: yup.string().required("Informe a descrição"),
+  solventeUtilizado: yup.string().required("Informe o solvente utilizado"),
   // CAMPOS ÚNICOS DO FORMULÁRIO
   teste: yup.string().required("Teste"),
 });
@@ -29,7 +30,7 @@ async function handleClickForm(values: {
   naturezaProjeto: string;
   descricao: string;
   // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: string
+  solventeUtilizado: string
 }) {
   try {
     // CHAMADA DA API
@@ -54,7 +55,7 @@ export const FormFtir: React.FC = () => (
           naturezaProjeto: "",
           descricao: "",
           // CAMPOS ÚNICOS DO FORMULÁRIO
-          teste: ""
+          solventeUtilizado: ""
         }}
         onSubmit={handleClickForm}
         validationSchema={validationForm}
@@ -62,26 +63,69 @@ export const FormFtir: React.FC = () => (
         <Form className={styles.inputs_container}>
           <div className={styles.inputs_box}>
             <FormHeader />
+            <div className={styles.radio_box}>
+              <h3 className={styles.sub_title}>Serviço Requerido</h3>
+              <p>Espectroscopia no Infravermelho com Transformada de Fourier (FT-IR) utilizando o acessório:</p>
+              <div role="group" aria-labelledby="my-radio-group">
+                <label>
+                  <Field type="radio" name="condicoes" value="kbr" />
+                  Pastilha de KBr
+                </label>
+                <label>
+                  <Field type="radio" name="condicoes" value="atr" />
+                  Reflectância total atenuada (Attenuated total reflectance)
+                </label>
+                <label>
+                  <Field type="radio" name="condicoes" value="dfs" />
+                  Refletância difusa (Difuse reflectance sampling)
+                </label>
+              </div>
+            </div>
+            <h3 className={styles.sub_title}>METODOLOGIA ANALÍTICA: CONDIÇÕES A SEREM UTILIZADAS </h3>
             <div className={styles.row_box}>
               <div className={styles.field_box}>
-                <p>TESTE</p>
+                <label>
+                  Amostra Sólida
+                  <Field type="checkbox" name="amostraSolida" value="amostraSolida" />
+                </label>
+              </div>
+              <div className={styles.field_box}>
+                <label>
+                  Amostra líquida
+                  <Field type="checkbox" name="amostraLiquida" value="amostraLiquida" />
+                </label>
+              </div>
+              <div className={styles.field_box}>
+                <p>Solvente utilizado</p>
                 <div className={styles.input_box}>
                   <ErrorMessage
                     component={CustomErrorMessage}
-                    name="teste"
+                    name="solventeUtilizado"
                     className={styles.form_error}
                   />
                   <Field
-                    component="input" //input - textarea - etc
-                    name="teste"
-                    type="textarea"
-                    placeholder='teste'
-                    className={styles.input_form} // input_form - input_form_text_area
+                    name="solventeUtilizado"
+                    placeholder=''
+                    className={styles.input_form}
                   />
                 </div>
               </div>
             </div>
-            {/* CAMPOS ÚNICOS DO FORMULÁRIO   */}
+            <div className={styles.row_box}>
+              <div className={styles.field_box}>
+                <label>
+                  Registros dos espectros: Absorbância (A)
+                  <Field type="checkbox" name="absorbancia" value="absorbancia" />
+                </label>
+              </div>
+              <div className={styles.field_box}>
+                <label>
+                Absorbância (T%)
+                  <Field type="checkbox" name="transmitancia " value="transmitancia" />
+                </label>
+              </div>
+            </div>
+
           </div>
           <FormFooter />
         </Form>
