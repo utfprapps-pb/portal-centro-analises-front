@@ -24,17 +24,7 @@ export interface Authorities {
   authority: string;
 }
 
-export interface Category {
-  id?: number;
+export interface Project {
+  id: number;
   name: string;
-}
-
-export interface Product {
-  id?: number;
-  name: string;
-  description: string;
-  price: number;
-  category: Category;
-  imageName?: string;
-  contentType?: string;
 }

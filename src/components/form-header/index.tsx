@@ -4,6 +4,13 @@ import * as yup from "yup";
 import { CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
 
+const projects = [
+  { id: 1, name: 'aaaa' },
+  { id: 2, name: 'bbbb' },
+  { id: 3, name: 'cccc' },
+  { id: 4, name: 'dddd' }
+];
+
 export const FormHeader: React.FC = () => (
 	<div className={styles.inputs_box}>
 		<div className={styles.row_box}>
@@ -64,6 +71,7 @@ export const FormHeader: React.FC = () => (
 					<Field
 						name="nomeOrientador"
 						placeholder=''
+						disabled
 						className={styles.input_form}
 					/>
 				</div>
@@ -71,65 +79,25 @@ export const FormHeader: React.FC = () => (
 		</div>
 		<div className={styles.row_box}>
 			<div className={styles.field_box}>
-				<p>Email do Orientador</p>
+				<p>Projeto</p>
 				<div className={styles.input_box}>
 					<ErrorMessage
 						component={CustomErrorMessage}
-						name="emailOrientador"
+						name="projeto"
 						className={styles.form_error}
 					/>
 					<Field
-						name="emailOrientador"
-						placeholder=''
+						as="select"
+						name="projeto"
+						multiple={false}
 						className={styles.input_form}
-					/>
-				</div>
-			</div>
-			<div className={styles.field_box}>
-				<p>Telefone do Orientador</p>
-				<div className={styles.input_box}>
-					<ErrorMessage
-						component={CustomErrorMessage}
-						name="telefoneOrientador"
-						className={styles.form_error}
-					/>
-					<Field
-						name="telefoneOrientador"
-						placeholder=''
-						className={styles.input_form}
-					/>
-				</div>
-			</div>
-		</div>
-		<div className={styles.row_box}>
-			<div className={styles.field_box}>
-				<p>Natureza do Projeto</p>
-				<div className={styles.input_box}>
-					<ErrorMessage
-						component={CustomErrorMessage}
-						name="naturezaProjeto"
-						className={styles.form_error}
-					/>
-					<Field
-						name="naturezaProjeto"
-						placeholder=''
-						className={styles.input_form}
-					/>
-				</div>
-			</div>
-			<div className={styles.field_box}>
-				<p>Departamento</p>
-				<div className={styles.input_box}>
-					<ErrorMessage
-						component={CustomErrorMessage}
-						name="departamento"
-						className={styles.form_error}
-					/>
-					<Field
-						name="departamento"
-						placeholder=''
-						className={styles.input_form}
-					/>
+					>
+						{projects.map(({id, name}) => (
+							<option key={id} value={id}>
+								{name}
+							</option>
+						))}
+					</Field>
 				</div>
 			</div>
 		</div>

@@ -32,7 +32,6 @@ export function Solicitar() {
   ];
   
   function handleClickForm(event: any) {
-    console.log(event.target.value)
     setActiveForm(event.target.value);
   }
   return(

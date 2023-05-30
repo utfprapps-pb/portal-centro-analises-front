@@ -3,16 +3,15 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from "yup";
 import { CustomErrorMessage, FormFooter, FormHeader } from '@/components'
 import styles from "./styles.module.scss";
+import { api } from "../../libs/axiosBase";
+import { Project } from '@/commons/type';
+
 
 const validationForm = yup.object().shape({
   nomeAluno: yup.string().required("Informe seu nome"),
   emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
   telefoneAluno: yup.string().required("Informe seu telefone"),
   nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
-  emailOrientador: yup.string().email("Email inválido").required("Informe o email do seu orientador"),
-  telefoneOrientador: yup.string().required("Informe o telefone"),
-  departamento: yup.string().required("Informe o departamento"),
-  naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
   descricao: yup.string().required("Informe a descrição"),
   limites: yup.string().required("Informe os limites"),
   elementos: yup.string().required("Informe os elementos"),
@@ -25,11 +24,9 @@ async function handleClickForm(values: {
   emailAluno: string;
   telefoneAluno: string;
   nomeOrientador: string;
-  emailOrientador: string;
-  telefoneOrientador: string;
-  departamento: string;
-  naturezaProjeto: string;
+  projeto: Project[];
   descricao: string;
+  //
   limites: string;
   condicoes: string;
   elementos: string;
@@ -37,7 +34,20 @@ async function handleClickForm(values: {
   observacoes: string;
 }) {
   try {
+    const { limites, condicoes, elementos, concentracao, observacoes } = values;
+    const fields = { limites, condicoes, elementos, concentracao, observacoes };
+    const fieldsStr = JSON.stringify(fields);
 
+    const payload = {
+      equipment: {"id": 10},
+      project: {"id": 1},
+      description : values.descricao,
+      status : 0,
+      fields: fieldsStr
+    }
+
+    console.log(payload);
+    // const solicitation = await api.post("/solicitation", payload);
   } catch (error) {
     console.error("error", error);
   }
@@ -54,10 +64,7 @@ export const FormAbsorcaoAtomica: React.FC = () => (
             emailAluno: "",
             telefoneAluno: "",
             nomeOrientador: "",
-            emailOrientador: "",
-            telefoneOrientador: "",
-            departamento: "",
-            naturezaProjeto: "",
+            projeto: [],
             descricao: "",
             limites: "",
             condicoes: "",
