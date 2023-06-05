@@ -31,10 +31,37 @@
 .row {
   display: flex;
   flex-direction: row;
-  justify-content: end;
-  align-items: center;
+  margin: 8px;
 }
 
-.margin_inline{
+.justify_end {
+  justify-content: flex-end;
+}
+
+.margin_inline {
   margin-inline: 10px;
+}
+
+.buttoncolor {
+  background-color: #3f51b5 !important;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 16px;
+  width: 100%;
+}
+
+.textField {
+  width: 100%;
+  margin: 8px !important;
+}
+
+.containerForm {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  padding: 16px;
 }
