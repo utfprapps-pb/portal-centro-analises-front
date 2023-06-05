@@ -1,7 +1,10 @@
-import * as integration from './integration'
-import * as mock from './mock'
-import { env } from '@/config'
+import { api } from "@/libs";
 
-export * from './types'
+const checkHash = (hashKey: String) => {
+  return api.get(`/emailconfirm/code/${hashKey}`);
+}
 
-export const { emailConfirm } = env.USE_MOCKS ? mock : integration
+const EmailConfirmService = {
+  checkHash,
+}
+export default EmailConfirmService;
