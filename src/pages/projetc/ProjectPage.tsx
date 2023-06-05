@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { DeleteRounded, EditRounded } from '@material-ui/icons'
-import { IconButton } from '@mui/material'
+import { Button, Grid, IconButton } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import { styled } from '@mui/material/styles'
 import Table from '@mui/material/Table'
@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import toast from 'react-hot-toast'
+import { useNavigate } from 'react-router-dom'
 
 import styles from './styles.module.scss'
 import { ProjectParams } from '../../services/api/project/project.type'
@@ -37,6 +38,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }))
 
 export const ProjectPage = () => {
+  const navigate = useNavigate()
   const [data, setData] = useState<ProjectParams[]>([])
   const [apiError, setApiError] = useState('')
 
@@ -59,7 +61,17 @@ export const ProjectPage = () => {
   }, [])
 
   return (
-    <div className={styles.margin_top}>
+    <div>
+      <Grid container justifyContent="flex-end">
+        <Button
+          variant="outlined"
+          sx={{ m: 1 }}
+          className={styles.buttoncolor}
+          onClick={() => navigate('/projeto/new')}
+        >
+          Inserir
+        </Button>
+      </Grid>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
