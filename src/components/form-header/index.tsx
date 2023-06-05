@@ -3,16 +3,33 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from "yup";
 import { CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
+import { api } from "../../libs/axiosBase";
 
 
 export function FormHeader() { 
-	const projects = [
-		{ id: 0, name: "Selecione o projeto" },
-		{ id: 1, name: 'aaaa' },
-		{ id: 2, name: 'bbbb' },
-		{ id: 3, name: 'cccc' },
-		{ id: 4, name: 'dddd' }
-	];
+
+	let projects: any[] = [];
+	let orientador = 'asdsafasfs'
+	
+	async function getProject() {
+		try {
+			// const orientadorProject = await api.get("/projects");
+			// projects = orientadorProject.data.projects;
+			// orientador = orientadorProject.data.orientador.name;
+			console.log(projects)
+		} catch (error) {
+			console.error("error", error);
+		}
+	}
+
+
+	// const projects = [
+	// 	{ id: 0, name: "Selecione o projeto" },
+	// 	{ id: 1, name: 'aaaa' },
+	// 	{ id: 2, name: 'bbbb' },
+	// 	{ id: 3, name: 'cccc' },
+	// 	{ id: 4, name: 'dddd' }
+	// ];
 
 	return (
 		<div className={styles.inputs_box}>
@@ -73,6 +90,7 @@ export function FormHeader() {
 						/>
 						<Field
 							name="nomeOrientador"
+							value={orientador}
 							placeholder=''
 							disabled
 							className={styles.input_form}

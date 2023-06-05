@@ -4,10 +4,14 @@ import { PlaylistAdd, History, Check, BusinessCenter } from '@material-ui/icons'
 import * as yup from "yup";
 import { FormAbsorcaoAtomica, FormAnaliseTermica, FormAtividadeAgua, FormCr, FormDrx, FormFotometroChama, FormFtir, FormGcMs, FormHplc, FormMev, FormNir, FormUvVis  } from '@/components'
 import styles from "./styles.module.scss";
-
+import { useAuth } from '@/hooks/useAuth';
 
 export function Solicitar() {
+  const {authenticated, authenticatedUser} = useAuth();
   const [activeForm, setActiveForm] = useState('');
+  console.log(authenticated)
+  console.log(authenticatedUser)
+
   
   const validationForm = yup.object().shape({
     firstName: yup.string().required("Informe seu nome"),

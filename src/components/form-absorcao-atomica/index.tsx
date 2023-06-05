@@ -24,6 +24,7 @@ async function handleClickForm(values: {
   emailAluno: string;
   telefoneAluno: string;
   nomeOrientador: string;
+  projeto: number;
   descricao: string;
   //
   limites: string;
@@ -39,7 +40,7 @@ async function handleClickForm(values: {
 
     const payload = {
       equipment: {"id": 10},
-      project: {"id": 1},
+      project: {"id": values.projeto},
       description : values.descricao,
       status : 0,
       fields: fieldsStr
@@ -62,7 +63,8 @@ export const FormAbsorcaoAtomica: React.FC = () => (
             nomeAluno: "",
             emailAluno: "",
             telefoneAluno: "",
-            nomeOrientador: "",
+            nomeOrientador: "NOME",
+            projeto: 0,
             descricao: "",
             limites: "",
             condicoes: "",
