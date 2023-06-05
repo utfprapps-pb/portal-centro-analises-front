@@ -1,0 +1,9 @@
+@import "../../styles/variables.scss";
+
+.container {
+    color: black;
+    font-weight: 400;
+    font-size: $b3;
+    // font-family: ${(props) => props.theme.fontFamily[props.family]}, sans-serif;
+    cursor: pointer;
+}

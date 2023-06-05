@@ -1,0 +1,21 @@
+@import "../../styles/variables.scss";
+
+.container {
+  position: relative;
+  display: inline-block;
+  font-size: $b3;
+  text-decoration: none;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition: 0.5s;
+  width: 90px;
+  cursor: pointer;
+}
+
+.container:hover {
+
+}
+
+.text {
+  font-size: $b4;
+}

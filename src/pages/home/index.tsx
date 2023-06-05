@@ -1,11 +1,13 @@
 import React from 'react'
-
-import * as S from './styles'
-import { Header, Menu } from '@/components'
+import styles from "./styles.module.scss";
+import { Header, Menu, Welcome } from '@/components'
 
 export const HomePage: React.FC = () => (
-  <S.Container>
+  <div className={styles.container}>
     <Menu />
-    <Header />
-  </S.Container>
+    <div className={styles.middle}>
+      <Header />
+      <Welcome />
+    </div>
+  </div>
 )

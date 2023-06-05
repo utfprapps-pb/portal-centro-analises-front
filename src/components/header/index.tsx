@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import styles from "./styles.module.scss";
+import { AuthContext } from '@/contexts';
 
-import * as S from './styles'
+export function Header() {
+  const { authenticatedUser} = useContext(AuthContext);
 
-export const Header: React.FC = () => (
-  <S.Container>
-    <h2>Seja bem vindo, Leonardo</h2>
-  </S.Container>
-)
+  return (
+    <div className={styles.container}>
+      <h2>Seja bem vindo, {authenticatedUser?.displayName}</h2>
+    </div>
+  )
+}

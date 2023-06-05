@@ -1,0 +1,17 @@
+@keyframes spin {
+    to {
+		transform: rotate(360deg);
+	}
+}
+
+.containar::before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    animation: spin 0.5s infinite linear;
+    border: 5px blue solid;
+    border-left-color: white;
+    border-radius: 100%;
+}
+

@@ -1,0 +1,60 @@
+@import '../../styles/variables.scss';
+
+.container {
+	display: flex;
+}
+
+.error_icon {
+    display: flex;
+    position: relative;
+    color: var(--primary);
+}
+
+.tooltip_container {
+    background-color: white;
+    cursor: pointer;
+    position: absolute;
+    display: flex;
+    flex-direction: row-reverse;
+    margin-left: -2rem;
+    align-items: center;
+}
+
+.tooltip_text {
+    display: none;
+}
+
+.form_error {
+    display: flex;
+    align-items: center;
+    text-align: right;
+}
+
+.form_error + input {
+    border: 1px solid var(--primary);
+}
+
+@media (min-width: 960px) {
+    .tooltip_text {
+        padding: 0.3rem;
+        text-align: right !important;
+        align-items: flex-end;
+        color: #3f51b5;
+        width: 290px;
+        border-radius: 0.5rem;
+        display: flex;
+        justify-content: flex-end;
+        position: absolute;
+        right: 1.5rem;
+    }
+
+    .tooltip_text span {
+        background-color: white;
+        margin: 0;
+        padding: 0 0.2rem;
+        position: relative;
+        left: 0.3rem;
+        text-align: right;
+        align-items: flex-end;
+    }
+}
