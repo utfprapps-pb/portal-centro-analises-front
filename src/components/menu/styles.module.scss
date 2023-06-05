@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 @keyframes changeWeight {
   0% { font-weight: 200; }
   25% { font-weight: 300; } 
@@ -85,7 +87,7 @@
   }
 
   .title .title h1 {
-    font-size: 1rem;
+    font-size: $b3;
     font-weight: 1000;
     letter-spacing: 0.2rem;
     cursor: pointer;
@@ -123,7 +125,7 @@
   }
   .tab h2 {
     display: block;
-    font-size: 1.2rem;
+    font-size: $b3;
     font-weight: 300;
     letter-spacing: 0.2rem;
     padding: 1rem;

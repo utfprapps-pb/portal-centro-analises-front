@@ -1,0 +1,29 @@
+version: "3.9"
+
+networks:
+  web:
+    name: web
+    driver: bridge
+    external: false
+    attachable: true
+
+services:
+  ca-web-dev:
+    image: ca-web-dev:${BUILD_NUMBER}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ca-web-dev
+    restart: unless-stopped
+    environment:
+      - VITE_API_BASE_URL=${VITE_API_BASE_URL}
+      - VITE_USE_MOCKS=${VITE_USE_MOCKS}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ca-web-dev.rule=Host(`ca-dev.app.pb.utfpr.edu.br`)"
+      - "traefik.http.routers.ca-web-dev.entrypoints=websecure"
+      - "traefik.http.routers.ca-web-dev.tls.certresolver=letsencrypt"
+    ports:
+      - "8811:80"
+    networks:
+      - web

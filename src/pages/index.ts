@@ -1,3 +1,4 @@
+export * from './emailConfirmation'
 export * from './home'
 export * from './login'
 export * from './signUp'
