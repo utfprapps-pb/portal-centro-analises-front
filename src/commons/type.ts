@@ -38,3 +38,10 @@ export interface Product {
   imageName?: string;
   contentType?: string;
 }
+
+export type SignUpParams = {
+  name: string
+  username: string
+  password: string
+  email: string
+}

@@ -7,7 +7,7 @@ import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./contexts";
-import { EmailConfirmationPage } from "./pages";
+import { EmailConfirmationPage, SignUpPage } from "./pages";
 
 const ROLES = {
   'Admin': 'ADMIN',
@@ -22,6 +22,7 @@ export function App() {
       <Route path="/" element={<Layout />}>
         {/* public routes */}
         <Route path="login" element={<LoginPage />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
         <Route path="/email-confirm/:hashKey" element={<EmailConfirmationPage />} />
         {/* <Route path="signup" element={<UserSignupPage />} /> */}
         {/* <Route path="unauthorized" element={<Unauthorized />} /> */}

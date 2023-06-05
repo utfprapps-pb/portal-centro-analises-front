@@ -1,56 +1,69 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from "react";
 
-import { Formik, Form, Field, ErrorMessage } from 'formik'
-import { useNavigate } from 'react-router-dom'
-import * as yup from 'yup'
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
 
-import styles from './styles.module.scss'
+import styles from "./styles.module.scss";
 // import { SignUpParams } from './types'
-import { CustomButton, CustomErrorMessage } from '@/components'
+import { CustomButton, CustomErrorMessage, Loading } from "@/components";
 // import { SignUpParams } from '@/services/api/auth'
-import { useAuth } from '@/hooks'
+import { useAuth } from "@/hooks";
+import AuthService from "@/services/AuthService";
+import { CircularProgress } from "@material-ui/core";
 
 export const SignUpPage: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  // const [isLoading, setIsLoading] = useState(false)
-  const { loading, handleSignUp } = useAuth()
+  const [apiError, setApiError] = useState("");
+  const [pendingApiCall, setPendingApiCall] = useState(false);
 
-  // const { loading, handleSignIn } = useAuth()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   function goToLogin() {
-    navigate('/login')
+    navigate("/login");
   }
 
   const handleSubmit = useCallback(
     async (values: {
-      email: string
-      password: string
-      name: string
-      username: string
+      email: string;
+      password: string;
+      name: string;
+      username: string;
     }) => {
-      await handleSignUp(values)
+      setPendingApiCall(true);
+      AuthService.signUp(values)
+        .then((response) => {
+          setPendingApiCall(false);
+          //TODO adicionar toast de sucesso
+          navigate("/login");
+        })
+        .catch((apiError) => {
+          setApiError("Erro ao realizar cadastro!");
+          setPendingApiCall(false);
+        });
     },
-    [handleSignUp]
-  )
+    []
+  );
 
   const validationForm = yup.object().shape({
     email: yup
       .string()
-      .email('Informe um email válido')
-      .required('Informe seu email'),
+      .email("Informe um email válido")
+      .required("Informe seu email"),
     password: yup
       .string()
-      .min(6, 'Mínimo de 6 carácteres')
-      .required('Informe sua senha'),
+      .min(6, "Mínimo de 6 carácteres")
+      .required("Informe sua senha"),
     confirmPassword: yup
       .string()
-      .min(6, 'Mínimo de 6 carácteres')
-      .required('Informe sua senha')
-      .oneOf([yup.ref('password')], 'Suas senhas não conferem'),
-    name: yup.string().required('Informe seu nome')
-  })
+      .min(6, "Mínimo de 6 carácteres")
+      .required("Informe sua senha")
+      .oneOf([yup.ref("password")], "Suas senhas não conferem"),
+    name: yup
+      .string()
+      .min(6, "Mínimo de 6 carácteres")
+      .required("Informe sua senha"),
+  });
 
   return (
     <div>
@@ -61,11 +74,11 @@ export const SignUpPage: React.FC = () => {
           </div>
           <Formik
             initialValues={{
-              name: '',
-              email: '',
-              password: '',
-              confirmPassword: '',
-              username: ''
+              name: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+              username: "",
             }}
             onSubmit={handleSubmit}
             validationSchema={validationForm}
@@ -150,18 +163,25 @@ export const SignUpPage: React.FC = () => {
                 </div>
               </div>
               <div className={styles.form_footer}>
-                <CustomButton
-                  text="Cadastrar"
-                  padding="1rem"
-                  textColor="white"
-                  backgroundColor="#006dac"
-                  textColorHover="white"
-                  backgroundColorHover="#00bbff"
-                  letterSpacing="4px"
-                  fontSize="16px"
-                  fontWeight="400"
-                  type="submit"
-                />
+                {pendingApiCall ? (
+                  <div>
+                    <CircularProgress />
+                  </div>
+                ) : (
+                  <CustomButton
+                    text="Cadastrar"
+                    padding="1rem"
+                    textColor="white"
+                    backgroundColor="#006dac"
+                    textColorHover="white"
+                    backgroundColorHover="#00bbff"
+                    letterSpacing="4px"
+                    fontSize="16px"
+                    fontWeight="400"
+                    type="submit"
+                  />
+                )}
+
                 <CustomButton
                   text="Ir para o login"
                   padding="1rem"
@@ -181,5 +201,5 @@ export const SignUpPage: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
