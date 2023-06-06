@@ -12,6 +12,7 @@ import { CustomButton, CustomErrorMessage, Loading } from "@/components";
 import { useAuth } from "@/hooks";
 import AuthService from "@/services/AuthService";
 import { CircularProgress } from "@material-ui/core";
+import { toast } from "react-hot-toast";
 
 export const SignUpPage: React.FC = () => {
   const [apiError, setApiError] = useState("");
@@ -36,8 +37,10 @@ export const SignUpPage: React.FC = () => {
           setPendingApiCall(false);
           //TODO adicionar toast de sucesso
           navigate("/login");
+          toast.success('Cadastrado com sucesso!')
         })
         .catch((apiError) => {
+          toast.error('Erro ao realizar cadastro :(')
           setApiError("Erro ao realizar cadastro!");
           setPendingApiCall(false);
         });
