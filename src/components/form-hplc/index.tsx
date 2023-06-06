@@ -14,8 +14,17 @@ const validationForm = yup.object().shape({
   departamento: yup.string().required("Informe o departamento"),
   naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
   descricao: yup.string().required("Informe a descrição"),
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: yup.string().required("Teste"),
+  coluna: yup.string().required("Informe a coluna"),
+  fluxo: yup.string().required("Informe o fluxo"),
+  tempoAnalise: yup.string().required("Informe a descrição"),
+  volume: yup.string().required("Informe o volume injetado"),
+  temperaturaForno: yup.string().required("Informe a temperatura do forno"),
+  temperaturaRi: yup.string(),
+  fluorescenciaEmissao: yup.string(),
+  fluorescenciaExcitacao: yup.string(),
+  comprimentoOnda: yup.string(),
+  composicao: yup.string(),
+  gradiente: yup.string()
 });
 
 async function handleClickForm(values: {
@@ -28,8 +37,17 @@ async function handleClickForm(values: {
   departamento: string;
   naturezaProjeto: string;
   descricao: string;
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: string
+  coluna: string;
+  fluxo: string;
+  tempoAnalise: string;
+  volume: string;
+  temperaturaForno: string;
+  temperaturaRi: string;
+  fluorescenciaEmissao: string;
+  fluorescenciaExcitacao: string;
+  comprimentoOnda: string;
+  composicao: string;
+  gradiente: string;
 }) {
   try {
     // CHAMADA DA API
@@ -53,8 +71,17 @@ export const FormHplc: React.FC = () => (
           departamento: "",
           naturezaProjeto: "",
           descricao: "",
-          // CAMPOS ÚNICOS DO FORMULÁRIO
-          teste: ""
+          coluna: "",
+          fluxo: "",
+          tempoAnalise: "",
+          volume: "",
+          temperaturaForno: "",
+          temperaturaRi: "",
+          fluorescenciaEmissao: "",
+          fluorescenciaExcitacao: "",
+          comprimentoOnda: "",
+          composicao: "",
+          gradiente: ""
         }}
         onSubmit={handleClickForm}
         validationSchema={validationForm}
@@ -64,24 +91,177 @@ export const FormHplc: React.FC = () => (
             <FormHeader />
             <div className={styles.row_box}>
               <div className={styles.field_box}>
-                <p>TESTE</p>
+                <p>Coluna</p>
                 <div className={styles.input_box}>
                   <ErrorMessage
                     component={CustomErrorMessage}
-                    name="teste"
+                    name="coluna"
                     className={styles.form_error}
                   />
                   <Field
-                    component="input" //input - textarea - etc
-                    name="teste"
-                    type="textarea"
-                    placeholder='teste'
-                    className={styles.input_form} // input_form - input_form_text_area
+                    name="coluna"
+                    placeholder=''
+                    className={styles.input_form}
+                  />
+                </div>
+              </div>
+              <div className={styles.field_box}>
+                <p>Fluxo (mL min-1)</p>
+                <div className={styles.input_box}>
+                  <ErrorMessage
+                    component={CustomErrorMessage}
+                    name="fluxo"
+                    className={styles.form_error}
+                  />
+                  <Field
+                    name="fluxo"
+                    placeholder=''
+                    className={styles.input_form}
                   />
                 </div>
               </div>
             </div>
-            {/* CAMPOS ÚNICOS DO FORMULÁRIO   */}
+            <div className={styles.row_box}>
+              <div className={styles.field_box}>
+                <p>Tempo de análise (min)</p>
+                <div className={styles.input_box}>
+                  <ErrorMessage
+                    component={CustomErrorMessage}
+                    name="tempoAnalise"
+                    className={styles.form_error}
+                  />
+                  <Field
+                    name="tempoAnalise"
+                    placeholder=''
+                    className={styles.input_form}
+                  />
+                </div>
+              </div>
+              <div className={styles.field_box}>
+                <p>Volume injetado (µL)</p>
+                <div className={styles.input_box}>
+                  <ErrorMessage
+                    component={CustomErrorMessage}
+                    name="volume"
+                    className={styles.form_error}
+                  />
+                  <Field
+                    name="volume"
+                    placeholder=''
+                    className={styles.input_form}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={styles.field_box}>
+              <p>Temperatura do Forno da coluna (°C)</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="temperaturaForno"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="temperaturaForno"
+                  placeholder=''
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+            <h3 className={styles.sub_title}>Detector(es) desejado(s):</h3>
+            <div className={styles.field_box}>
+              <p>RI - Temperatura (°C)</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="temperaturaRi"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="temperaturaRi"
+                  placeholder='Caso não necessário, não preencha'
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+            <div className={styles.row_box}>
+              <div className={styles.field_box}>
+                <p>Fluorescência - λ emissão</p>
+                <div className={styles.input_box}>
+                  <ErrorMessage
+                    component={CustomErrorMessage}
+                    name="fluorescenciaEmissao"
+                    className={styles.form_error}
+                  />
+                  <Field
+                    name="fluorescenciaEmissao"
+                    placeholder='Caso não necessário, não preencha'
+                    className={styles.input_form}
+                  />
+                </div>
+              </div>
+              <div className={styles.field_box}>
+                <p>Fluorescência - λ excitação</p>
+                <div className={styles.input_box}>
+                  <ErrorMessage
+                    component={CustomErrorMessage}
+                    name="fluorescenciaExcitacao"
+                    className={styles.form_error}
+                  />
+                  <Field
+                    name="fluorescenciaExcitacao"
+                    placeholder='Caso não necessário, não preencha'
+                    className={styles.input_form}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={styles.field_box}>
+              <p>PDA - Comprimento de onda (nm)</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="comprimentoOnda"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="comprimentoOnda"
+                  placeholder='Caso não necessário, não preencha'
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+            <h3 className={styles.sub_title}>Modo de eluição</h3>
+            <div className={styles.field_box}>
+              <p>Isocrático - Composição da fase móvel</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="composicao"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="composicao"
+                  placeholder='Caso não necessário, não preencha'
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+            <div className={styles.field_box}>
+              <p>Gradiente - Descrever as condições</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="gradiente"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="gradiente"
+                  placeholder='Caso não necessário, não preencha'
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
           </div>
           <FormFooter />
         </Form>

@@ -74,13 +74,19 @@
 
 .radio_box {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   gap: 1rem;
   align-items: center;
   text-align: center;
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+
+.row_box > div {
+  align-items: start;
+  text-align: start;
+  justify-content: start;
 }
 
 .sub_title {

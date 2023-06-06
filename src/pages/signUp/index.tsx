@@ -14,6 +14,7 @@ import AuthService from "@/services/AuthService";
 import { CircularProgress } from "@material-ui/core";
 import { toast } from "react-hot-toast";
 
+
 export const SignUpPage: React.FC = () => {
   const [apiError, setApiError] = useState("");
   const [pendingApiCall, setPendingApiCall] = useState(false);

@@ -12,7 +12,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Add } from '@material-ui/icons'
 
-
 export function FormDrx() {
     interface RowData {
     amostra: number;
@@ -31,7 +30,6 @@ export function FormDrx() {
     const newData = { amostra, identificacao, modo, faixa, velocidade, step, tempo };
     setRows([...rows, newData]);
   }
-  
   
   const validationForm = yup.object().shape({
     nomeAluno: yup.string().required("Informe seu nome"),

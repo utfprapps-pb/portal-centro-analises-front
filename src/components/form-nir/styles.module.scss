@@ -74,7 +74,7 @@
 
 .radio_box {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   width: 100%;
   gap: 1rem;
   align-items: center;
@@ -95,6 +95,10 @@
   gap: 1rem;
   align-items: center;
   text-align: center;
+}
+
+.row_box > div {
+  text-align: start;
 }
 
 .radio_box > div > label {
