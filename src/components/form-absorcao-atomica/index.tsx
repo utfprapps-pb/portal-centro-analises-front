@@ -37,7 +37,7 @@ async function handleClickForm(values: {
     const { limites, condicoes, elementos, concentracao, observacoes } = values;
     const fields = { limites, condicoes, elementos, concentracao, observacoes };
     const fieldsStr = JSON.stringify(fields);
-    console.log(values.projeto)
+
     const payload = {
       equipment: {"id": 1},
       project: {"id": values.projeto},
@@ -46,9 +46,7 @@ async function handleClickForm(values: {
       fields: fieldsStr
     }
 
-    console.log(payload);
     const solicitation = await api.post("/solicitation", payload);
-    console.log(solicitation)
   } catch (error) {
     console.error("error", error);
   }

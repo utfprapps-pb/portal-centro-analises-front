@@ -43,7 +43,6 @@ export function Solicitar() {
   useEffect(() => {
 		async function getTeacher() {
 				const teacher = await api.get("/project/all");
-        console.log(teacher)
         if (teacher.data.teacherDTO.id) {
           setHaveTeacher(teacher.data.teacherDTO)
         }
