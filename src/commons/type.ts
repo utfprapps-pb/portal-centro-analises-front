@@ -26,5 +26,12 @@ export interface Authorities {
 
 export interface Project {
   id: number;
-  name: string;
+  description: string;
+  subject: string;
+}
+
+export interface Teacher {
+  id: number;
+  nome: string;
+  email: string;
 }
