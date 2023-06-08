@@ -7,7 +7,7 @@ import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./contexts";
-import { EmailConfirmationPage, SignUpPage } from "./pages";
+import { EmailConfirmationPage, PartnerListPage, PartnerPage, SignUpPage } from "./pages";
 import { NotFound } from "./pages/notFound";
 
 const ROLES = {
@@ -34,6 +34,9 @@ export function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/historico" element={<HistoricoPage />} />
           <Route path="/solicitar" element={<SolicitarPage />} />
+          <Route path="/partner" element={<PartnerListPage />} />
+          <Route path="/partner/new" element={<PartnerPage />} />
+          <Route path="/partner/:id" element={<PartnerPage />} />
         </Route>
 
         {/* protected routes - Role: Admin */}
