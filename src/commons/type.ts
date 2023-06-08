@@ -42,3 +42,4 @@ export type SignUpParams = {
   password: string
   email: string
 }
+
