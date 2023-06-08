@@ -14,8 +14,10 @@ const validationForm = yup.object().shape({
   departamento: yup.string().required("Informe o departamento"),
   naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
   descricao: yup.string().required("Informe a descrição"),
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: yup.string().required("Teste"),
+  amostra: yup.string().required("Informe a amostra"),
+  numeroMedicao: yup.string().required("Informe o número de medições"),
+  localizacao: yup.string().required("Informe a localização"),
+  leitura: yup.string().required("Informe a leitura")
 });
 
 async function handleClickForm(values: {
@@ -28,8 +30,10 @@ async function handleClickForm(values: {
   departamento: string;
   naturezaProjeto: string;
   descricao: string;
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: string
+  amostra: string;
+  numeroMedicao: string;
+  localizacao: string;
+  leitura: string;
 }) {
   try {
     // CHAMADA DA API
@@ -53,8 +57,10 @@ export const FormCr: React.FC = () => (
           departamento: "",
           naturezaProjeto: "",
           descricao: "",
-          // CAMPOS ÚNICOS DO FORMULÁRIO
-          teste: ""
+          amostra: "",
+          numeroMedicao: "",
+          localizacao: "",
+          leitura: ""
         }}
         onSubmit={handleClickForm}
         validationSchema={validationForm}
@@ -62,26 +68,68 @@ export const FormCr: React.FC = () => (
         <Form className={styles.inputs_container}>
           <div className={styles.inputs_box}>
             <FormHeader />
+            <div className={styles.field_box}>
+              <p>Amostra</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="amostra"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="amostra"
+                  placeholder=''
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+            <div className={styles.field_box}>
+              <p>Número de medições em cada amostra</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="numeroMedicao"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="numeroMedicao"
+                  placeholder=''
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+            <div className={styles.field_box}>
+              <p>Localização das medições</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="localizacao"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="localizacao"
+                  placeholder='frutas, medições na região lateral, superior, inferior, etc..'
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
             <div className={styles.row_box}>
-              <div className={styles.field_box}>
-                <p>TESTE</p>
-                <div className={styles.input_box}>
-                  <ErrorMessage
-                    component={CustomErrorMessage}
-                    name="teste"
-                    className={styles.form_error}
-                  />
-                  <Field
-                    component="input" //input - textarea - etc
-                    name="teste"
-                    type="textarea"
-                    placeholder='teste'
-                    className={styles.input_form} // input_form - input_form_text_area
-                  />
+              <div className={styles.row_box}>
+                <div className={styles.field_box_2}>
+                  <p>Leitura</p>
+                  <div role="group" className={styles.radio_box} aria-labelledby="my-radio-group">
+                    <label>
+                      <Field type="radio" name="leitura" value="solida" />
+                      CIE : L*a*b*
+                    </label>
+                    <label>
+                      <Field type="radio" name="leitura" value="liquida" />
+                      Hunter Lab: L a b
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
-            {/* CAMPOS ÚNICOS DO FORMULÁRIO   */}
           </div>
           <FormFooter />
         </Form>

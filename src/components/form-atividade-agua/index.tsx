@@ -13,9 +13,7 @@ const validationForm = yup.object().shape({
   telefoneOrientador: yup.string().required("Informe o telefone"),
   departamento: yup.string().required("Informe o departamento"),
   naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
-  descricao: yup.string().required("Informe a descrição"),
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: yup.string().required("Teste"),
+  descricao: yup.string().required("Informe a descrição")
 });
 
 async function handleClickForm(values: {
@@ -28,8 +26,6 @@ async function handleClickForm(values: {
   departamento: string;
   naturezaProjeto: string;
   descricao: string;
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: string
 }) {
   try {
     // CHAMADA DA API
@@ -52,9 +48,7 @@ export const FormAtividadeAgua: React.FC = () => (
           telefoneOrientador: "",
           departamento: "",
           naturezaProjeto: "",
-          descricao: "",
-          // CAMPOS ÚNICOS DO FORMULÁRIO
-          teste: ""
+          descricao: ""
         }}
         onSubmit={handleClickForm}
         validationSchema={validationForm}
@@ -62,26 +56,6 @@ export const FormAtividadeAgua: React.FC = () => (
         <Form className={styles.inputs_container}>
           <div className={styles.inputs_box}>
             <FormHeader />
-            <div className={styles.row_box}>
-              <div className={styles.field_box}>
-                <p>TESTE</p>
-                <div className={styles.input_box}>
-                  <ErrorMessage
-                    component={CustomErrorMessage}
-                    name="teste"
-                    className={styles.form_error}
-                  />
-                  <Field
-                    component="input" //input - textarea - etc
-                    name="teste"
-                    type="textarea"
-                    placeholder='teste'
-                    className={styles.input_form} // input_form - input_form_text_area
-                  />
-                </div>
-              </div>
-            </div>
-            {/* CAMPOS ÚNICOS DO FORMULÁRIO   */}
           </div>
           <FormFooter />
         </Form>

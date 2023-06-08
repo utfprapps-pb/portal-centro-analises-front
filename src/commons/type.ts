@@ -35,3 +35,10 @@ export interface Teacher {
   nome: string;
   email: string;
 }
+
+export type SignUpParams = {
+  name: string
+  username: string
+  password: string
+  email: string
+}

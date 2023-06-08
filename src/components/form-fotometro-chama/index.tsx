@@ -14,8 +14,9 @@ const validationForm = yup.object().shape({
   departamento: yup.string().required("Informe o departamento"),
   naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
   descricao: yup.string().required("Informe a descrição"),
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: yup.string().required("Teste"),
+  limites: yup.string().required("Informe os limites"),
+  elementosAnalisados: yup.string().required("Informe os elementos a serem analisados"),
+  concentracoes: yup.string().required("Informe a concentração da curva")
 });
 
 async function handleClickForm(values: {
@@ -28,8 +29,9 @@ async function handleClickForm(values: {
   departamento: string;
   naturezaProjeto: string;
   descricao: string;
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: string
+  limites: string;
+  elementosAnalisados: string;
+  concentracoes: string;
 }) {
   try {
     // CHAMADA DA API
@@ -53,8 +55,9 @@ export const FormFotometroChama: React.FC = () => (
           departamento: "",
           naturezaProjeto: "",
           descricao: "",
-          // CAMPOS ÚNICOS DO FORMULÁRIO
-          teste: ""
+          limites: "",
+          elementosAnalisados: "",
+          concentracoes: ""
         }}
         onSubmit={handleClickForm}
         validationSchema={validationForm}
@@ -62,26 +65,55 @@ export const FormFotometroChama: React.FC = () => (
         <Form className={styles.inputs_container}>
           <div className={styles.inputs_box}>
             <FormHeader />
-            <div className={styles.row_box}>
-              <div className={styles.field_box}>
-                <p>TESTE</p>
-                <div className={styles.input_box}>
-                  <ErrorMessage
-                    component={CustomErrorMessage}
-                    name="teste"
-                    className={styles.form_error}
-                  />
-                  <Field
-                    component="input" //input - textarea - etc
-                    name="teste"
-                    type="textarea"
-                    placeholder='teste'
-                    className={styles.input_form} // input_form - input_form_text_area
-                  />
-                </div>
+
+            <div className={styles.field_box}>
+              <p>Limites Mínimo e Máximo da concentração das Amostras</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="limites"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="limites"
+                  placeholder=''
+                  className={styles.input_form}
+                />
               </div>
             </div>
-            {/* CAMPOS ÚNICOS DO FORMULÁRIO   */}
+
+            <div className={styles.field_box}>
+              <p>Elementos a serem analisados</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="elementosAnalisados"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="elementosAnalisados"
+                  placeholder=''
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+
+            <div className={styles.field_box}>
+              <p>Concentrações da curva de calibração</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="concentracoes"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="concentracoes"
+                  placeholder=''
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+
           </div>
           <FormFooter />
         </Form>

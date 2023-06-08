@@ -14,8 +14,10 @@ const validationForm = yup.object().shape({
   departamento: yup.string().required("Informe o departamento"),
   naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
   descricao: yup.string().required("Informe a descrição"),
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: yup.string().required("Teste"),
+  varredura: yup.string().required("Informe o tipo de varredura"),
+  comprimento: yup.string().required("Informe o comprimento"),
+  cubeta: yup.string().required("Informe o tipo da cubeta"),
+  amostra: yup.string().required("Informe o tipo da amostra")
 });
 
 async function handleClickForm(values: {
@@ -28,8 +30,10 @@ async function handleClickForm(values: {
   departamento: string;
   naturezaProjeto: string;
   descricao: string;
-  // CAMPOS ÚNICOS DO FORMULÁRIO
-  teste: string
+  varredura: string;
+  comprimento: string;
+  cubeta: string;
+  amostra: string;
 }) {
   try {
     // CHAMADA DA API
@@ -53,8 +57,10 @@ export const FormUvVis: React.FC = () => (
           departamento: "",
           naturezaProjeto: "",
           descricao: "",
-          // CAMPOS ÚNICOS DO FORMULÁRIO
-          teste: ""
+          varredura: "",
+          comprimento: "",
+          cubeta: "",
+          amostra: ""
         }}
         onSubmit={handleClickForm}
         validationSchema={validationForm}
@@ -62,26 +68,70 @@ export const FormUvVis: React.FC = () => (
         <Form className={styles.inputs_container}>
           <div className={styles.inputs_box}>
             <FormHeader />
+            <div className={styles.field_box}>
+              <p>Faixa de Varredura (nm)</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="varredura"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="varredura"
+                  placeholder=''
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
+            <div className={styles.field_box}>
+              <p>Comprimento de onda fixo (nm)</p>
+              <div className={styles.input_box}>
+                <ErrorMessage
+                  component={CustomErrorMessage}
+                  name="comprimento"
+                  className={styles.form_error}
+                />
+                <Field
+                  name="comprimento"
+                  placeholder=''
+                  className={styles.input_form}
+                />
+              </div>
+            </div>
             <div className={styles.row_box}>
-              <div className={styles.field_box}>
-                <p>TESTE</p>
-                <div className={styles.input_box}>
-                  <ErrorMessage
-                    component={CustomErrorMessage}
-                    name="teste"
-                    className={styles.form_error}
-                  />
-                  <Field
-                    component="input" //input - textarea - etc
-                    name="teste"
-                    type="textarea"
-                    placeholder='teste'
-                    className={styles.input_form} // input_form - input_form_text_area
-                  />
+              <div className={styles.field_box_2}>
+                <p>Amostra</p>
+                <div role="group" className={styles.radio_box} aria-labelledby="my-radio-group">
+                  <label>
+                    <Field type="radio" name="amostra" value="solida" />
+                    Sólida
+                  </label>
+                  <label>
+                    <Field type="radio" name="amostra" value="liquida" />
+                    Liquida
+                  </label>
                 </div>
               </div>
             </div>
-            {/* CAMPOS ÚNICOS DO FORMULÁRIO   */}
+            <div className={styles.row_box}>
+              <div className={styles.field_box_2}>
+                <p>Cubetas</p>
+                <div role="group" className={styles.radio_box} aria-labelledby="my-radio-group">
+                  <label>
+                    <Field type="radio" name="cubeta" value="acrílico" />
+                    Acrílico
+                  </label>
+                  <label>
+                    <Field type="radio" name="cubeta" value="quartzo" />
+                    Quartzo
+                  </label>
+                  <label>
+                    <Field type="radio" name="cubeta" value="vidro" />
+                    Vidro
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
           <FormFooter />
         </Form>
