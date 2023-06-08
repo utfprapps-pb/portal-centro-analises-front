@@ -8,6 +8,7 @@ import { RequireAuth } from "./components/required-auth";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./contexts";
 import { EmailConfirmationPage, SignUpPage } from "./pages";
+import { NotFound } from "./pages/notFound";
 
 const ROLES = {
   'Admin': 'ADMIN',
@@ -43,7 +44,7 @@ export function App() {
         </Route> */}
 
         {/* catch all */}
-        {/* <Route path="*" element={<NotFound />} /> */}
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
