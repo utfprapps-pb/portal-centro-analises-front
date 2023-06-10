@@ -43,3 +43,8 @@ export type SignUpParams = {
   email: string
 }
 
+export type LabelValue = {
+  label: string,
+  value: string
+}
+

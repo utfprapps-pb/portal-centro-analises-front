@@ -9,15 +9,17 @@ import IconButton from '@mui/material/IconButton';
 import { Filter } from "./filter";
 
 import styles from "./styles.module.css"
+import { LabelValue } from "@/commons/type";
 
-export function FilterDrawer() {
-    const list = [
-        { label: "Id", value: 'id' },
-        { label: "Nome", value: 'name' },
-        { label: "Descrição", value: 'description' }
-    ];
+export function FilterDrawer(props:any) {
+    // const list = [
+    //     { label: "Id", value: 'id' },
+    //     { label: "Nome", value: 'name' },
+    //     { label: "Descrição", value: 'description' }
+    // ];
+    const list = props.list;
 
-    const operations = [
+    const operations:LabelValue[] = [
         { label: "Igual", value: ':' },
         { label: "Diferente", value: '!' },
         { label: "Maior", value: '>' },
@@ -31,7 +33,7 @@ export function FilterDrawer() {
     const [open, setOpen] = useState(false);
     const [fields, setFields] = useState(list);
     const [filterlist, setFilterList] = useState(filters);
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState(props.search);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -80,6 +82,7 @@ export function FilterDrawer() {
         if (filterlist && filterlist.length) {
             setSearch(filterlist.map(item => item.field.value + item.operation + item.value).join(","))
             console.log(filterlist.map(item => item.field.value + item.operation + item.value).join(","))
+            props.handleSearchChange(search)
         }
         handleClose()
     };
@@ -118,10 +121,10 @@ export function FilterDrawer() {
                                         <ListItemText
                                             primary={field.label}
                                         />
-                                        <IconButton aria-label="add" onClick={handleAdd(field)} key={index}
+                                        <IconButton aria-label="add" onClick={handleAdd(field)}
                                             color='default'
                                             size='medium'>
-                                            <AddIcon key={index} />
+                                            <AddIcon />
                                         </IconButton>
                                     </ListItem>
                                 ))
@@ -132,15 +135,15 @@ export function FilterDrawer() {
                     {
                         filterlist.map((filter, index) => (
                             <Box className={styles.box_filtro} key={index}>
-                                <div className={styles.filtro_subtitle} key={index}>
-                                    <Typography variant="body1" key={index}>
+                                <div className={styles.filtro_subtitle}>
+                                    <Typography variant="body1">
                                         {filter?.field?.label}
                                     </Typography>
                                 </div>
-                                <div className={styles.flex_row} key={index}>
-                                    <div className={styles.flex_column} key={index}>
-                                        <InputLabel htmlFor="operation" key={index}>Comparação</InputLabel>
-                                        <Select key={index}
+                                <div className={styles.flex_row}>
+                                    <div className={styles.flex_column}>
+                                        <InputLabel htmlFor="operation">Comparação</InputLabel>
+                                        <Select
                                             autoFocus
                                             value={filterlist[index].operation}
                                             onChange={handleOperationChange(index)}
@@ -153,17 +156,17 @@ export function FilterDrawer() {
                                             ))}
                                         </Select>
                                     </div>
-                                    <div className={styles.flex_column} key={index}>
-                                        <TextField key={index}
+                                    <div className={styles.flex_column}>
+                                        <TextField
                                             id="value"
                                             label="Valor" value={filterlist[index].value}
-                                            defaultValue="" onChange={handleValueChange(index)}
+                                            onChange={handleValueChange(index)}
                                         />
                                     </div>
-                                    <IconButton aria-label="delete" onClick={handleRemove(filterlist[index].value, index)} key={index}
+                                    <IconButton aria-label="delete" onClick={handleRemove(filterlist[index].value, index)}
                                         color='default'
                                         size='medium'>
-                                        <DeleteIcon key={index} />
+                                        <DeleteIcon />
                                     </IconButton>
                                 </div>
                             </Box>
