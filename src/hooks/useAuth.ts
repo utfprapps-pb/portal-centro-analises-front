@@ -26,7 +26,6 @@ export function useAuth() {
         verified  = false;
       }
       if (token && user && verified) {
-        console.log("entrou nessa po")
         api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
           token
         )}`;      
