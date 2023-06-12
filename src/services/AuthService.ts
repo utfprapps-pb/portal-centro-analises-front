@@ -7,7 +7,6 @@ const login = (user: UserLogin) => {
 };
 
 const signUp = (params: SignUpParams) => {
-  debugger
   params.username = params.name
 
   return api.post("/users", params);
