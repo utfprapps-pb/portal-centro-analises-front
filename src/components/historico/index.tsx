@@ -7,7 +7,7 @@ import { SolicitationAudit } from "@/commons/type";
 export function Historico() {
   const [isLoading, setIsLoading] = useState(true);
   const [history, setHistory] = useState<SolicitationAudit>();
-  
+
   function getFile() {
     console.log("get-file");
   }
