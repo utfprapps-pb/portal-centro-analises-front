@@ -1,5 +1,8 @@
 @import '../../styles/variables.scss';
 
+.w100 {
+  width: 100%;
+}
 .container {
   position: relative;
   display: flex;
@@ -17,6 +20,11 @@
 
 .margin_top {
   margin-top: 1em;
+}
+
+.button {
+  margin-top: 1em;
+  width: 100%;
 }
 
 .container_white {
@@ -44,6 +52,8 @@
 
 .buttoncolor {
   background-color: #3f51b5 !important;
+  color: #fff !important;
+  outline-color: #3f51b5 !important;
 }
 
 .form {
