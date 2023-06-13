@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from "./styles.module.scss";
-import { PlaylistAdd, History, Check, BusinessCenter } from '@material-ui/icons'
+import { PlaylistAdd, History, Check, BusinessCenter, AccountBalance } from '@material-ui/icons'
 import { Link } from 'react-router-dom';
 
 export const Menu: React.FC = () => (
@@ -24,6 +24,10 @@ export const Menu: React.FC = () => (
       <Link className={styles.tab} to="/projeto">
         <BusinessCenter style={{ color: '#3f51b5' }} />
         <h2>Projetos</h2>
+      </Link>
+      <Link className={styles.tab} to="/partner">
+        <AccountBalance style={{ color: '#3f51b5' }} />
+        <h2>Parceiros</h2>
       </Link>
     </section>
   </div>

@@ -11,21 +11,20 @@ import { Filter } from "./filter";
 import styles from "./styles.module.css"
 import { LabelValue } from "@/commons/type";
 
-export function FilterDrawer(props:any) {
-    // const list = [
-    //     { label: "Id", value: 'id' },
-    //     { label: "Nome", value: 'name' },
-    //     { label: "Descrição", value: 'description' }
-    // ];
-    const list = props.list;
+export function FilterDrawer({ list, handleSearchChange }) {
+    /* const list = [
+        { label: "Id", value: 'id' },
+        { label: "Nome", value: 'name' },
+        { label: "Descrição", value: 'description' }
+    ]; */
+    //const list = props.list;
 
     const operations:LabelValue[] = [
         { label: "Igual", value: ':' },
         { label: "Diferente", value: '!' },
         { label: "Maior", value: '>' },
         { label: "Menor", value: '<' },
-        { label: "Contém", value: '~' },
-        { label: "Data", value: '-' }
+        { label: "Contém", value: '≈' }
     ];
 
     let filters: Filter[] = [];
@@ -33,7 +32,7 @@ export function FilterDrawer(props:any) {
     const [open, setOpen] = useState(false);
     const [fields, setFields] = useState(list);
     const [filterlist, setFilterList] = useState(filters);
-    const [search, setSearch] = useState(props.search);
+    const [search, setSearch] = useState('');
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -80,9 +79,12 @@ export function FilterDrawer(props:any) {
     const handleConfirm = () => {
         console.log(filterlist)
         if (filterlist && filterlist.length) {
-            setSearch(filterlist.map(item => item.field.value + item.operation + item.value).join(","))
-            console.log(filterlist.map(item => item.field.value + item.operation + item.value).join(","))
-            props.handleSearchChange(search)
+            let joined = filterlist.map(item => item.field.value + ((item.value instanceof Date) ? '-' : item.operation) + item.value).join(",")
+            setSearch(joined)
+            handleSearchChange(joined)
+        }else{
+            setSearch('')
+            handleSearchChange('')
         }
         handleClose()
     };
@@ -90,11 +92,21 @@ export function FilterDrawer(props:any) {
     const handleClean = () => {
         filters = [];
         setFilterList([]);
-        setSearch('');
+        setSearch('')
+        handleSearchChange('')
     }
 
     const handleRemove = (item: any, index: number) => () => {
         filterlist.splice(index, 1)
+        const updatedFilterList = filterlist.map((value, i) => {
+            if (i === index) {
+                value.value = item;
+                return value
+            } else {
+                return value
+            }
+        })
+        setFilterList(updatedFilterList);
     }
 
     return (

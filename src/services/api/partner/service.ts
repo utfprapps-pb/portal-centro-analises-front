@@ -26,7 +26,7 @@ const search = (
   asc: boolean,
   search: string
 ) => {
-  return api.get(`/partners/${page}/${size}/${order}/${asc}/${search}`)
+  return api.get(`/partners/search?page=${page}&size=${size}&order=${order}&asc=${asc}&search=${search}`)
 }
 
 const findOne = (id: number) => {
