@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "../libs/axiosBase";
-import { AuthenticatedUser, AuthenticationResponse, UserLogin } from "../commons/type";
-import { useNavigate } from "react-router-dom";
+import { AuthenticatedUser, AuthenticationResponse } from "../commons/type";
 
 export function useAuth() {
   const [authenticated, setAuthenticated] = useState(false);

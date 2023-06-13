@@ -6,10 +6,7 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 import styles from "./styles.module.scss";
-// import { SignUpParams } from './types'
-import { CustomButton, CustomErrorMessage, Loading } from "@/components";
-// import { SignUpParams } from '@/services/api/auth'
-import { useAuth } from "@/hooks";
+import { CustomButton, CustomErrorMessage } from "@/components";
 import AuthService from "@/services/AuthService";
 import { CircularProgress } from "@material-ui/core";
 import { toast } from "react-hot-toast";

@@ -1,5 +1,3 @@
-/* eslint-disable eqeqeq */
-/* eslint-disable react/jsx-no-bind */
 import React from 'react'
 import styles from './styles.module.scss'
 

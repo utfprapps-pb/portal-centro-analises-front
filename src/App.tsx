@@ -5,8 +5,6 @@ import { HomePage } from "./pages/home";
 import { HistoricoPage } from "./pages/historico";
 import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "./contexts";
 import { EmailConfirmationPage, SignUpPage, AdminPage } from "./pages";
 
 const ROLES = {
