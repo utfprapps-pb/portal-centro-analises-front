@@ -7,7 +7,7 @@ import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./contexts";
-import { EmailConfirmationPage, SignUpPage } from "./pages";
+import { EmailConfirmationPage, SignUpPage, AdminPage } from "./pages";
 import { Project } from "./pages/projetc";
 import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
 
@@ -52,6 +52,7 @@ export function App() {
           <Route path="/projeto" element={<Project />} />
           <Route path="/projeto/new" element={<ProjectPageForm />} />
           <Route path="/projeto/new/:id" element={<ProjectPageForm />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
 
         {/* protected routes - Role: Admin */}

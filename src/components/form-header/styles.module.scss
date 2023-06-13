@@ -57,6 +57,20 @@
     border-radius: 0.2rem;
 }
 
+.select_box {
+    width: 100%;
+    background-color: var(--white);
+    border-color: none;
+    color: var(--black);
+    border: none;
+    outline: none;
+    height: 2rem;
+    padding: 0.3rem;
+    border-radius: 0.2rem;
+    text-align: top;
+    align-items: top;
+}
+
 .input_form_text_area {
     width: 100%;
     background-color: var(--white);

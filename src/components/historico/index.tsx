@@ -1,5 +1,3 @@
-/* eslint-disable eqeqeq */
-/* eslint-disable react/jsx-no-bind */
 import React, { useState } from 'react'
 import styles from './styles.module.scss'
 import { CustomStatus, DownloadFile } from '@/components'

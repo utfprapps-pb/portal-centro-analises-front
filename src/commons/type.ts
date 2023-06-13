@@ -24,19 +24,16 @@ export interface Authorities {
   authority: string;
 }
 
-export interface Category {
-  id?: number;
-  name: string;
+export interface Project {
+  id: number;
+  description: string;
+  subject: string;
 }
 
-export interface Product {
-  id?: number;
-  name: string;
-  description: string;
-  price: number;
-  category: Category;
-  imageName?: string;
-  contentType?: string;
+export interface Teacher {
+  id: number;
+  nome: string;
+  email: string;
 }
 
 export type SignUpParams = {
@@ -45,3 +42,4 @@ export type SignUpParams = {
   password: string
   email: string
 }
+
