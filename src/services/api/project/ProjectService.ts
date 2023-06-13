@@ -7,7 +7,7 @@ const findAll = () => api.get('/project')
 
 const remove = (id: number) => api.delete(`/project/${id}`)
 
-const findById = (id: number) => api.get(`/project/${id}`)
+const findById = (id: number) => api.post(`/project/${id}`)
 
 const ProjectService = {
   save,
