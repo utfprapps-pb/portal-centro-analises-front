@@ -44,21 +44,35 @@ export const ProjectPage = () => {
 
   const loadData = () => {
     ProjectService.findAll()
-      .then((response) => {
-        setData(response.data)
-        setApiError('')
-      })
-      .catch((responseError) => {
-        setApiError('Falha ao carregar lista de categorias.')
-        toast.error(apiError)
-        // eslint-disable-next-line no-console
-        console.log(responseError)
-      })
+    .then((response) => {
+      setData(response.data)
+      setApiError('')
+    })
+    .catch((responseError) => {
+      setApiError('Falha ao carregar lista de categorias.')
+      toast.error(apiError)
+      // eslint-disable-next-line no-console
+      console.log(responseError)
+    })
   }
 
   useEffect(() => {
     loadData()
   }, [])
+
+  const removeProject = (id: number) => {
+    ProjectService.remove(id)
+    .then((response) => {
+      toast.success("Removido com sucesso")
+      setApiError('')
+      loadData()
+    })
+    .catch((responseError) => {
+      setApiError('Falha ao remover projeto.')
+      toast.error(apiError)
+      console.log(responseError)
+    })
+  }
 
   return (
     <div>
@@ -68,7 +82,7 @@ export const ProjectPage = () => {
           sx={{ m: 1 }}
           className={styles.buttoncolor}
           onClick={() => navigate('/projeto/new')}
-        >
+          >
           Inserir
         </Button>
       </Grid>
@@ -96,10 +110,10 @@ export const ProjectPage = () => {
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   <IconButton aria-label="delete" color="error">
-                    <DeleteRounded />
+                    <DeleteRounded onClick={() => removeProject(p.id!)}/>
                   </IconButton>
                   <IconButton aria-label="delete" color="info">
-                    <EditRounded />
+                    <EditRounded onClick={ () => navigate(`/projeto/new/${p.id!}`)}/>
                   </IconButton>
                 </StyledTableCell>
               </StyledTableRow>
