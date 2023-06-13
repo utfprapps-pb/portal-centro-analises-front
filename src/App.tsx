@@ -50,8 +50,8 @@ export function App() {
           <Route path="/historico" element={<HistoricoPage />} />
           <Route path="/solicitar" element={<SolicitarPage />} />
           <Route path="/projeto" element={<Project />} />
-          <Route path="/projeto/new" element={<ProjectPageForm />} />
-          <Route path="/projeto/new/:id" element={<ProjectPageForm />} />
+          <Route path="/projeto/form" element={<ProjectPageForm />} />
+          <Route path="/projeto/form/:id" element={<ProjectPageForm />} />
         </Route>
 
         {/* protected routes - Role: Admin */}

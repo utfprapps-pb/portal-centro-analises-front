@@ -81,7 +81,7 @@ export const ProjectPage = () => {
           variant="outlined"
           sx={{ m: 1 }}
           className={styles.buttoncolor}
-          onClick={() => navigate('/projeto/new')}
+          onClick={() => navigate('/projeto/form')}
           >
           Inserir
         </Button>
@@ -113,7 +113,7 @@ export const ProjectPage = () => {
                     <DeleteRounded onClick={() => removeProject(p.id!)}/>
                   </IconButton>
                   <IconButton aria-label="delete" color="info">
-                    <EditRounded onClick={ () => navigate(`/projeto/new/${p.id!}`)}/>
+                    <EditRounded onClick={ () => navigate(`/projeto/form/${p.id!}`)}/>
                   </IconButton>
                 </StyledTableCell>
               </StyledTableRow>
