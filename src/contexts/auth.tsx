@@ -1,8 +1,6 @@
-import { createContext, ReactNode, useContext, useEffect } from 'react';
+import { createContext, ReactNode } from 'react';
 import { AuthenticatedUser, AuthenticationResponse} from '../commons/type';
 import { useAuth } from '@/hooks/useAuth';
-// import { AuthContextContext } from "@/contexts/index";
-
 
 interface AuthContextType {
   authenticated: boolean;
