@@ -3,6 +3,7 @@ export type ProjectParams = {
   description: string
   subject: string
   students: StudentsParams[]
+  teacher?: any
 }
 
 export type ProjectResponseProps = {
@@ -12,4 +13,7 @@ export type ProjectResponseProps = {
 
 export type StudentsParams = {
   id: number
+  name: string
+  email: string
+  ra: string
 }
