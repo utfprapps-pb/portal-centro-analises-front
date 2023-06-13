@@ -24,7 +24,7 @@ export const ProjectPageForm = () => {
   const animatedComponents = makeAnimated();
   const navigate = useNavigate();
 
-  const [students, setStudents] = useState<StudentsParams[]>();
+  const [students, setStudents] = useState<StudentsParams[]>([]);
   const [studentsSelected, setStudentsSelected] = useState<StudentsParams[]>(
     []
   );
@@ -38,58 +38,62 @@ export const ProjectPageForm = () => {
     students: [],
   });
 
-  const loadStudents = () => {
-    StudentService.findAll()
-      .then((response) => {
+  const loadStudents = async () => {
+    try {
+      const response = await StudentService.findAll();
+      if (response.data) {
         setStudents(response.data);
         setApiError("");
-      })
-      .catch((responseError) => {
-        setApiError("Falha ao carregar estudantes.");
-        toast.error(apiError);
-        console.log(responseError);
-      });
+      }
+    } catch (error) {
+      setApiError("Falha ao carregar estudantes.");
+      toast.error(apiError);
+      console.log(error);
+    }
   };
 
-  const loadData = () => {
-    if (id) {
-      ProjectService.findById(Number(id))
-        .then((response) => {
+  useEffect(() => {
+    loadStudents();
+
+    const loadData = async () => {
+      try {
+        const response = await ProjectService.findById(Number(id));
+
+        if (response.data) {
           setProject({
             id: response.data.id,
             description: response.data.description,
             subject: response.data.subject,
             students: response.data.students,
           });
-          console.log(students);
-          setApiError("");
-        })
-        .catch((responseError) => {
-          setApiError("Falha ao carregar dados do projeto.");
-          toast.error(apiError);
-          console.log(responseError);
-        });
-    }
-  };
 
-  useEffect(() => {
-    loadData();
-    loadStudents();
+          setStudentsSelected(response.data.students);
+          setApiError("");
+        }
+      } catch (error) {
+        setApiError("Falha ao carregar projeto.");
+        toast.error(apiError);
+        console.log(error);
+      }
+    };
+
+    if (id) {
+      loadData();
+    }
   }, []);
 
   const handleSubmit = (values: ProjectParams) => {
-    //TODO  retornar id do usuário no login!!!
     const data: ProjectParams = {
       ...values,
       id: project.id,
       students: studentsSelected,
-      teacher: authenticatedUser
+      teacher: authenticatedUser,
     };
 
     ProjectService.save(data)
       .then((response) => {
         toast.success("Sucesso ao salvar o projeto.");
-        navigate("/projetos");
+        navigate("/projeto");
       })
       .catch((error) => {
         toast.error("Falha ao salvar o projeto.");
@@ -108,14 +112,10 @@ export const ProjectPageForm = () => {
           variant="outlined"
         >
           <Formik
-            initialValues={
-              {
-                subject: project.subject,
-                description: project.description,
-              } as ProjectParams
-            }
+            initialValues={project}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
+            enableReinitialize={true}
           >
             {({ errors, touched }) => (
               <Form className={styles.form}>
@@ -141,12 +141,10 @@ export const ProjectPageForm = () => {
                   required
                   variant="outlined"
                 />
-                <label htmlFor=""></label>
                 <Select
                   name="students"
                   onChange={(optionsSelected: any) => {
                     setStudentsSelected(optionsSelected);
-                    console.log(studentsSelected)
                   }}
                   closeMenuOnSelect={false}
                   className={styles.textField}
@@ -154,6 +152,7 @@ export const ProjectPageForm = () => {
                   aria-label="Estudantes"
                   placeholder="Estudantes"
                   defaultValue={studentsSelected}
+                  value={studentsSelected}
                   getOptionValue={(option: StudentsParams) => option.name}
                   getOptionLabel={(option: StudentsParams) => option.name}
                   isMulti
