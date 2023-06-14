@@ -1,7 +1,6 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { CustomButton, CustomErrorMessage } from '@/components'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { useAuth } from '@/hooks'
 import { useNavigate } from 'react-router-dom';
 import * as yup from "yup";
 import styles from "./styles.module.scss";
@@ -11,8 +10,7 @@ import { UserLogin } from "../../commons/type";
 
 export const LoginPage: React.FC = () => {
   const [apiError, setApiError] = useState("");
-  const [pendingApiCall, setPendingApiCall] = useState(false);;
-  const [disableSubmit, setDisableSubmit] = useState(true);
+  const [pendingApiCall, setPendingApiCall] = useState(false);
   const navigate = useNavigate();
   const { handleLogin, loading } = useContext(AuthContext);
   

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { api } from "../libs/axiosBase";
-import { AuthenticatedUser, AuthenticationResponse, UserLogin } from "../commons/type";
-import { useNavigate } from "react-router-dom";
+import { AuthenticatedUser, AuthenticationResponse } from "../commons/type";
 
 export function useAuth() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -26,7 +25,6 @@ export function useAuth() {
         verified  = false;
       }
       if (token && user && verified) {
-        console.log("entrou nessa po")
         api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
           token
         )}`;      

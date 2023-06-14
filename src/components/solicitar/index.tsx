@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import { PlaylistAdd, History, Check, BusinessCenter } from '@material-ui/icons'
+import { Formik, Form, Field } from 'formik';
 import * as yup from "yup";
 import { FormAbsorcaoAtomica, FormAnaliseTermica, FormAtividadeAgua, FormCr, FormDrx, FormFotometroChama, FormFtir, FormGcMs, FormHplc, FormMev, FormNir, FormUvVis  } from '@/components'
 import styles from "./styles.module.scss";
 import { useAuth } from '@/hooks/useAuth';
 import { api } from "../../libs/axiosBase";
-import { Teacher, Project } from '@/commons/type';
 
 export function Solicitar() {
   const [haveTeacher, setHaveTeacher] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const {authenticated, authenticatedUser} = useAuth();
   const [activeForm, setActiveForm] = useState('');
   
   const validationForm = yup.object().shape({

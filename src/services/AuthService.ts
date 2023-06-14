@@ -1,4 +1,4 @@
-import { SignUpParams, User, UserLogin } from "../commons/type";
+import { SignUpParams, UserLogin } from "../commons/type";
 import { api } from "../libs/axiosBase";
 
 
