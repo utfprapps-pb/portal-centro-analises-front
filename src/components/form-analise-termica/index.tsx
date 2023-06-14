@@ -163,7 +163,6 @@ export function FormAnaliseTermica() {
                       />
                     </div>
                   </div>
-
                   <div className={styles.field_box}>
                     <p>Características físicas</p>
                     <div className={styles.input_box}>
@@ -179,7 +178,6 @@ export function FormAnaliseTermica() {
                       />
                     </div>
                   </div>
-
                   <div className={styles.field_box}>
                     <p>Massa de amostra</p>
                     <div className={styles.input_box}>
@@ -195,7 +193,6 @@ export function FormAnaliseTermica() {
                       />
                     </div>
                   </div>
-
                   <div className={styles.field_box}>
                     <p>Técnica</p>
                     <div className={styles.input_box}>
@@ -211,7 +208,6 @@ export function FormAnaliseTermica() {
                       />
                     </div>
                   </div>
-
                   <div className={styles.field_box}>
                     <p>Atmosfera e fluxo gás (mL min-1)</p>
                     <div className={styles.input_box}>
@@ -227,7 +223,6 @@ export function FormAnaliseTermica() {
                       />
                     </div>
                   </div>
-
                   <div className={styles.field_box}>
                     <p>Taxa de Aquecimento* (°C min-1)</p>
                     <div className={styles.input_box}>
