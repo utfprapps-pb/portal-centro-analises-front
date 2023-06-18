@@ -45,7 +45,7 @@ export function PartnerForm() {
 
   const onSubmit = (values: Partner) => {
     const data: Partner = {
-       ...values,
+      ...values,
       id: partner.id,
       name: values.name
     }
@@ -69,7 +69,7 @@ export function PartnerForm() {
     <>
       <div className={styles.container}>
         <h1 className={styles.title}>Instituição Parceira</h1>
-         <Formik
+        <Formik
             initialValues={partner}
             validationSchema={validationSchema}
             onSubmit={onSubmit}

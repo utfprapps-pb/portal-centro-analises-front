@@ -113,7 +113,8 @@ export function FilterDrawer({ list, handleSearchChange }) {
         <div>
             <IconButton aria-label="filter" onClick={handleClickOpen}
                 color='primary'
-                size='large'>
+                size='small'
+                sx={{color: '#3f51b5'}}>
                 <FilterIcon fontSize='large' />
             </IconButton>
             <Drawer

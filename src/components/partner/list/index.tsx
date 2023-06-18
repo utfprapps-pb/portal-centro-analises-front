@@ -21,7 +21,7 @@ import TableCell from '@material-ui/core/TableCell'
 import { useNavigate } from "react-router-dom"
 
 import styles from './styles.module.scss'
-import { TableFooter, TablePagination } from '@material-ui/core'
+import { Button, Grid, TableFooter, TablePagination } from '@material-ui/core'
 import TablePaginationActions from '@material-ui/core/TablePagination/TablePaginationActions'
 import { FilterDrawer } from '@/components/filter-drawer'
 
@@ -33,7 +33,6 @@ export function PartnerList() {
   ];
 
   const handleSearchChange = (value: string) => {
-    console.log("VALUE: ", value)
     setSearch(value !== '' ? value : '')
   }
 
@@ -100,12 +99,21 @@ export function PartnerList() {
   };
 
   return (
-      <><FilterDrawer list={list} handleSearchChange={handleSearchChange} />
-      <main className={styles.container}>
+      <>
+      <Grid container justifyContent="space-between">
+      <FilterDrawer list={list} handleSearchChange={handleSearchChange} />
+        <Button
+          variant="outlined"
+          className={styles.buttoncolor}
+          onClick={() => { onEdit('/partner/new') } }
+          >
+          Inserir
+        </Button>
+      </Grid>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 700 }} aria-label="simple table">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ backgroundColor: '#3f51b5', color: '#ffffff' }}>
               <TableCell>Código</TableCell>
               <TableCell>Nome</TableCell>
               <TableCell align="right">Ações</TableCell>
@@ -131,6 +139,11 @@ export function PartnerList() {
                 </TableCell>
               </TableRow>
             ))}
+            {data.length === 0 && (
+              <div className={styles.container_white}>
+                Nenhum dado para ser exibido
+              </div>
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>
@@ -152,13 +165,6 @@ export function PartnerList() {
           </TableFooter>
         </Table>
       </TableContainer>
-      <div className={styles.add_box}>
-        <IconButton aria-label="new" onClick={() => { onEdit('/partner/new') } }
-          color='primary'
-          size='large'>
-          <AddCircleIcon fontSize='large' />
-        </IconButton>
-      </div>
-    </main></>
+    </>
   )
 }
