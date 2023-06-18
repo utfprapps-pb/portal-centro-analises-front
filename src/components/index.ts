@@ -27,3 +27,5 @@ export * from '@/components/download-file'
 export * from '@/components/partner/form'
 export * from '@/components/partner/list'
 export * from '@/components/filter-drawer'
+export * from '@/components/admin-panel'
+

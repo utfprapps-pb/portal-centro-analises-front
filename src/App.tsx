@@ -7,15 +7,17 @@ import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./contexts";
-import { EmailConfirmationPage, PartnerListPage, PartnerPage, SignUpPage } from "./pages";
+import { EmailConfirmationPage, PartnerListPage, PartnerPage, SignUpPage, AdminPage } from "./pages";
 import { NotFound } from "./pages/notFound";
+import { Project } from "./pages/projetc";
+import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
 
 const ROLES = {
-  'Admin': 'ADMIN',
-  'Professor': 'PROFESSOR',
-  'Student': 'STUDENT',
-  'External': 'EXTERNAL',
-}
+  Admin: "ADMIN",
+  Professor: "PROFESSOR",
+  Student: "STUDENT",
+  External: "EXTERNAL",
+};
 
 export function App() {
   return (
@@ -24,12 +26,26 @@ export function App() {
         {/* public routes */}
         <Route path="login" element={<LoginPage />} />
         <Route path="/sign-up" element={<SignUpPage />} />
-        <Route path="/email-confirm/:hashKey" element={<EmailConfirmationPage />} />
+        <Route
+          path="/email-confirm/:hashKey"
+          element={<EmailConfirmationPage />}
+        />
         {/* <Route path="signup" element={<UserSignupPage />} /> */}
         {/* <Route path="unauthorized" element={<Unauthorized />} /> */}
 
         {/* protected routes - Roles: User and Admin */}
-        <Route element={<RequireAuth allowedRoles={[ROLES.Student, ROLES.Admin, ROLES.Student, ROLES.External]} />}>
+        <Route
+          element={
+            <RequireAuth
+              allowedRoles={[
+                ROLES.Student,
+                ROLES.Admin,
+                ROLES.Student,
+                ROLES.External,
+              ]}
+            />
+          }
+        >
           <Route path="/home" element={<HomePage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/historico" element={<HistoricoPage />} />
@@ -37,6 +53,10 @@ export function App() {
           <Route path="/partner" element={<PartnerListPage />} />
           <Route path="/partner/new" element={<PartnerPage />} />
           <Route path="/partner/:id" element={<PartnerPage />} />
+          <Route path="/projeto" element={<Project />} />
+          <Route path="/projeto/form" element={<ProjectPageForm />} />
+          <Route path="/projeto/form/:id" element={<ProjectPageForm />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
 
         {/* protected routes - Role: Admin */}

@@ -4,8 +4,6 @@ import * as yup from "yup";
 import { CustomErrorMessage, FormFooter, FormHeader } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
-import { Project } from '@/commons/type';
-
 
 const validationForm = yup.object().shape({
   nomeAluno: yup.string().required("Informe seu nome"),
