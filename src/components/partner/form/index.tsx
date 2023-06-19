@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button, TextField } from '@material-ui/core'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -88,14 +88,14 @@ export function PartnerForm() {
                   required
                   variant="outlined"
                 />
-          <div className={styles.button_box}>
-            <Button variant="contained" color="primary" type="submit">
-              Salvar
-            </Button>
-          </div>
-        </Form>
+                <div className={styles.button_box}>
+                  <Button variant="contained" color="primary" type="submit">
+                    Salvar
+                  </Button>
+                </div>
+              </Form>
             )}
-          </Formik>
+        </Formik>
       </div>
     </>
   )

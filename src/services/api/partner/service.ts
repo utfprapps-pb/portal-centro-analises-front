@@ -5,7 +5,6 @@ import { useLocalStorage } from '@/hooks'
 const localStorage = useLocalStorage()
 const auth = localStorage.get(localStorage.LOCAL_STORAGE_KEYS.AUTH)
 api.defaults.headers.common['Authorization'] = `Bearer ${auth?.token}`
-//api.defaults.baseURL = 'http://localhost:8085/api/'
 
 const save = (partner: any) => {
   return api.post('/partners', partner)
