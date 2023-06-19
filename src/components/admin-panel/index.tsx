@@ -4,6 +4,7 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { CustomErrorMessage } from '../error-message'
 import * as yup from "yup";
 import { CustomButton } from '../custom-button';
+import Dropdown from '../dropdown';
 
 export function AdminPanel() {
 
@@ -11,7 +12,6 @@ export function AdminPanel() {
 
   const validationForm = yup.object().shape({
     nome: yup.string().required("Informe o nome"),
-    telefone: yup.string().required("Informe o telefone"),
     cargo: yup.string().required("Informe o cargo"),
     email: yup.string().required("Informe o email"),
     orientador: yup.string()
@@ -19,7 +19,6 @@ export function AdminPanel() {
 
   async function handleClickForm(values: {
     nome: string;
-    telefone: string;
     cargo: string;
     email: string;
     orientador: string;
@@ -43,7 +42,6 @@ export function AdminPanel() {
               <Formik
                 initialValues={{
                   nome: "",
-                  telefone: "",
                   cargo: "",
                   orientador: "",
                   email: ""
@@ -70,20 +68,20 @@ export function AdminPanel() {
                         </div>
                       </div>
                       <div className={styles.field_box}>
-                        <p>Telefone</p>
-                        <div className={styles.input_box}>
-                          <ErrorMessage
-                            component={CustomErrorMessage}
-                            name="telefone"
-                            className={styles.form_error}
-                          />
-                          <Field
-                            name="telefone"
-                            placeholder=''
-                            className={styles.input_form}
-                          />
-                        </div>
+                      <p>Orientador</p>
+                      <div className={styles.input_box}>
+                        <ErrorMessage
+                          component={CustomErrorMessage}
+                          name="orientador"
+                          className={styles.form_error}
+                        />
+                        <Field
+                          name="orientador"
+                          placeholder=''
+                          className={styles.input_form}
+                        />
                       </div>
+                    </div>
                     </div>
                     <div className={styles.row_box}>
                       <div className={styles.field_box}>
@@ -100,39 +98,12 @@ export function AdminPanel() {
                             className={styles.input_form}
                           />
                         </div>
-                      </div>
-                      <div className={styles.field_box}>
+                        <div className={styles.field_box}>
                         <p>Cargo</p>
-                        <div className={styles.input_box}>
-                          <ErrorMessage
-                            component={CustomErrorMessage}
-                            name="cargo"
-                            className={styles.form_error}
-                          />
-                          <Field
-                            name="cargo"
-                            placeholder=''
-                            className={styles.input_form}
-                          />
-                        </div>
+                        <Dropdown className={styles.input_form} />
+                      </div>
                       </div>
                     </div>
-                    <div className={styles.field_box}>
-                      <p>Orientador</p>
-                      <div className={styles.input_box}>
-                        <ErrorMessage
-                          component={CustomErrorMessage}
-                          name="orientador"
-                          className={styles.form_error}
-                        />
-                        <Field
-                          name="orientador"
-                          placeholder=''
-                          className={styles.input_form}
-                        />
-                      </div>
-                    </div>
-
 
                     <div className={styles.button_box}>
                       <CustomButton
@@ -154,9 +125,9 @@ export function AdminPanel() {
                         text="REMOVER"
                         padding="1rem"
                         textColor="white"
-                        backgroundColor="#ff4444"
+                        backgroundColor="#cc0000"
                         textColorHover="white"
-                        backgroundColorHover="#00bbff"
+                        backgroundColorHover="#ff4444"
                         letterSpacing="4px"
                         fontSize="16px"
                         fontWeight="400"

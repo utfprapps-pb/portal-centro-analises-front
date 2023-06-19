@@ -1,5 +1,5 @@
 import { api } from "@/libs/axiosBase";
-import axios from "axios";
+import { CustomButton } from '../custom-button';
 import { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 
@@ -16,11 +16,9 @@ function DataTable() {
     });
 
     useEffect(() => {
-        debugger
         api.get("/users")
             .then(response => {
                 const data = response.data;
-                debugger;
                 setPage(state => ({
                     ...state,
                     content: data
@@ -52,7 +50,18 @@ function DataTable() {
                                 <td>{item.name}</td>
                                 <td>{item.role}</td>
                                 <td>{item.email}</td>
-                                <td><button>Selecionar</button></td>
+                                <td><CustomButton
+                                    text="Selecionar"
+                                    padding="0.5rem"
+                                    textColor="white"
+                                    backgroundColor="#006dac"
+                                    textColorHover="white"
+                                    backgroundColorHover="#00bbff"
+                                    letterSpacing="4px"
+                                    fontSize="12px"
+                                    fontWeight="200"
+                                    type="submit"
+                                /></td>
                             </tr>
                         ))}
                     </tbody>
@@ -61,5 +70,10 @@ function DataTable() {
         </>
     );
 }
+
+const handleClick = (item) => {
+    // Handle button click logic here
+    console.log('ronaldinho ' + item);
+  };
 
 export default DataTable;
