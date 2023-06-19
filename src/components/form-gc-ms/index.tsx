@@ -51,7 +51,7 @@ export const FormGcMs: React.FC = () => {
       const fieldsStr = JSON.stringify(fields);
   
       const payload = {
-        equipment: {"id": 1},
+        equipment: {"id": 2},
         project: {"id": values.projeto},
         description : values.descricao,
         status : 0,

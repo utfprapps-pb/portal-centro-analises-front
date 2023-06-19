@@ -68,7 +68,7 @@ export function FormDrx() {
       const fieldsStr = JSON.stringify(fields);
   
       const payload = {
-        equipment: {"id": 1},
+        equipment: {"id": 6},
         project: {"id": values.projeto},
         description : values.descricao,
         status : 0,

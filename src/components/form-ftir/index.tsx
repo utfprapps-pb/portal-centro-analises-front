@@ -35,7 +35,7 @@ export const FormFtir: React.FC = () => {
       const fieldsStr = JSON.stringify(fields);
 
       const payload = {
-        equipment: {"id": 1},
+        equipment: {"id": 8},
         project: {"id": values.projeto},
         description : values.descricao,
         status : 0,
