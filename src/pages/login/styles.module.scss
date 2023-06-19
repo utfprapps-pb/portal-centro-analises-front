@@ -11,6 +11,12 @@
     min-height: 100vh;
   }
 
+  .custom_description {
+    font-size: smaller;
+    color: rgba(0, 0, 0, 0.5);
+    padding-left: 5px;
+  }  
+
 	.modal_content {
 		display: flex;
     flex-direction: column;
