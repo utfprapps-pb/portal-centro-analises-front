@@ -11,9 +11,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Add } from '@material-ui/icons'
+import { api } from "../../libs/axiosBase";
+import { toast } from "react-hot-toast";
+import { useHistory } from "@/hooks";
 
 export function FormDrx() {
-    interface RowData {
+  const { navigate } = useHistory();
+
+  interface RowData {
     amostra: number;
     identificacao: string;
     modo: string;
@@ -26,7 +31,6 @@ export function FormDrx() {
   const [rows, setRows] = useState<RowData[]>([]);
   
   function createData(amostra: number, identificacao: string, modo: string, faixa: string, velocidade: string, step: string, tempo: string) {
-    // return { amostra, identificacao, modo, faixa, velocidade, step, tempo };
     const newData = { amostra, identificacao, modo, faixa, velocidade, step, tempo };
     setRows([...rows, newData]);
   }
@@ -36,11 +40,7 @@ export function FormDrx() {
     emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
     telefoneAluno: yup.string().required("Informe seu telefone"),
     nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
-    emailOrientador: yup.string().email("Email inválido").required("Informe o email do seu orientador"),
-    telefoneOrientador: yup.string().required("Informe o telefone"),
-    departamento: yup.string().required("Informe o departamento"),
-    naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
-    descricao: yup.string().required("Informe a descrição")
+    descricao: yup.string().required("Informe a descrição"),
   });
   
   function addInTable(values: {
@@ -60,15 +60,28 @@ export function FormDrx() {
     emailAluno: string;
     telefoneAluno: string;
     nomeOrientador: string;
-    emailOrientador: string;
-    telefoneOrientador: string;
-    departamento: string;
-    naturezaProjeto: string;
+    projeto: number;
     descricao: string;
   }) {
     try {
-      console.log(rows)
+      const fields = { rows };
+      const fieldsStr = JSON.stringify(fields);
+  
+      const payload = {
+        equipment: {"id": 1},
+        project: {"id": values.projeto},
+        description : values.descricao,
+        status : 0,
+        fields: fieldsStr
+      }
+  
+      await api.post("/solicitation", payload);
+      toast.success('Solicitação efetuada com sucesso!');
+      window.setTimeout(() => {
+        navigate("/");
+      }, 5000);
     } catch (error) {
+      toast.error('Erro ao realizar solicitação');
       console.error("error", error);
     }
   }
@@ -82,11 +95,8 @@ export function FormDrx() {
             nomeAluno: "",
             emailAluno: "",
             telefoneAluno: "",
-            nomeOrientador: "",
-            emailOrientador: "",
-            telefoneOrientador: "",
-            departamento: "",
-            naturezaProjeto: "",
+            nomeOrientador: "NOME",
+            projeto: 0,
             descricao: "",
             amostra: 0,
             identificacao: "",
@@ -99,7 +109,7 @@ export function FormDrx() {
           onSubmit={handleClickForm}
           validationSchema={validationForm}
         >
-          {({ values }) => (
+          {({ values }: any) => (
             <Form className={styles.inputs_container}>
               <div className={styles.inputs_box}>
                 <FormHeader />
