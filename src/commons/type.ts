@@ -9,6 +9,14 @@ export interface User {
   password: string;
 }
 
+export interface EditUser {
+  id: number;
+  nome: string;
+  orientador: Teacher;
+  email: string;
+  role: string;
+}
+
 export interface AuthenticationResponse {
   token: string;
   user: AuthenticatedUser;

@@ -1,33 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 
-const Dropdown = () => {
-  const [selectedOption, setSelectedOption] = useState(null);
+interface DropdownProps {
+  value: string;
+  onChange: (selectedValue: string) => void;
+}
+
+const Dropdown: React.FC<DropdownProps> = ({ value, onChange }) => {
+  const [selectedOption, setSelectedOption] = useState( { value: 'PROFESSOR', label: 'Professor' },);
 
   const options = [
-    { value: '0', label: 'Aguardando Confirmação do Orientador' },
-    { value: '1', label: 'Aguardando Confirmação do Laboratório' },
-    { value: '2', label: 'Aguardando Amostra' },
-    { value: '3', label: 'Aguardando Análise' },
-    { value: '4', label: 'Aguardando Pagamento' },
-    { value: '5', label: 'Recusado' },
-    { value: '6', label: 'Concluído' },
+    { value: 'PROFESSOR', label: 'Professor' },
+    { value: 'STUDENT', label: 'Estudante' },
+    { value: 'EXTERNAL', label: 'Externo' },
+    { value: 'ADMIN', label: 'Admin' },
   ];
 
   const customStyles = {
-    control: (provided) => ({
+    control: (provided: any) => ({
       ...provided,
-      fontSize: '16px'
+      fontSize: '16px',
     }),
-    option: (provided) => ({
+    option: (provided: any) => ({
       ...provided,
-      fontSize: '16px'
-    })
+      fontSize: '16px',
+    }),
   };
 
-  const handleSelect = (selectedOption) => {
+  const handleSelect = (selectedOption : any) => {
     setSelectedOption(selectedOption);
+    onChange(selectedOption.value);
   };
+
+  useEffect(() => {
+    // Set the initial value when the value prop changes
+    const initialValue = options.find((option) => option.value === value);
+    if(initialValue != null) {
+      setSelectedOption(initialValue);
+    }
+  }, [value]);
 
   return (
     <div>
@@ -36,7 +47,7 @@ const Dropdown = () => {
         onChange={handleSelect}
         options={options}
         styles={customStyles}
-        placeholder="Selecione um status"
+        placeholder="Selecione um cargo"
       />
     </div>
   );
