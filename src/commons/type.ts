@@ -32,7 +32,7 @@ export interface Project {
 
 export interface Teacher {
   id: number;
-  nome: string;
+  name: string;
   email: string;
 }
 
@@ -43,8 +43,30 @@ export type SignUpParams = {
   email: string
 }
 
+export interface SolicitationAudit {
+  id: number;
+  changeDate: string;
+  newStatus: string;
+  solicitation: {
+    createdBy: {
+      name: string;
+    }
+    equipament: {
+      form: string;
+      name: string;
+    };
+    project: {
+      description: string;
+      subject: string;
+      teacher: {
+        name: string;
+      }
+    }
+
+  }
+}
+
 export type LabelValue = {
   label: string,
   value: string
 }
-

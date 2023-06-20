@@ -14,6 +14,7 @@ export function FormHeader() {
   useEffect(() => {
 		async function getProject() {
 				const teacherProject = await api.get("/project/all");
+				console.log(teacherProject)
 				setProjects(teacherProject.data.projectDTOS)
 				setTeacher(teacherProject.data.teacherDTO)
 				setIsLoading(false);
@@ -84,10 +85,10 @@ export function FormHeader() {
 								/>
 								<Field
 									name="nomeOrientador"
-									value={teacher?.nome ?? ''}
-									placeholder={teacher?.nome ?? ''}
+									value={teacher?.name ?? ''}
+									placeholder={teacher?.name ?? ''}
 									disabled
-									className={styles.input_form}
+									className={styles.input_form_disable}
 								/>
 							</div>
 						</div>

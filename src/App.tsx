@@ -11,6 +11,8 @@ import { EmailConfirmationPage, PartnerListPage, PartnerPage, SignUpPage, AdminP
 import { NotFound } from "./pages/notFound";
 import { Project } from "./pages/projetc";
 import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
+import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
+import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
 
 const ROLES = {
   Admin: "ADMIN",
@@ -57,6 +59,9 @@ export function App() {
           <Route path="/projeto/form" element={<ProjectPageForm />} />
           <Route path="/projeto/form/:id" element={<ProjectPageForm />} />
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/equipamento" element={<EquipmentsPage />} />
+          <Route path="/equipamento/form" element={<EquipmentPageForm />} />
+          <Route path="/equipamento/form/:id" element={<EquipmentPageForm />} />
         </Route>
 
         {/* protected routes - Role: Admin */}

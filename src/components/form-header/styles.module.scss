@@ -29,6 +29,10 @@
     align-items: end;
 }
 
+.default_option {
+    color: gray;
+}
+
 .inputs_box {
     display: flex;
     flex-direction: column;
@@ -50,6 +54,18 @@
     background-color: var(--white);
     border-color: none;
     color: var(--black);
+    border: none;
+    outline: none;
+    height: 1rem;
+    padding: 1rem;
+    border-radius: 0.2rem;
+}
+
+.input_form_disable {
+    width: 100%;
+    background-color: var(--white);
+    border-color: none;
+    color: gray;
     border: none;
     outline: none;
     height: 1rem;
