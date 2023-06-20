@@ -6,7 +6,7 @@ interface RequireAuthProps {
   allowedRoles: string[];
 }
 
-export function RequireAuth({ allowedRoles }: RequireAuthProps) {
+export function RequireAuth({ allowedRoles }: RequireAuthProps) { 
   let { authenticated, authenticatedUser } = useContext(AuthContext);
   const location = useLocation();
 

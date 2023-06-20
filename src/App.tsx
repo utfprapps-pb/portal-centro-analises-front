@@ -29,18 +29,60 @@ export function App() {
           path="/email-confirm/:hashKey"
           element={<EmailConfirmationPage />}
         />
-        {/* <Route path="signup" element={<UserSignupPage />} /> */}
-        {/* <Route path="unauthorized" element={<Unauthorized />} /> */}
 
-        {/* protected routes - Roles: User and Admin */}
         <Route
           element={
             <RequireAuth
               allowedRoles={[
                 ROLES.Student,
-                ROLES.Admin,
+              ]}
+            />
+          }
+        >
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/historico" element={<HistoricoPage />} />
+          <Route path="/solicitar" element={<SolicitarPage />} />
+        </Route>
+
+        <Route
+          element={
+            <RequireAuth
+              allowedRoles={[
                 ROLES.Student,
-                ROLES.External,
+              ]}
+            />
+          }
+        >
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/historico" element={<HistoricoPage />} />
+          <Route path="/solicitar" element={<SolicitarPage />} />
+        </Route>
+
+        <Route
+          element={
+            <RequireAuth
+              allowedRoles={[
+                ROLES.Professor,
+              ]}
+            />
+          }
+        >
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/historico" element={<HistoricoPage />} />
+          <Route path="/solicitar" element={<SolicitarPage />} />
+          <Route path="/projeto" element={<Project />} />
+          <Route path="/projeto/form" element={<ProjectPageForm />} />
+          <Route path="/projeto/form/:id" element={<ProjectPageForm />} />
+        </Route>
+
+        <Route
+          element={
+            <RequireAuth
+              allowedRoles={[
+                ROLES.Admin,
               ]}
             />
           }
@@ -57,16 +99,6 @@ export function App() {
           <Route path="/equipamento/form" element={<EquipmentPageForm />} />
           <Route path="/equipamento/form/:id" element={<EquipmentPageForm />} />
         </Route>
-
-        {/* protected routes - Role: Admin */}
-        {/* <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
-          <Route path="/product-v2" element={<ProductListPageV2 />} />
-          <Route path="/product-v2/new" element={<ProductFormPageV2 />} />
-          <Route path="/product-v2/:id" element={<ProductFormPageV2 />} />
-        </Route> */}
-
-        {/* catch all */}
-        {/* <Route path="*" element={<NotFound />} /> */}
       </Route>
     </Routes>
   );
