@@ -47,7 +47,19 @@ export const ProfilePage: React.FC = () => {
                   />
                   <Field
                     as={TextField}
-                    label="Senha"
+                    label="Senha atual"
+                    type="password"
+                    name="oldPassword"
+                    className={styles.textField}
+                    error={touched.oldPassword && !!errors.oldPassword}
+                    helperText={touched.oldPassword && errors.oldPassword}
+                    variant="outlined"
+                    fullWidth
+                  />
+                  <Field
+                    as={TextField}
+                    label="Nova senha"
+                    type="password"
                     name="password"
                     className={styles.textField}
                     error={touched.password && !!errors.password}
@@ -57,7 +69,8 @@ export const ProfilePage: React.FC = () => {
                   />
                   <Field
                     as={TextField}
-                    label="Confirmar senha"
+                    label="Confirmar nova senha"
+                    type="password"
                     name="confirmPassword"
                     className={styles.textField}
                     error={touched.confirmPassword && !!errors.confirmPassword}

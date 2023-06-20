@@ -1,19 +1,25 @@
-import { getProfileData } from "@/services/api/profile";
+import { useHistory } from "@/hooks";
+import { changePassword, getProfileData } from "@/services/api/profile";
 import { Profile } from "@/services/api/profile/types";
+import { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 import * as yup from "yup";
 
 export const useProfile = () => {
+  const { navigate } = useHistory()
+
   const [profileData, setProfileData] = useState<Profile>({
     name: "",
     email: "",
+    oldPassword: "",
     password: "",
     confirmPassword: "",
   });
 
   const validations = yup.object().shape({
+    oldPassword: yup.string().required("Campo obrigatório"),
     password: yup
       .string()
       .min(6, "Mínimo de 6 carácteres")
@@ -25,8 +31,22 @@ export const useProfile = () => {
       .oneOf([yup.ref("password")], "As senhas precisam ser iguais"),
   });
 
-  const handleOnSubmit = useCallback((formData: Profile) => {
-    console.log(formData);
+  const handleOnSubmit = useCallback(async (formData: Profile) => {
+    try {
+      const { password: newPassword, oldPassword } = formData
+
+      await changePassword({
+        newPassword,
+        oldPassword
+      })
+
+      toast.success("Senha alterada com sucesso")
+      navigate("/")
+    } catch (error) {
+      const axiosError = error as AxiosError<{ message: string }>
+      console.log('axiosError: ', axiosError);
+      toast.error(axiosError.response?.data?.message ?? "Erro ao alterar senha")
+    }
   }, []);
 
   useEffect(() => {
