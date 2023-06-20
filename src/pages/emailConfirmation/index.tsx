@@ -14,7 +14,6 @@ export const EmailConfirmationPage: React.FC = () => {
 
   const redirect = () => {
     window.setTimeout(() => {
-      console.log("redirect to loginnnnnnnnnnn");
       navigate("/login");
     }, 5000);
   };
