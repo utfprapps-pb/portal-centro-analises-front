@@ -44,9 +44,8 @@ export function AdminPanel() {
 
   function updateSelectedUser(selected: EditUser) {
     if(selected != null && selected.id != null) {
-      debugger;
-      api.put('users/', selected).then((response) => {
-
+      api.post(`admin/edit/role/${selected.id}`, selected.role).then((response) => {
+        window.location.reload();
       });
     }
   }
@@ -55,6 +54,7 @@ export function AdminPanel() {
     if(selected != null && selected.id != null) {
       api.delete('users/' + selected.id)
       .then((response) => {
+        window.location.reload();
       });
   
     }
