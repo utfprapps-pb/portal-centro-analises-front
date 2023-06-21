@@ -38,34 +38,23 @@ export function AdminPanel() {
       setActivePage(index);
   }
 
-  function getUser(selected: any): void | undefined {
-    setUser({id: selected.id, nome: selected.name, email: selected.email, role: selected.role, orientador: selected.orientador});
+  function getUser(selected: EditUser): void | undefined {
+    setUser(selected);
   }
 
   function updateSelectedUser(selected: EditUser) {
     if(selected != null && selected.id != null) {
       debugger;
-      api.put('users/', {"id" : selected.id}).then((response) => {
-        debugger;
+      api.put('users/', selected).then((response) => {
 
       });
     }
   }
 
-  function removeUserSelectedUser(selected: any) {
+  function removeUserSelectedUser(selected: EditUser) {
     if(selected != null && selected.id != null) {
       api.delete('users/' + selected.id)
       .then((response) => {
-        useEffect(() => {
-          api.get("/users")
-              .then(response => {
-                  const data = response.data;
-                  setPage((state: any) => ({
-                      ...state,
-                      content: data
-                  }));
-              })
-      }, [activePage]);
       });
   
     }
@@ -74,7 +63,7 @@ export function AdminPanel() {
   const handleRoleChange = (selectedValue: string) => {
     let updatedUser = { ...user }; 
     updatedUser.role = selectedValue;
-    setUser({id: updatedUser.id || 0, nome: updatedUser.nome || ' ', email: updatedUser.email || '', role: updatedUser.role, orientador: updatedUser.orientador || 0});
+    setUser(updatedUser);
   };
 
   const [isLoading, setIsLoading] = useState(false);

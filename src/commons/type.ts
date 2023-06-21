@@ -15,6 +15,16 @@ export interface EditUser {
   orientador: number;
   email: string;
   role: string;
+  password: string;
+  status: boolean;
+  createdAt: string;
+  updatedAt: string;
+  emailVerified: boolean;
+  balance: number;
+  ra: string;
+  siape: string;
+  cpf: string;
+  cnpj: string;
 }
 
 export interface AuthenticationResponse {
