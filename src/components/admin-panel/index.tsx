@@ -12,7 +12,7 @@ export function AdminPanel() {
 
   const [activePage, setActivePage] = useState(0);
 
-  const [user, setUser] = useState<EditUser | undefined>();
+  const [user, setUser] = useState<EditUser>();
 
   const [page, setPage] = useState<any>({
       content: [],
@@ -42,9 +42,11 @@ export function AdminPanel() {
     setUser({id: selected.id, nome: selected.name, email: selected.email, role: selected.role, orientador: selected.orientador});
   }
 
-  function updateSelectedUser(selected: any) {
+  function updateSelectedUser(selected: EditUser) {
     if(selected != null && selected.id != null) {
-      api.put('ronaldinho').then((response) => {
+      debugger;
+      api.put('users/', {"id" : selected.id}).then((response) => {
+        debugger;
 
       });
     }
@@ -71,8 +73,8 @@ export function AdminPanel() {
 
   const handleRoleChange = (selectedValue: string) => {
     let updatedUser = { ...user }; 
-    updatedUser.role = selectedValue; 
-    //setUser({id: updatedUser.id, nome: updatedUser.name, email: updatedUser.email, role: updatedUser.role, orientador: updatedUser.orientador});
+    updatedUser.role = selectedValue;
+    setUser({id: updatedUser.id || 0, nome: updatedUser.nome || ' ', email: updatedUser.email || '', role: updatedUser.role, orientador: updatedUser.orientador || 0});
   };
 
   const [isLoading, setIsLoading] = useState(false);
@@ -141,7 +143,7 @@ export function AdminPanel() {
                               className={styles.form_error} />
                             <Field
                               name="orientador"
-                              value={user?.orientador?.id ?? ''}
+                              value={user?.orientador ?? ''}
                               placeholder=''
                               className={styles.input_form} />
                           </div>
