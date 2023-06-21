@@ -12,7 +12,7 @@ export interface User {
 export interface EditUser {
   id: number;
   nome: string;
-  orientador: Teacher;
+  orientador: number;
   email: string;
   role: string;
 }
