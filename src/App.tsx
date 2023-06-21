@@ -5,7 +5,9 @@ import { HomePage } from "./pages/home";
 import { HistoricoPage } from "./pages/historico";
 import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
-import { EmailConfirmationPage, SignUpPage, AdminPage } from "./pages";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "./contexts";
+import { EmailConfirmationPage, SignUpPage, ProfilePage, AdminPage } from "./pages";
 import { Project } from "./pages/projetc";
 import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
 import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
@@ -91,6 +93,7 @@ export function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/historico" element={<HistoricoPage />} />
           <Route path="/solicitar" element={<SolicitarPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/projeto" element={<Project />} />
           <Route path="/projeto/form" element={<ProjectPageForm />} />
           <Route path="/projeto/form/:id" element={<ProjectPageForm />} />
