@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Drawer, Input, InputLabel, List, ListItem, ListItemText, MenuItem, Select, TextField, Typography } from "@material-ui/core";
+import { Box, Button, Divider, Drawer, Input, InputLabel, List, ListItem, ListItemText, MenuItem, Select, TextField, Typography } from "@mui/material";
 import React from "react";
 import { useState } from "react";
 
@@ -12,12 +12,6 @@ import styles from "./styles.module.css"
 import { LabelValue } from "@/commons/type";
 
 export function FilterDrawer({ list, handleSearchChange }) {
-    /* const list = [
-        { label: "Id", value: 'id' },
-        { label: "Nome", value: 'name' },
-        { label: "Descrição", value: 'description' }
-    ]; */
-    //const list = props.list;
 
     const operations:LabelValue[] = [
         { label: "Igual", value: ':' },
@@ -170,9 +164,10 @@ export function FilterDrawer({ list, handleSearchChange }) {
                                         </Select>
                                     </div>
                                     <div className={styles.flex_column}>
+                                        <InputLabel htmlFor="value">Valor</InputLabel>
                                         <TextField
                                             id="value"
-                                            label="Valor" value={filterlist[index].value}
+                                            value={filterlist[index].value}
                                             onChange={handleValueChange(index)}
                                         />
                                     </div>
