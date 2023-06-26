@@ -11,8 +11,8 @@ export function Header() {
   return (
     <div className={styles.container}>
       <h2>Seja bem vindo, {authenticatedUser?.displayName}</h2>
-      <IconButton aria-label="delete" color="inherit" size="large">
-        <ExitToAppRounded onClick={() => AuthService.logOut()} />
+      <IconButton aria-label="delete" color="inherit" size="large" onClick={() => AuthService.logOut()} >
+        <ExitToAppRounded/>
       </IconButton>
     </div>
   );
