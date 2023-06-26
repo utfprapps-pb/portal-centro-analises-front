@@ -16,8 +16,6 @@ export function RequireAuth({ allowedRoles }: RequireAuthProps) {
     const obj = JSON.parse(user);
     (authenticated = true);
     (authenticatedUser = obj);
-    console.log(authenticatedUser)
-    console.log(allowedRoles)
   }
 
   return authenticatedUser  && allowedRoles?.includes(authenticatedUser?.role) ? (

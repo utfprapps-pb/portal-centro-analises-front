@@ -14,7 +14,7 @@ export function FormHeader() {
   useEffect(() => {
 		async function getProject() {
 				const teacherProject = await api.get("/project/all");
-				console.log(teacherProject)
+
 				setProjects(teacherProject.data.projectDTOS)
 				setTeacher(teacherProject.data.teacherDTO)
 				setIsLoading(false);
