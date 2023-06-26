@@ -129,10 +129,10 @@ export function PartnerList() {
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
                 <TableCell align="right">
-                  <IconButton aria-label="edit" onClick={() => { onEdit(`/partner/${row.id}`) } }>
+                  <IconButton color='primary' aria-label="edit" onClick={() => { onEdit(`/partner/${row.id}`) } }>
                     <EditIcon />
                   </IconButton>
-                  <IconButton aria-label="delete" onClick={() => { onRemove(row.id ? row.id : 0) } }>
+                  <IconButton color='error' aria-label="delete" onClick={() => { onRemove(row.id ? row.id : 0) } }>
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
