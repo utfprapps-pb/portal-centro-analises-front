@@ -1,6 +1,7 @@
 import { useHistory } from "@/hooks";
 import { changePassword, getProfileData } from "@/services/api/profile";
 import { Profile } from "@/services/api/profile/types";
+import { StudentsParams } from "@/services/api/students/student.type";
 import { AxiosError } from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -8,7 +9,7 @@ import { toast } from "react-hot-toast";
 import * as yup from "yup";
 
 export const useProfile = () => {
-  const { navigate } = useHistory()
+  const { navigate } = useHistory();
 
   const [profileData, setProfileData] = useState<Profile>({
     name: "",
@@ -17,6 +18,9 @@ export const useProfile = () => {
     password: "",
     confirmPassword: "",
   });
+
+  const [professors, setProfessors] = useState<StudentsParams[]>([]);
+  const [professorSelected, setProfessorSelected] = useState<StudentsParams>();
 
   const validations = yup.object().shape({
     oldPassword: yup.string().required("Campo obrigatório"),
@@ -33,19 +37,21 @@ export const useProfile = () => {
 
   const handleOnSubmit = useCallback(async (formData: Profile) => {
     try {
-      const { password: newPassword, oldPassword } = formData
+      const { password: newPassword, oldPassword } = formData;
 
       await changePassword({
         newPassword,
-        oldPassword
-      })
+        oldPassword,
+      });
 
-      toast.success("Senha alterada com sucesso")
-      navigate("/")
+      toast.success("Senha alterada com sucesso");
+      navigate("/");
     } catch (error) {
-      const axiosError = error as AxiosError<{ message: string }>
-      console.log('axiosError: ', axiosError);
-      toast.error(axiosError.response?.data?.message ?? "Erro ao alterar senha")
+      const axiosError = error as AxiosError<{ message: string }>;
+      console.log("axiosError: ", axiosError);
+      toast.error(
+        axiosError.response?.data?.message ?? "Erro ao alterar senha"
+      );
     }
   }, []);
 
