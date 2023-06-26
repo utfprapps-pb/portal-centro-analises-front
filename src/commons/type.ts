@@ -7,6 +7,15 @@ export interface User {
   displayName: string;
   email: string;
   password: string;
+  role: string;
+}
+
+export interface EditUser {
+  id: number;
+  name: string;
+  orientador: number;
+  email: string;
+  role: string;
 }
 
 export interface AuthenticationResponse {
@@ -32,7 +41,7 @@ export interface Project {
 
 export interface Teacher {
   id: number;
-  nome: string;
+  name: string;
   email: string;
 }
 
@@ -41,5 +50,28 @@ export type SignUpParams = {
   username: string
   password: string
   email: string
+}
+
+export interface SolicitationAudit {
+  id: number;
+  changeDate: string;
+  newStatus: string;
+  solicitation: {
+    createdBy: {
+      name: string;
+    }
+    equipament: {
+      form: string;
+      name: string;
+    };
+    project: {
+      description: string;
+      subject: string;
+      teacher: {
+        name: string;
+      }
+    }
+
+  }
 }
 

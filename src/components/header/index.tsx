@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import styles from "./styles.module.scss";
 import { AuthContext } from "@/contexts";
+import { useHistory } from "@/hooks";
 import { IconButton } from "@mui/material";
 import { ExitToAppRounded } from "@material-ui/icons";
 import AuthService from "@/services/AuthService";

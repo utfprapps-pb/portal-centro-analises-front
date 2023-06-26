@@ -7,6 +7,7 @@ import styles from "./styles.module.scss";
 import { AuthContext } from "../../contexts/auth";
 import AuthService from "../../services/AuthService"
 import { UserLogin } from "../../commons/type";
+import { toast } from "react-hot-toast";
 
 export const LoginPage: React.FC = () => {
   const [apiError, setApiError] = useState("");
@@ -17,7 +18,6 @@ export const LoginPage: React.FC = () => {
   function goToSignUp() {
     navigate('/sign-up')
   }
-
 
   function handleSubmit (values: { email: string; password: string }) {
     setPendingApiCall(true);
@@ -32,11 +32,11 @@ export const LoginPage: React.FC = () => {
         navigate("/");
       })
       .catch((apiError) => {
+        toast.error('Usuário ou senha inválidos!');
         setApiError("Usuário ou senha inválidos!");
         setPendingApiCall(false);
       });
     }
-
 
   const validationForm = yup.object().shape({
     email: yup.string().required("Informe seu email"),
@@ -78,6 +78,8 @@ export const LoginPage: React.FC = () => {
                         className={styles.input_form}
                       />
                     </div>
+                    <div className={styles.custom_description}>Instituição: professores.utfpr.edu.br / utfpr.edu.br / alunos.utfpr.edu.br</div>
+                    <div className={styles.custom_description}>Externo: qualquer e-mail permitido.</div>
                   </div>
                 </div>
                 <div className={styles.row_box}>
