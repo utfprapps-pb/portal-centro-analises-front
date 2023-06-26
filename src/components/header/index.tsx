@@ -9,20 +9,12 @@ import AuthService from "@/services/AuthService";
 export function Header() {
   const { authenticatedUser } = useContext(AuthContext);
 
-  const { navigate } = useHistory();
-
-  const goToProfile = () => {
-    navigate("/profile");
-  };
-
   return (
     <div className={styles.container}>
-      <h2 onClick={goToProfile}>
-        Seja bem vindo, {authenticatedUser?.displayName}
-      </h2>
-      <IconButton aria-label="delete" color="inherit" size="large">
-        <ExitToAppRounded onClick={() => AuthService.logOut()} />
+      <h2>Seja bem vindo, {authenticatedUser?.displayName}</h2>
+      <IconButton aria-label="delete" color="inherit" size="large" onClick={() => AuthService.logOut()} >
+        <ExitToAppRounded/>
       </IconButton>
     </div>
-  )
+  );
 }
