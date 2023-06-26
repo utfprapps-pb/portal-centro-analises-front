@@ -4,53 +4,63 @@ import * as yup from "yup";
 import { CustomErrorMessage, FormFooter, FormHeader } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
+import { toast } from "react-hot-toast";
+import { useHistory } from "@/hooks";
 
-const validationForm = yup.object().shape({
-  nomeAluno: yup.string().required("Informe seu nome"),
-  emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
-  telefoneAluno: yup.string().required("Informe seu telefone"),
-  nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
-  descricao: yup.string().required("Informe a descrição"),
-  limites: yup.string().required("Informe os limites"),
-  elementos: yup.string().required("Informe os elementos"),
-  concentracao: yup.string().required("Informe a concentração"),
-  observacoes: yup.string().required("Informe uma observação")
-});
+export const FormAbsorcaoAtomica: React.FC = () => {
+  const { navigate } = useHistory();
 
-async function handleClickForm(values: {
-  nomeAluno: string;
-  emailAluno: string;
-  telefoneAluno: string;
-  nomeOrientador: string;
-  projeto: number;
-  descricao: string;
-  //
-  limites: string;
-  condicoes: string;
-  elementos: string;
-  concentracao: string;
-  observacoes: string;
-}) {
-  try {
-    const { limites, condicoes, elementos, concentracao, observacoes } = values;
-    const fields = { limites, condicoes, elementos, concentracao, observacoes };
-    const fieldsStr = JSON.stringify(fields);
-
-    const payload = {
-      equipment: {"id": 1},
-      project: {"id": values.projeto},
-      description : values.descricao,
-      status : 0,
-      fields: fieldsStr
+  const validationForm = yup.object().shape({
+    nomeAluno: yup.string().required("Informe seu nome"),
+    emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
+    telefoneAluno: yup.string().required("Informe seu telefone"),
+    nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
+    descricao: yup.string().required("Informe a descrição"),
+    limites: yup.string().required("Informe os limites"),
+    elementos: yup.string().required("Informe os elementos"),
+    concentracao: yup.string().required("Informe a concentração"),
+    observacoes: yup.string().required("Informe uma observação")
+  });
+  
+  async function handleClickForm(values: {
+    nomeAluno: string;
+    emailAluno: string;
+    telefoneAluno: string;
+    nomeOrientador: string;
+    projeto: number;
+    descricao: string;
+    //
+    limites: string;
+    condicoes: string;
+    elementos: string;
+    concentracao: string;
+    observacoes: string;
+  }) {
+    try {
+      const { limites, condicoes, elementos, concentracao, observacoes } = values;
+      const fields = { limites, condicoes, elementos, concentracao, observacoes };
+      const fieldsStr = JSON.stringify(fields);
+  
+      const payload = {
+        equipment: {"id": 10},
+        project: {"id": values.projeto},
+        description : values.descricao,
+        status : 0,
+        fields: fieldsStr
+      }
+  
+      await api.post("/solicitation", payload);
+      toast.success('Solicitação efetuada com sucesso!');
+      window.setTimeout(() => {
+        navigate("/");
+      }, 5000);
+    } catch (error) {
+      toast.error('Erro ao realizar solicitação');
+      console.error("error", error);
     }
-
-    const solicitation = await api.post("/solicitation", payload);
-  } catch (error) {
-    console.error("error", error);
   }
-}
 
-export const FormAbsorcaoAtomica: React.FC = () => (
+  return(
   <>
     <div className={styles.container}>
       <h1 className={styles.title}>Absorção Atômica</h1>
@@ -175,4 +185,5 @@ export const FormAbsorcaoAtomica: React.FC = () => (
       </div>
     </div>
   </>
-)
+  )
+}
