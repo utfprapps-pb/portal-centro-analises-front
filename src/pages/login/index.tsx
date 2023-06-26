@@ -78,6 +78,8 @@ export const LoginPage: React.FC = () => {
                         className={styles.input_form}
                       />
                     </div>
+                    <div className={styles.custom_description}>Instituição: professores.utfpr.edu.br / utfpr.edu.br / alunos.utfpr.edu.br</div>
+                    <div className={styles.custom_description}>Externo: qualquer e-mail permitido.</div>
                   </div>
                 </div>
                 <div className={styles.row_box}>

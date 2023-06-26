@@ -10,6 +10,14 @@ export interface User {
   role: string;
 }
 
+export interface EditUser {
+  id: number;
+  name: string;
+  orientador: number;
+  email: string;
+  role: string;
+}
+
 export interface AuthenticationResponse {
   token: string;
   user: AuthenticatedUser;
