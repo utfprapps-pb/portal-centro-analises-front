@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 import { Header, Menu } from "@/components";
 import { Field, Form, Formik } from "formik";
 import { useProfile } from "./useProfile";
-import { Box, Paper, TextField, Button } from "@mui/material";
+import { Box, Paper, TextField, Button, MenuItem } from "@mui/material";
 
 export const ProfilePage: React.FC = () => {
   const { profileData, validations, handleOnSubmit } = useProfile();
@@ -80,6 +80,20 @@ export const ProfilePage: React.FC = () => {
                     variant="outlined"
                     fullWidth
                   />
+                  <Field
+                    as={TextField}
+                    select
+                    name="select"
+                    label="Select"
+                    variant="outlined"
+                    className={styles.buttonContainer}
+                  >
+                    {}
+                    <MenuItem value="opcao1">Opção 1</MenuItem>
+                    <MenuItem value="opcao2">Opção 2</MenuItem>
+                    <MenuItem value="opcao3">Opção 3</MenuItem>
+                  </Field>
+
                   <Box className={styles.buttonContainer}>
                     <Button
                       className={styles.button}
