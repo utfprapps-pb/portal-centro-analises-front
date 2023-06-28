@@ -14,6 +14,7 @@ import { Add } from '@material-ui/icons'
 import { api } from "../../libs/axiosBase";
 import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
+import { FormFooterLoad } from '../form-footer-load';
 
 export function FormDrx() {
   const { navigate } = useHistory();
@@ -27,22 +28,29 @@ export function FormDrx() {
     step: string;
     tempo: string;
   }
-  
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  function startButtonLoad() {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  };
+
   const [rows, setRows] = useState<RowData[]>([]);
-  
+
   function createData(amostra: number, identificacao: string, modo: string, faixa: string, velocidade: string, step: string, tempo: string) {
     const newData = { amostra, identificacao, modo, faixa, velocidade, step, tempo };
     setRows([...rows, newData]);
   }
-  
+
   const validationForm = yup.object().shape({
     nomeAluno: yup.string().required("Informe seu nome"),
-    emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
-    telefoneAluno: yup.string().required("Informe seu telefone"),
     nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
     descricao: yup.string().required("Informe a descrição"),
   });
-  
+
   function addInTable(values: {
     amostra: number;
     identificacao: string;
@@ -54,27 +62,26 @@ export function FormDrx() {
   }) {
     createData(values.amostra, values.identificacao, values.modo, values.faixa, values.velocidade, values.step, values.tempo)
   }
-  
+
   async function handleClickForm(values: {
     nomeAluno: string;
-    emailAluno: string;
-    telefoneAluno: string;
     nomeOrientador: string;
     projeto: number;
     descricao: string;
   }) {
     try {
+      startButtonLoad();
       const fields = { rows };
       const fieldsStr = JSON.stringify(fields);
-  
+
       const payload = {
-        equipment: {"id": 6},
-        project: {"id": values.projeto},
-        description : values.descricao,
-        status : 0,
+        equipment: { "id": 6 },
+        project: { "id": values.projeto },
+        description: values.descricao,
+        status: 0,
         fields: fieldsStr
       }
-  
+
       await api.post("/solicitation", payload);
       toast.success('Solicitação efetuada com sucesso!');
       window.setTimeout(() => {
@@ -92,9 +99,7 @@ export function FormDrx() {
       <div>
         <Formik
           initialValues={{
-            nomeAluno: "",
-            emailAluno: "",
-            telefoneAluno: "",
+            nomeAluno: "NOMEALUNO",
             nomeOrientador: "NOME",
             projeto: 0,
             descricao: "",
@@ -258,7 +263,7 @@ export function FormDrx() {
                   </Table>
                 </TableContainer>
               </div>
-              <FormFooter /> 
+              {isLoading ? <FormFooterLoad /> : <FormFooter />}
             </Form>
           )}
         </Formik>

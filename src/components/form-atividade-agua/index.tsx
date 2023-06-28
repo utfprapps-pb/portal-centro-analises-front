@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
 import { api } from "../../libs/axiosBase";
@@ -6,14 +6,22 @@ import styles from "./styles.module.scss";
 import { FormFooter, FormHeader } from '@/components'
 import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
+import { FormFooterLoad } from '../form-footer-load';
 
 export const FormAtividadeAgua: React.FC = () => {
   const { navigate } = useHistory();
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  function startButtonLoad() {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  };
+
   const validationForm = yup.object().shape({
     nomeAluno: yup.string().required("Informe seu nome"),
-    emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
-    telefoneAluno: yup.string().required("Informe seu telefone"),
     nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
     emailOrientador: yup.string().email("Email inválido").required("Informe o email do seu orientador"),
     telefoneOrientador: yup.string().required("Informe o telefone"),
@@ -31,6 +39,7 @@ export const FormAtividadeAgua: React.FC = () => {
     descricao: string;
   }) {
     try {
+      startButtonLoad();
   
       const payload = {
         equipment: {"id": 1},
@@ -56,10 +65,8 @@ export const FormAtividadeAgua: React.FC = () => {
       <div>
         <Formik
           initialValues={{
-            nomeAluno: "",
-            emailAluno: "",
-            telefoneAluno: "",
-            nomeOrientador: "",
+            nomeAluno: "NOMEALUNO",
+            nomeOrientador: "NOME",
             emailOrientador: "",
             telefoneOrientador: "",
             departamento: "",
@@ -73,7 +80,7 @@ export const FormAtividadeAgua: React.FC = () => {
             <div className={styles.inputs_box}>
               <FormHeader />
             </div>
-            <FormFooter />
+            {isLoading ? <FormFooterLoad /> : <FormFooter />}
           </Form>
         </Formik>
       </div>

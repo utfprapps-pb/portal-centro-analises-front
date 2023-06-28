@@ -3,7 +3,6 @@ import { Formik, Form, Field } from 'formik';
 import * as yup from "yup";
 import { FormAbsorcaoAtomica, FormAnaliseTermica, FormAtividadeAgua, FormCr, FormDrx, FormFotometroChama, FormFtir, FormGcMs, FormHplc, FormMev, FormNir, FormUvVis  } from '@/components'
 import styles from "./styles.module.scss";
-import { useAuth } from '@/hooks/useAuth';
 import { api } from "../../libs/axiosBase";
 
 export function Solicitar() {
@@ -19,18 +18,18 @@ export function Solicitar() {
 
   const options = [
     { label: "Escolha um formulário", value: "" },
-    { label: "Absorção Atômica", value: "AA" },
-    { label: "GC-MS", value: "GCMS" },
-    { label: "DRX", value: "DRX" },
-    { label: "Infravermelho-FTIR", value: "FTIR" },
-    { label: "HPLC", value: "HPLC" },
-    { label: "MEV", value: "MEV" },
-    { label: "Infravermelho-NIR", value: "NIR" },
-    { label: "Análise Térmica", value: "AT" },
-    { label: "UV/VIS", value: "UVVIS" },
-    { label: "Atividade de água", value: "AAG" },
+    { label: "Absorção Atômica - Espectroscopia de Absorção Atômica", value: "AA" },
+    { label: "Cromatografia Gasosa Acoplada à Espectrometria de Massas - GC-MS", value: "GCMS" },
+    { label: "Difatrometro de Raios X - DRX", value: "DRX" },
+    { label: "Espectroscopia no Infravermelho por Transformada de Fourier - FTIR", value: "FTIR" },
+    { label: "Cromatografia Líquida de Alta Eficiência - HPLC", value: "HPLC" },
+    { label: "Microscópio Eletrônico de Varredura - MEV", value: "MEV" },
+    { label: "Espectrofotômetro NIR - NIR", value: "NIR" },
+    { label: "Análise Térmica Diferencial - DTA", value: "AT" },
+    { label: "Espectroscopia na Região Ultravioleta-Visível - UV/VIS", value: "UVVIS" },
+    { label: "Atividade de água - Aw", value: "AAG" },
     { label: "Fotômetro de chama", value: "FC" },
-    { label: "Colorímetro CR 400", value: "CR" },
+    { label: "Análise Colorimétrica - Colorímetro CR 400", value: "CR" },
   ];
   
   function handleClickForm(event: any) {

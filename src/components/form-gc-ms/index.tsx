@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from "yup";
 import styles from "./styles.module.scss";
@@ -6,14 +6,22 @@ import { CustomErrorMessage, FormFooter, FormHeader } from '@/components'
 import { api } from "../../libs/axiosBase";
 import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
+import { FormFooterLoad } from '../form-footer-load';
 
 export const FormGcMs: React.FC = () => {
   const { navigate } = useHistory();
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  function startButtonLoad() {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  };
+
   const validationForm = yup.object().shape({
     nomeAluno: yup.string().required("Informe seu nome"),
-    emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
-    telefoneAluno: yup.string().required("Informe seu telefone"),
     nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
     descricao: yup.string().required("Informe a descrição"),
     coluna: yup.string().required("Informe a coluna"),
@@ -29,8 +37,6 @@ export const FormGcMs: React.FC = () => {
   
   async function handleClickForm(values: {
     nomeAluno: string;
-    emailAluno: string;
-    telefoneAluno: string;
     nomeOrientador: string;
     projeto: number;
     descricao: string;
@@ -46,6 +52,7 @@ export const FormGcMs: React.FC = () => {
     quantidade: string;
   }) {
     try {
+      startButtonLoad();
       const { coluna, gas, fluxo, volume, temperatura, tempo, aquecimento, injecao, quantidade } = values;
       const fields = { coluna, gas, fluxo, volume, temperatura, tempo, aquecimento, injecao, quantidade };
       const fieldsStr = JSON.stringify(fields);
@@ -75,9 +82,7 @@ export const FormGcMs: React.FC = () => {
       <div>
         <Formik
           initialValues={{
-            nomeAluno: "",
-            emailAluno: "",
-            telefoneAluno: "",
+            nomeAluno: "NOMEALUNO",
             nomeOrientador: "NOME",
             projeto: 0,
             descricao: "",
@@ -240,7 +245,7 @@ export const FormGcMs: React.FC = () => {
                 </div>
               </div>
             </div>
-            <FormFooter />
+            {isLoading ? <FormFooterLoad /> : <FormFooter />}
           </Form>
         </Formik>
       </div>
