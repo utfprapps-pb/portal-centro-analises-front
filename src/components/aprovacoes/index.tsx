@@ -16,23 +16,25 @@ import { ProjectParams } from '../../services/api/project/project.type'
 import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
+import { ArovacoesParams } from '@/services/api/aprovacoes/aprovacoes.type'
 
 export const Aprovacoes = () => {
   const navigate = useNavigate()
-  const [data, setData] = useState<ProjectParams[]>([])
+  const [data, setData] = useState<ArovacoesParams[]>([])
   const [apiError, setApiError] = useState('')
 
   const loadData = () => {
+    console.log();
     AprovacoesService.getSolicitationPending()
     .then((response: any) => {
       setData(response.data)
+      console.log(response.data)
       setApiError('')
     })
     .catch((responseError: any) => {
       setApiError('Falha ao carregar lista de categorias.')
       toast.error(apiError)
       // eslint-disable-next-line no-console
-      console.log(responseError)
     })
   }
 
@@ -88,10 +90,10 @@ export const Aprovacoes = () => {
                 <StyledTableCell component="th" scope="row">
                   {p.id}
                 </StyledTableCell>
-                <StyledTableCell align="right">{p.subject}</StyledTableCell>
+                <StyledTableCell align="right">{p.equipment}</StyledTableCell>
                 <StyledTableCell align="right">{p.description}</StyledTableCell>
                 <StyledTableCell align="right">
-                  {p.students.length}
+                  {p.students}
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   <IconButton aria-label="approve" color="success">

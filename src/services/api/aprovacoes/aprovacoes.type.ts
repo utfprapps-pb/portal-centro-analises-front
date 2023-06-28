@@ -1,9 +1,10 @@
-export type ProjectParams = {
+export type ArovacoesParams = {
   id?: number
+  createdBy: Object
   description: string
-  subject: string
-  students: StudentsParams[]
-  teacher?: any
+  fields: Object
+  project?: Object
+  status: string
 }
 
 export type ProjectResponseProps = {
