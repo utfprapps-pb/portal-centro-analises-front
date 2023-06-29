@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
-import { ThumbUp, ThumbDown } from '@material-ui/icons'
-import { Button, Grid, IconButton } from '@mui/material'
+import { ThumbUp, ThumbDown, OpenInBrowser } from '@material-ui/icons'
+import { IconButton } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -12,7 +12,6 @@ import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
 import styles from './styles.module.scss'
-import { ProjectParams } from '../../services/api/project/project.type'
 import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
@@ -24,7 +23,6 @@ export const Aprovacoes = () => {
   const [apiError, setApiError] = useState('')
 
   const loadData = () => {
-    console.log();
     AprovacoesService.getSolicitationPending()
     .then((response: any) => {
       setData(response.data)
@@ -43,7 +41,7 @@ export const Aprovacoes = () => {
   }, [])
 
   const approveProject = (id: number) => {
-    AprovacoesService.approve(id)
+    AprovacoesService.approve(id, 'PENDING_LAB')
     .then((response) => {
       toast.success("Aprovado com sucesso!")
       setApiError('')
@@ -57,7 +55,7 @@ export const Aprovacoes = () => {
   }
 
   const rejectProject = (id: number) => {
-    AprovacoesService.reject(id)
+    AprovacoesService.reject(id, 'REFUSED')
     .then((response) => {
       toast.success("Rejeitado!")
       setApiError('')
@@ -78,10 +76,11 @@ export const Aprovacoes = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>#</StyledTableCell>
-              <StyledTableCell align="right">Subject</StyledTableCell>
-              <StyledTableCell align="right">Description</StyledTableCell>
-              <StyledTableCell align="right">Students</StyledTableCell>
-              <StyledTableCell align="right">Functions</StyledTableCell>
+              <StyledTableCell align="center">Abrir formulário</StyledTableCell>
+              <StyledTableCell align="right">Formulário</StyledTableCell>
+              <StyledTableCell align="right">Descrição</StyledTableCell>
+              <StyledTableCell align="right">Solicitante</StyledTableCell>
+              <StyledTableCell align="right">Aprovar/Reprovar</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -90,11 +89,14 @@ export const Aprovacoes = () => {
                 <StyledTableCell component="th" scope="row">
                   {p.id}
                 </StyledTableCell>
-                <StyledTableCell align="right">{p.equipment}</StyledTableCell>
-                <StyledTableCell align="right">{p.description}</StyledTableCell>
-                <StyledTableCell align="right">
-                  {p.students}
+                <StyledTableCell align="center" className={styles.icon_open}>
+                  <IconButton aria-label="approve" color="info">
+                    <OpenInBrowser onClick={ () => navigate(`/aprovacoes/view/${p.id!}`)}/>
+                  </IconButton>
                 </StyledTableCell>
+                <StyledTableCell align="right">{p.equipment.form}</StyledTableCell>
+                <StyledTableCell align="right">{p.description}</StyledTableCell>
+                <StyledTableCell align="right">{p.createdBy.name}</StyledTableCell>
                 <StyledTableCell align="right">
                   <IconButton aria-label="approve" color="success">
                     <ThumbUp onClick={() => approveProject(p.id!)}/>

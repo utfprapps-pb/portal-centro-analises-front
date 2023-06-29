@@ -13,6 +13,7 @@ import { Project } from "./pages/projetc";
 import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
 import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
 import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
+import { AprovacoesView } from "./pages/aprovacoes/AprovacoesView";
 
 const ROLES = {
   Admin: "ADMIN",
@@ -78,6 +79,7 @@ export function App() {
           <Route path="/projeto/form" element={<ProjectPageForm />} />
           <Route path="/projeto/form/:id" element={<ProjectPageForm />} />
           <Route path="/aprovacoes" element={<AprovacoesPage />} />
+          <Route path="/aprovacoes/view/:id" element={<AprovacoesView />} />
         </Route>
 
         <Route

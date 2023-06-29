@@ -7,11 +7,11 @@ const findAll = () => api.get('/project')
 
 const getSolicitationPending = () => api.get('/solicitation/pending') 
 
-const approve = (id: number) => api.delete(`/project/${id}`)
+const approve = (id: number, status: string) => api.post(`/solicitation/${id}/status`, status, {headers: {'Content-Type': 'text/plain'}})
 
-const reject = (id: number) => api.delete(`/project/${id}`)
+const reject = (id: number, status: string) => api.post(`/solicitation/${id}/status`, status, {headers: {'Content-Type': 'text/plain'}})
 
-const findById = (id: number) => api.post(`/project/${id}`)
+const findById = (id: number) => api.post(`/solicitation/${id}`)
 
 const AprovacoesService = {
   save,
