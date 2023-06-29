@@ -1,35 +1,46 @@
 import { useState, useEffect } from "react";
 import { api } from "../libs/axiosBase";
 import { AuthenticatedUser, AuthenticationResponse } from "../commons/type";
+import { User } from '@/commons/type';
 
 export function useAuth() {
   const [authenticated, setAuthenticated] = useState(false);
   const [authenticatedUser, setAuthenticatedUser] = useState<AuthenticatedUser>();
   const [loading, setLoading] = useState(true);
+  const [userRole, setUserRole] = useState<User | undefined>();
 
   useEffect(() => {
-    
+
     async function getVerify() {
       const token: string | null = localStorage.getItem("token");
       const user = localStorage.getItem("user");
       let verified = false;
+
       try {
         if (token) {
           api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
             token
-          )}`; 
+          )}`;
+          await api.get("/token/verify");
+          verified  = true;
+
+        } else {
+          verified = false;
         }
-        await api.get("/token/verify");
-        verified  = true;
       } catch (error: unknown) {
         verified  = false;
       }
+
       if (token && user && verified) {
         api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
           token
-        )}`;      
+        )}`;
+        const selfUser = await api.get("/users/findSelfUser");
+        const { id, name, email, role } = selfUser.data;
+        const newUser = { id, displayName: name, email, role }
+        setAuthenticatedUser(newUser);
+        localStorage.setItem("user", JSON.stringify(newUser));
         setAuthenticated(true);
-        setAuthenticatedUser(JSON.parse(user));
         verified  = true;
       } else {
         localStorage.removeItem("user");
@@ -41,7 +52,6 @@ export function useAuth() {
     }
 
     getVerify();
-
     setLoading(false);
   }, []);
 
@@ -66,7 +76,7 @@ export function useAuth() {
     authenticated,
     authenticatedUser,
     loading,
-    setAuthenticated, 
+    setAuthenticated,
     setAuthenticatedUser,
     handleLogin,
     handleLogout,

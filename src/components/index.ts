@@ -24,5 +24,8 @@ export * from '@/components/form-footer'
 export * from '@/components/historico'
 export * from '@/components/custom-status'
 export * from '@/components/download-file'
+export * from '@/components/partner/form'
+export * from '@/components/partner/list'
+export * from '@/components/filter-drawer'
 export * from '@/components/admin-panel'
 

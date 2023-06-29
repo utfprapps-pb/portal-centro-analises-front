@@ -15,6 +15,8 @@ import { api } from "../../libs/axiosBase";
 import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
 import { FormFooterLoad } from '../form-footer-load';
+import Button from '@material-ui/core/Button';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 export function FormDrx() {
   const { navigate } = useHistory();
@@ -63,6 +65,22 @@ export function FormDrx() {
     createData(values.amostra, values.identificacao, values.modo, values.faixa, values.velocidade, values.step, values.tempo)
   }
 
+  type YourRowType = {
+    amostra: number;
+    identificacao: string;
+    modo: string;
+    faixa: string;
+    velocidade: string;
+    step: string;
+    tempo: string;
+  };
+  
+
+  function handleRemoveRow(row: YourRowType) {
+    const updatedRows = rows.filter((r) => r !== row);
+    setRows(updatedRows);
+  }
+  
   async function handleClickForm(values: {
     nomeAluno: string;
     nomeOrientador: string;
@@ -242,21 +260,30 @@ export function FormDrx() {
                         <TableCell align="right">Velocidade de Varredura</TableCell>
                         <TableCell align="right">Step</TableCell>
                         <TableCell align="right">Tempo do passo</TableCell>
+                        <TableCell align="right">Remover</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rows.map((row) => (
+                    {rows.map((row) => (
                         <TableRow
                           key={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                          <TableCell component="th" scope="row">{row.amostra}</TableCell>
-                          <TableCell align="right">{row.identificacao}</TableCell>
-                          <TableCell align="right">{row.modo}</TableCell>
-                          <TableCell align="right">{row.faixa}</TableCell>
-                          <TableCell align="right">{row.velocidade}</TableCell>
-                          <TableCell align="right">{row.step}</TableCell>
-                          <TableCell align="right">{row.tempo}</TableCell>
+                          <TableCell align="center">{row.amostra}</TableCell>
+                          <TableCell align="center">{row.identificacao}</TableCell>
+                          <TableCell align="center">{row.modo}</TableCell>
+                          <TableCell align="center">{row.faixa}</TableCell>
+                          <TableCell align="center">{row.velocidade}</TableCell>
+                          <TableCell align="center">{row.step}</TableCell>
+                          <TableCell align="center">{row.tempo}</TableCell>
+                          <TableCell align="right">
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              startIcon={<RemoveIcon />}
+                              onClick={() => handleRemoveRow(row)}
+                            />
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>

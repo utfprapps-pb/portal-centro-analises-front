@@ -3,10 +3,22 @@ import styles from "./styles.module.scss";
 import { Header, Menu } from "@/components";
 import { Field, Form, Formik } from "formik";
 import { useProfile } from "./useProfile";
-import { Box, Paper, TextField, Button } from "@mui/material";
+import { Box, Paper, TextField, Button, Divider } from "@mui/material";
+import { ProfessorParams } from "@/services/api/professor/professor.type";
+
+import Select from "react-select";
 
 export const ProfilePage: React.FC = () => {
-  const { profileData, validations, handleOnSubmit } = useProfile();
+  const {
+    profileData,
+    validations,
+    handleOnSubmit,
+    professors,
+    professorSelected,
+    setProfessorSelected,
+    handleOnSubmitProfessorLink,
+    excludeProfessorLink
+  } = useProfile();
 
   return (
     <div className={styles.container}>
@@ -80,6 +92,7 @@ export const ProfilePage: React.FC = () => {
                     variant="outlined"
                     fullWidth
                   />
+
                   <Box className={styles.buttonContainer}>
                     <Button
                       className={styles.button}
@@ -94,6 +107,45 @@ export const ProfilePage: React.FC = () => {
                 </Form>
               );
             }}
+          </Formik>
+          <Divider />
+
+          <Formik onSubmit={handleOnSubmitProfessorLink} initialValues={{}}>
+            <Form className={styles.form}>
+              <Select
+                className={styles.buttonContainer}
+                onChange={(optionsSelected: any) => {
+                  if (optionsSelected == null) {
+                    excludeProfessorLink();
+                  } else {
+                    setProfessorSelected(optionsSelected);
+                  }
+                }}
+                aria-label="Professores"
+                placeholder="Professores"
+                defaultValue={professorSelected}
+                value={professorSelected}
+                getOptionValue={(p: ProfessorParams) => p.id.toString()}
+                getOptionLabel={(p: ProfessorParams) =>
+                  p.siape != null ? p.name + " " + p.siape : p.name
+                }
+                isClearable={true}
+                isSearchable={true}
+                options={professors}
+                name="professors"
+              />
+              <Box className={styles.buttonContainer}>
+                <Button
+                  className={styles.button}
+                  color="primary"
+                  variant="contained"
+                  type="submit"
+                  disabled={professorSelected == null}
+                >
+                  Solicitar vinculo
+                </Button>
+              </Box>
+            </Form>
           </Formik>
         </Paper>
       </div>

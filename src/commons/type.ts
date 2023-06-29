@@ -7,6 +7,7 @@ export interface User {
   displayName: string;
   email: string;
   password: string;
+  role: string;
 }
 
 export interface EditUser {
@@ -23,6 +24,7 @@ export interface AuthenticationResponse {
 }
 
 export interface AuthenticatedUser {
+  id: number;
   displayName: string;
   email: string;
   role: string;
@@ -74,3 +76,7 @@ export interface SolicitationAudit {
   }
 }
 
+export type LabelValue = {
+  label: string,
+  value: string
+}
