@@ -17,7 +17,7 @@ import { AuthContext } from "@/contexts";
 
 import * as yup from "yup";
 import StudentProfessorLinkService from "@/services/api/studentProfessorLink/StudentProfessorLinkService";
-import { ROLES } from "@/App";
+import { ROLES } from "@/commons/roles";
 
 export const useProfile = () => {
   "use strict";

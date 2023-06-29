@@ -13,13 +13,7 @@ import { Project } from "./pages/projetc";
 import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
 import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
 import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
-
-export const ROLES = {
-  Admin: "ADMIN",
-  Professor: "PROFESSOR",
-  Student: "STUDENT",
-  External: "EXTERNAL",
-};
+import { ROLES } from "./commons/roles";
 
 export function App() {
   return (
