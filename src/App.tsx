@@ -13,7 +13,7 @@ import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
 import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
 import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
 
-const ROLES = {
+export const ROLES = {
   Admin: "ADMIN",
   Professor: "PROFESSOR",
   Student: "STUDENT",
