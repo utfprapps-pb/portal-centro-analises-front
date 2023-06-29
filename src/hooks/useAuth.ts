@@ -10,20 +10,20 @@ export function useAuth() {
   const [userRole, setUserRole] = useState<User | undefined>();
 
   useEffect(() => {
-    
+
     async function getVerify() {
       const token: string | null = localStorage.getItem("token");
       const user = localStorage.getItem("user");
       let verified = false;
-      
+
       try {
         if (token) {
           api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
             token
-          )}`; 
+          )}`;
           await api.get("/token/verify");
           verified  = true;
-          
+
         } else {
           verified = false;
         }
@@ -34,10 +34,10 @@ export function useAuth() {
       if (token && user && verified) {
         api.defaults.headers.common["Authorization"] = `Bearer ${JSON.parse(
           token
-        )}`;      
+        )}`;
         const selfUser = await api.get("/users/findSelfUser");
-        const { name, email, role } = selfUser.data;
-        const newUser = { displayName: name, email, role }
+        const { id, name, email, role } = selfUser.data;
+        const newUser = { id, displayName: name, email, role }
         setAuthenticatedUser(newUser);
         localStorage.setItem("user", JSON.stringify(newUser));
         setAuthenticated(true);
@@ -76,7 +76,7 @@ export function useAuth() {
     authenticated,
     authenticatedUser,
     loading,
-    setAuthenticated, 
+    setAuthenticated,
     setAuthenticatedUser,
     handleLogin,
     handleLogout,
