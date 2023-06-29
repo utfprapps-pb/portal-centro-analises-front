@@ -14,6 +14,8 @@ import { Add } from '@material-ui/icons'
 import { api } from "../../libs/axiosBase";
 import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
+import Button from '@material-ui/core/Button';
+import RemoveIcon from '@material-ui/icons/Remove';
 
 export function FormAnaliseTermica() {
   const { navigate } = useHistory();
@@ -81,6 +83,24 @@ export function FormAnaliseTermica() {
       values.intervaloTemperatura
     )
   }
+
+  type YourRowType = {
+    amostra: number;
+    identificacao: string;
+    caracteristicas: string;
+    massaAmostra: string;
+    tecnica: string;
+    atmosferaFluxo: string;
+    taxaAquecimento: string;
+    intervaloTemperatura: string;
+  };
+  
+
+  function handleRemoveRow(row: YourRowType) {
+    const updatedRows = rows.filter((r) => r !== row);
+    setRows(updatedRows);
+  }
+  
 
   async function handleClickForm(values: {
     nomeAluno: string;
@@ -283,6 +303,7 @@ export function FormAnaliseTermica() {
                         <TableCell align="right">Atmosfera e fluxo gás (mL min-1)</TableCell>
                         <TableCell align="right">Taxa de Aquecimento* (°C min-1)</TableCell>
                         <TableCell align="right">Intervalo de Temperatura (°C)</TableCell>
+                        <TableCell align="right">Remover</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -291,14 +312,22 @@ export function FormAnaliseTermica() {
                           key={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                          <TableCell component="th" scope="row">{row.amostra}</TableCell>
-                          <TableCell align="right">{row.identificacao}</TableCell>
-                          <TableCell align="right">{row.caracteristicas}</TableCell>
-                          <TableCell align="right">{row.massaAmostra}</TableCell>
-                          <TableCell align="right">{row.tecnica}</TableCell>
-                          <TableCell align="right">{row.atmosferaFluxo}</TableCell>
-                          <TableCell align="right">{row.taxaAquecimento}</TableCell>
+                          <TableCell align="center">{row.amostra}</TableCell>
+                          <TableCell align="center">{row.identificacao}</TableCell>
+                          <TableCell align="center">{row.caracteristicas}</TableCell>
+                          <TableCell align="center">{row.massaAmostra}</TableCell>
+                          <TableCell align="center">{row.tecnica}</TableCell>
+                          <TableCell align="center">{row.atmosferaFluxo}</TableCell>
+                          <TableCell align="center">{row.taxaAquecimento}</TableCell>
                           <TableCell align="right">{row.intervaloTemperatura}</TableCell>
+                          <TableCell align="right">
+                            <Button
+                              variant="contained"
+                              color="secondary"
+                              startIcon={<RemoveIcon />}
+                              onClick={() => handleRemoveRow(row)}
+                            />
+                          </TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
