@@ -24,6 +24,7 @@ export interface AuthenticationResponse {
 }
 
 export interface AuthenticatedUser {
+  id: number;
   displayName: string;
   email: string;
   role: string;
