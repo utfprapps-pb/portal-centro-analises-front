@@ -25,6 +25,7 @@ export function useAuth() {
           verified  = true;
 
         } else {
+          api.defaults.headers.common["Authorization"] = '';
           verified = false;
         }
       } catch (error: unknown) {
