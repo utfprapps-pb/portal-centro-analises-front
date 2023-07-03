@@ -44,13 +44,13 @@ export const EquipmentPageForm = () => {
         if (response.data) {
           setEquipment({
             id: response.data.id,
-            name: response.data.name,
-            valueHourPartner: response.data.valueHourPartner,
-            valueHourPfPj: response.data.valueHourPfPj,
-            valueHourUtfpr: response.data.valueHourUtfpr,
-            valueSamplePartner: response.data.valueSamplePartner,
-            valueSamplePfPj: response.data.valueSamplePfPj,
-            valueSampleUtfpr: response.data.valueSampleUtfpr,
+            name: response.data.name ?? '',
+            valueHourPartner: response.data.valueHourPartner ?? '',
+            valueHourPfPj: response.data.valueHourPfPj ?? '',
+            valueHourUtfpr: response.data.valueHourUtfpr ?? '',
+            valueSamplePartner: response.data.valueSamplePartner ?? '',
+            valueSamplePfPj: response.data.valueSamplePfPj ?? '',
+            valueSampleUtfpr: response.data.valueSampleUtfpr ?? '',
           });
         }
       } catch (error) {
@@ -66,6 +66,7 @@ export const EquipmentPageForm = () => {
   }, []);
 
   const handleSubmit = (values: EquipmentParams) => {
+    debugger
     const data: EquipmentParams = {
       ...values,
       id: equipment?.id!,
