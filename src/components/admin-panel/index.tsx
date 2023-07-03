@@ -12,7 +12,7 @@ export function AdminPanel() {
 
   const [activePage, setActivePage] = useState(0);
 
-  const [user, setUser] = useState<EditUser>();
+  const [user, setUser] = useState<EditUser | undefined>();
 
   const [page, setPage] = useState<any>({
     content: [],

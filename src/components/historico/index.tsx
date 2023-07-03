@@ -39,7 +39,7 @@ export function Historico() {
                     <CustomStatus
                       text={
                         newStatus == 'PENDING_ADVISOR' ? 'Aguardando Confirmação' :
-                        newStatus == 'PENDING_LAB' ? 'Aguardando Confirmação' :
+                        newStatus == 'PENDING_LAB' ? 'Aguardando Laboratório' :
                         newStatus == 'PENDING_SAMPLE' ? 'Aguardando Amostra' :
                         newStatus == 'APPROVED' ? 'Aguardando Análise' :
                         newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
@@ -51,10 +51,10 @@ export function Historico() {
                       textColor="white"
                       backgroundColor={
                         newStatus == 'FINISHED' ? '#00d400' :
-                        newStatus == 'PENDING_LAB' ? '#d49f00' :
+                        newStatus == 'PENDING_LAB' ? '#ff5e00' :
                         newStatus == 'PENDING_ADVISOR' ? '#d49f00' :
                         newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
-                        newStatus == 'PENDING_PAYMEN' ? '#d49f00' :
+                        newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
                         newStatus == 'APPROVED' ? '#d49f00' :
                         '#000000'
                       }

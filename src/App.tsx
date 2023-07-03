@@ -7,12 +7,13 @@ import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
 import { useContext, useEffect } from "react";
 import { AuthContext } from "./contexts";
-import { EmailConfirmationPage, SignUpPage, ProfilePage, AdminPage, PartnerListPage, PartnerPage } from "./pages";
+import { EmailConfirmationPage, SignUpPage, ProfilePage, AdminPage, PartnerListPage, PartnerPage, AprovacoesPage } from "./pages";
 import { NotFound } from "./pages/notFound";
 import { Project } from "./pages/projetc";
 import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
 import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
 import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
+import { AprovacoesView } from "./pages/aprovacoes/AprovacoesView";
 import { ROLES } from "./commons/roles";
 
 export function App() {
@@ -70,7 +71,8 @@ export function App() {
           <Route path="/projeto" element={<Project />} />
           <Route path="/projeto/form" element={<ProjectPageForm />} />
           <Route path="/projeto/form/:id" element={<ProjectPageForm />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/aprovacoes" element={<AprovacoesPage />} />
+          <Route path="/aprovacoes/view/:id" element={<AprovacoesView />} />
         </Route>
 
         <Route
@@ -86,7 +88,6 @@ export function App() {
           <Route path="/equipamento" element={<EquipmentsPage />} />
           <Route path="/equipamento/form" element={<EquipmentPageForm />} />
           <Route path="/equipamento/form/:id" element={<EquipmentPageForm />} />
-          <Route path="/profile" element={<ProfilePage />} />
           <Route path="/partner" element={<PartnerListPage />} />
           <Route path="/partner/new" element={<PartnerPage />} />
           <Route path="/partner/:id" element={<PartnerPage />} />
