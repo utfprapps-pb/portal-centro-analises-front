@@ -1,12 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "@/contexts";
 import styles from "./styles.module.scss";
-import { PlaylistAdd, History, Check, BusinessCenter, Adjust, Build } from '@material-ui/icons'
+import { PlaylistAdd, History, Check, BusinessCenter, Adjust, Build, AccountBalance } from '@material-ui/icons'
 import { Link } from 'react-router-dom';
 
 export const Menu: React.FC = () => {
   const { authenticatedUser } = useContext(AuthContext);
-
 
   return (
     <div className={styles.container}>
@@ -43,6 +42,10 @@ export const Menu: React.FC = () => {
             <Link className={styles.tab} to="/admin">
               <Adjust style={{ color: '#3f51b5' }} />
               <h2>Admin</h2>
+            </Link>
+            <Link className={styles.tab} to="/partner">
+              <AccountBalance style={{ color: '#3f51b5' }} />
+              <h2>Parceiros</h2>
             </Link>
           </>
         }

@@ -1,32 +1,34 @@
 import React, { useEffect, useState } from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as yup from "yup";
+import { Field, ErrorMessage } from 'formik';
 import { CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
 import { Project, Teacher } from '@/commons/type';
 
-export function FormHeader() { 
+export function FormHeader() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [teacher, setTeacher] = useState<Teacher | undefined>();
 	const [projects, setProjects] = useState<Array<Project>>();
 
-  useEffect(() => {
+	var t: any = localStorage.getItem("user");
+	var infoArray = JSON.parse(t);
+	var studentName = infoArray.displayName.toString();
+
+	useEffect(() => {
 		async function getProject() {
-				const teacherProject = await api.get("/project/all");
-				console.log(teacherProject)
-				setProjects(teacherProject.data.projectDTOS)
-				setTeacher(teacherProject.data.teacherDTO)
-				setIsLoading(false);
-			}
-			getProject();
-  }, []);
+			const teacherProject = await api.get("/project/all");
+			setProjects(teacherProject.data.projectDTOS)
+			setTeacher(teacherProject.data.teacherDTO)
+			setIsLoading(false);
+		}
+		getProject();
+	}, []);
 
 	return (
 		<>
-		{isLoading ? (
-        <p>Carregando...</p>
-      ) : (
+			{isLoading ? (
+				<p>Carregando...</p>
+			) : (
 				<div className={styles.inputs_box}>
 					<div className={styles.row_box}>
 						<div className={styles.field_box}>
@@ -38,38 +40,10 @@ export function FormHeader() {
 								/>
 								<Field
 									name="nomeAluno"
-									placeholder=""
-									className={styles.input_form}
-								/>
-							</div>
-						</div>
-					</div>
-					<div className={styles.row_box}>
-						<div className={styles.field_box}>
-							<p>Email do Aluno</p>
-							<div className={styles.input_box}>
-								<ErrorMessage
-									component={CustomErrorMessage}
-									name="emailAluno"
-								/>
-								<Field
-									name="emailAluno"
-									placeholder=""
-									className={styles.input_form}
-								/>
-							</div>
-						</div>
-						<div className={styles.field_box}>
-							<p>Telefone do Aluno</p>
-							<div className={styles.input_box}>
-								<ErrorMessage
-									component={CustomErrorMessage}
-									name="telefoneAluno"
-								/>
-								<Field
-									name="telefoneAluno"
-									placeholder=''
-									className={styles.input_form}
+									value={studentName ?? ''}
+									placeholder={studentName ?? ''}
+									disabled
+									className={styles.input_form_disable}
 								/>
 							</div>
 						</div>
@@ -107,7 +81,7 @@ export function FormHeader() {
 									<option key='0' value='0'>
 										Selecione um projeto
 									</option>
-									{projects && projects.map(({id, description}) => (
+									{projects && projects.map(({ id, description }) => (
 										<option key={id} value={id}>
 											{description}
 										</option>

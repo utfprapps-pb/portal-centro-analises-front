@@ -24,6 +24,7 @@ export interface AuthenticationResponse {
 }
 
 export interface AuthenticatedUser {
+  id: number;
   displayName: string;
   email: string;
   role: string;
@@ -75,3 +76,7 @@ export interface SolicitationAudit {
   }
 }
 
+export type LabelValue = {
+  label: string,
+  value: string
+}
