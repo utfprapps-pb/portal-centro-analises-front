@@ -15,6 +15,8 @@ import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
 import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
 import { AprovacoesView } from "./pages/aprovacoes/AprovacoesView";
 import { ROLES } from "./commons/roles";
+import { Transaction } from "./pages/transaction/list";
+import { TransactionPageForm } from "./pages/transaction/form";
 
 export function App() {
   return (
@@ -91,6 +93,9 @@ export function App() {
           <Route path="/partner" element={<PartnerListPage />} />
           <Route path="/partner/new" element={<PartnerPage />} />
           <Route path="/partner/:id" element={<PartnerPage />} />
+          <Route path="/transaction" element={<Transaction />} />
+          <Route path="/transaction/new" element={<TransactionPageForm />} />
+          <Route path="/transaction/:id" element={<TransactionPageForm />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
