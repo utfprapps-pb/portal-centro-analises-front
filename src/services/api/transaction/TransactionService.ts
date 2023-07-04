@@ -2,6 +2,8 @@ import { api } from '@/libs'
 
 const save = (transaction: any) => api.post('/transaction', transaction)
 
+const update = (transaction: any) => api.put('/transaction', transaction)
+
 const findAll = () => api.get('/transaction')
 
 const remove = (id: number) => api.delete(`/transaction/${id}`)
@@ -28,6 +30,7 @@ const search = (
 
 const TransactionService = {
   save,
+  update,
   findAll,
   remove,
   findById,

@@ -94,6 +94,21 @@ export function TransactionForm() {
       type: tipoSelected?.value
     }
     setPendingApiCall(true)
+    if(transaction.id){
+      TransactionService.update(data)
+      .then((response) => {
+        setPendingApiCall(false)
+        navigate('/transaction')
+      })
+      .catch((error) => {
+        if (error.response.data && error.response.data.validationErrors) {
+          setErrors(error.response.data.validationErrors)
+        } else {
+          setApiError('Falha ao atualizar a transação.')
+        }
+        setPendingApiCall(false)
+      })
+    }else{
     TransactionService.save(data)
       .then((response) => {
         setPendingApiCall(false)
@@ -107,6 +122,7 @@ export function TransactionForm() {
         }
         setPendingApiCall(false)
       })
+    }
   }
 
   return (
