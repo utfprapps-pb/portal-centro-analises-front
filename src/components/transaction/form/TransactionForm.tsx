@@ -91,7 +91,7 @@ export function TransactionForm() {
       createdAt: values.createdAt,
       updatedAt: values.updatedAt,
       user: userSelected,
-      type: values.type
+      type: tipoSelected
     }
     setPendingApiCall(true)
     TransactionService.save(data)
