@@ -96,6 +96,11 @@ export function TransactionList() {
     setPage(newPage);
     loadData(newPage)
   };
+  const formatDate = (date:any) => {
+    const newDate = new Date(date);
+    const formattedDate = `${newDate.toLocaleDateString()} ${newDate.toLocaleTimeString()}`;
+    return formattedDate;
+  }
 
   return (
       <>
@@ -132,8 +137,8 @@ export function TransactionList() {
                   {row.id}
                 </TableCell>
                 <TableCell>{row.value}</TableCell>
-                <TableCell>{row?.createdAt}</TableCell>
-                <TableCell>{row?.updatedAt}</TableCell>
+                <TableCell>{row?.createdAt ? formatDate(row?.createdAt) : ''}</TableCell>
+                <TableCell>{row?.updatedAt ? formatDate(row?.updatedAt) : ''}</TableCell>
                 <TableCell>{row.user.name}</TableCell>
                 <TableCell>{row.type}</TableCell>
                 <TableCell align="right">
