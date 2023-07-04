@@ -97,22 +97,22 @@ export const EquipmentsPage = () => {
                     </StyledTableCell>
                     <StyledTableCell align="left">{e.name}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueHourUtfpr}
+                      {e.valueHourUtfpr?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueHourPartner}
+                      {e.valueHourPartner?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueHourPfPj}
+                      {e.valueHourPfPj?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueSampleUtfpr}
+                      {e.valueSampleUtfpr?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueSamplePartner}
+                      {e.valueSamplePartner?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueSamplePfPj}
+                      {e.valueSamplePfPj?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                     </StyledTableCell>
 
                     <StyledTableCell
