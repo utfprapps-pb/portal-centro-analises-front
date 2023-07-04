@@ -21,19 +21,13 @@ export const FormAtividadeAgua: React.FC = () => {
   };
 
   const validationForm = yup.object().shape({
-    nomeAluno: yup.string().required("Informe seu nome"),
-    nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
-    emailOrientador: yup.string().email("Email inválido").required("Informe o email do seu orientador"),
-    telefoneOrientador: yup.string().required("Informe o telefone"),
-    departamento: yup.string().required("Informe o departamento"),
-    naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
-    descricao: yup.string().required("Informe a descrição")
+    nomeAluno: yup.string(),
+    nomeOrientador: yup.string(),
+    descricao: yup.string().required("Informe a descrição"),
   });
   
   async function handleClickForm(values: {
     nomeAluno: string;
-    emailAluno: string;
-    telefoneAluno: string;
     nomeOrientador: string;
     projeto: number;
     descricao: string;
@@ -67,10 +61,7 @@ export const FormAtividadeAgua: React.FC = () => {
           initialValues={{
             nomeAluno: "NOMEALUNO",
             nomeOrientador: "NOME",
-            emailOrientador: "",
-            telefoneOrientador: "",
-            departamento: "",
-            naturezaProjeto: "",
+            projeto: 1,
             descricao: ""
           }}
           onSubmit={handleClickForm}

@@ -10,6 +10,7 @@ export function FormHeader() {
 	const [teacher, setTeacher] = useState<Teacher | undefined>();
 	const [projects, setProjects] = useState<Array<Project>>();
 	const [studentFields, setStudentFields] = useState(true);
+	const [professorFields, setProfessorFields] = useState(false);
 
 	var t: any = localStorage.getItem("user");
 	var infoArray = JSON.parse(t);
@@ -19,7 +20,11 @@ export function FormHeader() {
 	useEffect(() => {
 		if (userRole == 'STUDENT') {
 			setStudentFields(true);
+		} else if (userRole == 'PROFESSOR') {
+			setProfessorFields(true);
+			setStudentFields(false);
 		} else {
+			setProfessorFields(false);
 			setStudentFields(false);
 		}
 		async function getProject() {
@@ -75,6 +80,29 @@ export function FormHeader() {
 						</div>
 					</div> : <div></div>}
 					{studentFields ? <div className={styles.row_box}>
+						<div className={styles.field_box}>
+							<p>Projeto</p>
+							<div className={styles.input_box}>
+								<Field
+									label="Projeto"
+									as="select"
+									name="projeto"
+									multiple={false}
+									className={styles.select_box}
+								>
+									<option key='1' value='1'>
+										Selecione um projeto
+									</option>
+									{projects && projects.map(({ id, description }) => (
+										<option key={id} value={id}>
+											{description}
+										</option>
+									))}
+								</Field>
+							</div>
+						</div>
+					</div> : <div></div>}
+					{professorFields ? <div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Projeto</p>
 							<div className={styles.input_box}>
