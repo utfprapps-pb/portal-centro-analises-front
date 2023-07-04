@@ -18,6 +18,7 @@ const isAuthenticated = () => {
 const logOut = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+  api.defaults.headers.common["Authorization"] = '';
   window.location.reload();
 };
 
