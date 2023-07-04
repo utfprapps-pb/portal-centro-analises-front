@@ -172,9 +172,9 @@ export const useProfile = () => {
 
     if (authenticatedUser?.role == ROLES.Student) {
       loadStudentProfessorLink();
+      loadProfessors();
     }
     handleGetProfile();
-    loadProfessors();
   }, []);
 
   return {
