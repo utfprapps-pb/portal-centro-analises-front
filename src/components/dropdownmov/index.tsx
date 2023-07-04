@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 
 interface DropdownProps {
-  value: string;
-  onChange: (selectedValue: string) => void;
+  value: number;
+  onChange: (selectedValue: number) => void;
 }
 
 const DropdownMov: React.FC<DropdownProps> = ({ value, onChange }) => {
-  const [selectedOption, setSelectedOption] = useState( { value: 'DEPOSIT', label: 'Depositar' },);
+  const [selectedOption, setSelectedOption] = useState( { value: 0, label: 'Depositar' },);
 
   const options = [
-    { value: 'DEPOSIT', label: 'Depositar' },
-    { value: 'WITHDRAW', label: 'Retirar' },
+    { value: 0, label: 'Depositar' },
+    { value: 1, label: 'Retirar' },
   ];
 
   const customStyles = {

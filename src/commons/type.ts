@@ -4,6 +4,7 @@ export interface UserLogin {
 }
 
 export interface User {
+  id: number;
   displayName: string;
   email: string;
   password: string;
@@ -16,6 +17,13 @@ export interface EditUser {
   orientador: number;
   email: string;
   role: string;
+}
+
+export interface EditFinance {
+  value: string;
+  type: number;
+  description: string;
+  user: User;
 }
 
 export interface AuthenticationResponse {

@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, Form, Formik, validateYupSchema } from 'formik'
 import { CustomErrorMessage } from '../error-message'
 import * as yup from "yup";
 import { CustomButton } from '../custom-button';
 import Dropdown from '../dropdown';
 import { api } from '@/libs/axiosBase';
-import { EditUser } from '@/commons/type';
+import { EditFinance, EditUser } from '@/commons/type';
 import DropdownMov from '../dropdownmov';
+import { useSubmit } from 'react-router-dom';
 
 export function FinancePanel() {
 
     const [activePage, setActivePage] = useState(0);
 
     const [user, setUser] = useState<EditUser | undefined>();
+    const [finance, setFinance] = useState<EditFinance | undefined>();
   
     const [page, setPage] = useState<any>({
       content: [],
@@ -43,28 +45,29 @@ export function FinancePanel() {
       setUser(selected);
     }
   
-    function updateSelectedUser(selected: EditUser) {
-      if (selected != null && selected.id != null) {
-        api.post(`admin/edit/role/${selected.id}`, selected.role).then((response) => {
-          window.location.reload();
-        });
-      }
+
+
+    const handleValue = (value : string) => {
+      let updatedFinance = { ...finance };
+      updatedFinance.value = value;
+      setFinance(updatedFinance);
+    }
+
+    const handleDesc = (desc : string) => {
+      let updatedFinance = { ...finance };
+      updatedFinance.description = desc;
+      setFinance(updatedFinance);
     }
   
-    function removeUserSelectedUser(selected: EditUser) {
-      if (selected != null && selected.id != null) {
-        api.delete('users/' + selected.id)
-          .then((response) => {
-            window.location.reload();
-          });
-  
-      }
-    }
-  
-    const handleRoleChange = (selectedValue: string) => {
-      let updatedUser = { ...user };
-      updatedUser.role = selectedValue;
-      setUser(updatedUser);
+    const handleTypeChange = (selectedValue: number) => {
+      let updatedFinance = {
+        value: finance?.value,
+        type: selectedValue,
+        description: finance?.description,
+        user: user,
+      };
+
+      setFinance(updatedFinance);
     };
   
     const [isLoading, setIsLoading] = useState(false);
@@ -75,13 +78,38 @@ export function FinancePanel() {
     });
   
     async function handleClickForm(values: {
-      name: string;
-      cargo: string;
-      orientador: string;
+      nome: string;
+      type: string;
+      valor: string;
+      descricao: string;
     }) {
-      try {
-      } catch (error) {
-        console.error("error", error);
+      const { nome, type, valor, descricao } = values;
+      debugger;
+
+      let updatedFinance = { ...finance };
+      updatedFinance.user = {
+          id: user!.id,
+          displayName: '',
+          email: '',
+          password: '',
+          role: '',
+      };
+
+      updatedFinance.description = descricao;
+      updatedFinance.value = valor;
+
+      if (updatedFinance != null && updatedFinance.user != null 
+          && updatedFinance.type != null && updatedFinance.value != null) {
+        api.post(`transaction`, {
+          "value": updatedFinance.value,
+          "user": {
+              "id": updatedFinance.user.id
+          },
+          "type": updatedFinance.type,
+          "description": updatedFinance.description
+      }).then((response) => {
+          window.location.reload();
+        });
       }
     }
   
@@ -96,9 +124,10 @@ export function FinancePanel() {
               <div>
                 <Formik
                   initialValues={{
-                    name: "",
-                    cargo: "",
-                    orientador: "",
+                    nome: '',
+                    type: "",
+                    valor: "",
+                    descricao: "",
                   }}
                   onSubmit={handleClickForm}
                   validationSchema={validationForm}
@@ -124,10 +153,9 @@ export function FinancePanel() {
                       </div>
                       <div className={styles.row_box}>
                         <div className={styles.field_box}>
-  
                           <div className={styles.field_box}>
                             <p>Movimentação</p>
-                            <DropdownMov value={''} onChange={handleRoleChange} />
+                            <DropdownMov value={0} onChange={handleTypeChange} />
                           </div>
                         </div>
                       </div>
@@ -157,13 +185,13 @@ export function FinancePanel() {
                             <Field
                               name="description"
                               placeholder=''
+                              value={finance?.description}
                               className={styles.input_form} />
                           </div>
                         </div>
                       </div>
                       <div className={styles.button_box}>
                         <CustomButton
-                          onClick={() => updateSelectedUser(user!)}
                           text="CONFIRMAR"
                           padding="1rem"
                           textColor="white"
