@@ -17,11 +17,10 @@ import { LabelValue } from '@/commons/type'
 
 export function TransactionForm() {
   const animatedComponents = makeAnimated();
-  const { id } = useParams()
   const [transaction, setTransaction] = useState<Transaction>({
     value: 0,
+    description: '',
     createdAt:'',
-    updatedAt:'',
     user:'',
     type: 'DEPOSIT'
   })
@@ -54,33 +53,12 @@ export function TransactionForm() {
 
   useEffect(() => {
     loadUsers();
-    if (id) {
-      TransactionService.findById(parseInt(id))
-        .then((response) => {
-          if (response.data) {
-            setTransaction({
-              id: response.data.id,
-              value: response.data.value,
-              createdAt: response.data.createdAt,
-              updatedAt: response.data.updatedAt,
-              user: response.data.user,
-              type: response.data.type
-            })
-            setTipoSelected(tipos.find(tipo => tipo.value === response.data.type))
-            setUserSelected(response.data.user)
-            setApiError('')
-          } else {
-            setApiError('Falha ao carregar a transação')
-          }
-        })
-        .catch((erro) => {
-          setApiError('Falha ao carregar a transação')
-        })
-    }
-  }, [id])
+  })
 
   const validationSchema = yup.object().shape({
-    value: yup.string().required("Valor é obrigatório"),
+    // value: yup.string().required("Valor é obrigatório"),
+    // user: yup.string().required("Professor é obrigatório"),
+    // type: yup.string().required("Tipo é obrigatório"),
   });
 
   const onSubmit = (values: Transaction) => {
@@ -88,41 +66,26 @@ export function TransactionForm() {
       ...values,
       id: transaction.id,
       value: values.value,
+      description: values.description,
       createdAt: values.createdAt,
-      updatedAt: values.updatedAt,
       user: userSelected,
       type: tipoSelected?.value
     }
     setPendingApiCall(true)
-    if(transaction.id){
-      TransactionService.update(data)
-      .then((response) => {
-        setPendingApiCall(false)
-        navigate('/transaction')
-      })
-      .catch((error) => {
-        if (error.response.data && error.response.data.validationErrors) {
-          setErrors(error.response.data.validationErrors)
-        } else {
-          setApiError('Falha ao atualizar a transação.')
-        }
-        setPendingApiCall(false)
-      })
-    }else{
-    TransactionService.save(data)
-      .then((response) => {
-        setPendingApiCall(false)
-        navigate('/transaction')
-      })
-      .catch((error) => {
-        if (error.response.data && error.response.data.validationErrors) {
-          setErrors(error.response.data.validationErrors)
-        } else {
-          setApiError('Falha ao salvar a transação.')
-        }
-        setPendingApiCall(false)
-      })
-    }
+  TransactionService.save(data)
+    .then((response) => {
+      setPendingApiCall(false)
+      navigate('/transaction')
+    })
+    .catch((error) => {
+      if (error.response.data && error.response.data.validationErrors) {
+        setErrors(error.response.data.validationErrors)
+      } else {
+        setApiError('Falha ao salvar a transação.')
+      }
+      setPendingApiCall(false)
+    })
+    
   }
 
   return (
@@ -148,6 +111,17 @@ export function TransactionForm() {
                   required
                   variant="outlined"
                 />
+                <Field
+                  as={TextField}
+                  className={styles.textField}
+                  label="Descrição"
+                  name="description"
+                  error={touched.description && !!errors.description}
+                  helperText={touched.description && errors.description}
+                  fullWidth
+                  required
+                  variant="outlined"
+                />
                 <Select
                   name="user"
                   onChange={(optionsSelected: any) => {
@@ -155,8 +129,8 @@ export function TransactionForm() {
                   }}
                   className={styles.textField}
                   components={animatedComponents}
-                  aria-label="Usuário"
-                  placeholder="Usuário"
+                  aria-label="Professor"
+                  placeholder="Professor"
                   defaultValue={userSelected}
                   value={userSelected}
                   getOptionValue={(option: UserParams) => option.name}

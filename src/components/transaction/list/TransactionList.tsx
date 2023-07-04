@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react'
 
-import DeleteIcon from '@material-ui/icons/Delete'
-import EditIcon from '@material-ui/icons/Edit'
-
-import { Link } from 'react-router-dom'
-
 import TransactionService from '../../../services/api/transaction/TransactionService'
 import {Transaction} from '../model/transaction'
 
@@ -74,20 +69,9 @@ export function TransactionList() {
     }
   }
 
-  const onEdit = (url: string) => {
+  const onNew = (url: string) => {
     navigate(url);
   };
-
-  const onRemove = (id: number) => {
-    TransactionService.remove(id)
-      .then((response) => {
-        loadData(0)
-        setApiError('')
-      })
-      .catch((erro) => {
-        setApiError('Falha ao remover a instituição parceira')
-      })
-  }
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
@@ -109,7 +93,7 @@ export function TransactionList() {
  */}        <Button
           variant="outlined"
           className={styles.buttoncolor}
-          onClick={() => { onEdit('/transaction/new') } }
+          onClick={() => { onNew('/transaction/new') } }
           >
           Inserir
         </Button>
@@ -120,35 +104,26 @@ export function TransactionList() {
             <TableRow sx={{ backgroundColor: '#3f51b5', color: '#ffffff' }}>
               <TableCell>Código</TableCell>
               <TableCell>Valor</TableCell>
+              <TableCell>Descrição</TableCell>
               <TableCell>Criação</TableCell>
-              <TableCell>Atualização</TableCell>
               <TableCell>Professor</TableCell>
               <TableCell>Tipo</TableCell>
-              <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data.map((row: Transaction) => (              
               <TableRow
-                key={row.value}
+                key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
                 <TableCell>{row.value}</TableCell>
+                <TableCell>{row.description}</TableCell>
                 <TableCell>{row?.createdAt ? formatDate(row?.createdAt) : ''}</TableCell>
-                <TableCell>{row?.updatedAt ? formatDate(row?.updatedAt) : ''}</TableCell>
                 <TableCell>{row.user.name}</TableCell>
-                <TableCell>{row.type}</TableCell>
-                <TableCell align="right">
-                  <IconButton color='primary' aria-label="edit" onClick={() => { onEdit(`/transaction/${row.id}`) } }>
-                    <EditIcon />
-                  </IconButton>
-                  <IconButton color='error' aria-label="delete" onClick={() => { onRemove(row.id ? row.id : 0) } }>
-                    <DeleteIcon />
-                  </IconButton>
-                </TableCell>
+                <TableCell>{row.type === 'DEPOSIT' ? 'Depósito' : 'Retirada'}</TableCell>
               </TableRow>
             ))}
             {data.length === 0 && (
