@@ -21,8 +21,8 @@ export const FormFotometroChama: React.FC = () => {
   };
 
   const validationForm = yup.object().shape({
-    nomeAluno: yup.string().required("Informe seu nome"),
-    nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
+    nomeAluno: yup.string(),
+    nomeOrientador: yup.string(),
     descricao: yup.string().required("Informe a descrição"),
     limites: yup.string().required("Informe os limites"),
     elementosAnalisados: yup.string().required("Informe os elementos a serem analisados"),

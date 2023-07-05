@@ -66,7 +66,6 @@ export const EquipmentPageForm = () => {
   }, []);
 
   const handleSubmit = (values: EquipmentParams) => {
-    debugger
     const data: EquipmentParams = {
       ...values,
       id: equipment?.id!,
@@ -125,7 +124,7 @@ export const EquipmentPageForm = () => {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      InputProps={{ inputProps: { min: 0 }, shrink: true }}
+                      InputProps={{ inputProps: { min: 0, step: "0.01" }, shrink: true }}
                       variant="outlined"
                     />
                   </Grid>
@@ -137,7 +136,7 @@ export const EquipmentPageForm = () => {
                       name="valueHourPartner"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0 } }}
+                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -152,7 +151,7 @@ export const EquipmentPageForm = () => {
                       name="valueHourPfPj"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0 } }}
+                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -167,7 +166,7 @@ export const EquipmentPageForm = () => {
                       name="valueSampleUtfpr"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0 } }}
+                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -182,7 +181,7 @@ export const EquipmentPageForm = () => {
                       name="valueSamplePartner"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0 } }}
+                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -197,7 +196,7 @@ export const EquipmentPageForm = () => {
                       name="valueSamplePfPj"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0 } }}
+                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
                       InputLabelProps={{
                         shrink: true,
                       }}

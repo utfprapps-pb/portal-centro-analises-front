@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
-import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { ErrorMessage, Field, Form, Formik, validateYupSchema } from 'formik'
 import { CustomErrorMessage } from '../error-message'
 import * as yup from "yup";
 import { CustomButton } from '../custom-button';
 import Dropdown from '../dropdown';
 import { api } from '@/libs/axiosBase';
-import { EditUser } from '@/commons/type';
+import { EditFinance, EditUser } from '@/commons/type';
+import DropdownMov from '../dropdownmov';
+import { useSubmit } from 'react-router-dom';
 
-export function AdminPanel() {
-
+export const FinancePanel: React.FC = () => {
   const [activePage, setActivePage] = useState(0);
 
   const [user, setUser] = useState<EditUser | undefined>();
+  const [finance, setFinance] = useState<EditFinance | undefined>();
 
   const [page, setPage] = useState<any>({
     content: [],
@@ -24,7 +26,7 @@ export function AdminPanel() {
   });
 
   useEffect(() => {
-    api.get("/users")
+    api.get("/users/role/PROFESSOR")
       .then(response => {
         const data = response.data;
         setPage((state: any) => ({
@@ -42,47 +44,66 @@ export function AdminPanel() {
     setUser(selected);
   }
 
-  function updateSelectedUser(selected: EditUser) {
-    if (selected != null && selected.id != null) {
-      api.post(`admin/edit/role/${selected.id}`, selected.role).then((response) => {
-        window.location.reload();
-      });
-    }
+  const handleValue = (value: string) => {
+    let updatedFinance = { ...finance };
+    updatedFinance.value = value;
   }
 
-  function removeUserSelectedUser(selected: EditUser) {
-    if (selected != null && selected.id != null) {
-      api.delete('users/' + selected.id)
-        .then((response) => {
-          window.location.reload();
-        });
-
-    }
+  const handleDesc = (desc: string) => {
+    let updatedFinance = { ...finance };
+    updatedFinance.description = desc;
   }
 
-  const handleRoleChange = (selectedValue: string) => {
-    let updatedUser = { ...user };
-    updatedUser.role = selectedValue;
-    setUser(updatedUser);
+  const handleTypeChange = (selectedValue: number) => {
+    let updatedFinance = {
+      value: finance?.value,
+      type: selectedValue,
+      description: finance?.description,
+      user: user,
+    };
+    setFinance(updatedFinance);
   };
 
   const [isLoading, setIsLoading] = useState(false);
 
   const validationForm = yup.object().shape({
-    name: yup.string(),
-    cargo: yup.string().required("Informe o cargo"),
-    email: yup.string(),
+    nome: yup.string()
   });
 
   async function handleClickForm(values: {
-    name: string;
-    cargo: string;
-    email: string;
-    orientador: string;
+    nome: string;
+    type: string;
+    valor: string;
+    descricao: string;
   }) {
-    try {
-    } catch (error) {
-      console.error("error", error);
+    const { nome, type, valor, descricao } = values;
+
+    let updatedFinance = { ...finance };
+    updatedFinance.user = {
+      id: user!.id,
+      displayName: '',
+      email: '',
+      password: '',
+      role: '',
+    };
+
+    updatedFinance.description = descricao;
+    updatedFinance.value = valor;
+
+    debugger;
+
+    if (updatedFinance != null && updatedFinance.user != null
+      && updatedFinance.type != null && updatedFinance.value != null) {
+      api.post(`transaction`, {
+        "value": updatedFinance.value,
+        "user": {
+          "id": updatedFinance.user.id
+        },
+        "type": updatedFinance.type,
+        "description": updatedFinance.description
+      }).then((response) => {
+        window.location.reload();
+      });
     }
   }
 
@@ -93,14 +114,14 @@ export function AdminPanel() {
       ) : (
         <><div className={styles.inputs_box}>
           <div className={styles.container}>
-            <h1 className={styles.title}>PAINEL DO ADMINISTRADOR</h1>
+            <h1 className={styles.title}>PAINEL FINANCEIRO</h1>
             <div>
               <Formik
                 initialValues={{
-                  name: "",
-                  cargo: "",
-                  orientador: "",
-                  email: ""
+                  nome: "",
+                  type: "",
+                  valor: "",
+                  descricao: "",
                 }}
                 onSubmit={handleClickForm}
                 validationSchema={validationForm}
@@ -123,17 +144,25 @@ export function AdminPanel() {
                             className={styles.input_form} />
                         </div>
                       </div>
+                    </div>
+                    <div className={styles.row_box}>
                       <div className={styles.field_box}>
-                        <p>Email</p>
+                        <div className={styles.field_box}>
+                          <p>Movimentação</p>
+                          <DropdownMov value={0} onChange={handleTypeChange} />
+                        </div>
+                      </div>
+                    </div>
+                    <div className={styles.row_box}>
+                      <div className={styles.field_box}>
+                        <p>Valor</p>
                         <div className={styles.input_box}>
                           <ErrorMessage
                             component={CustomErrorMessage}
-                            name="email"
+                            name="valor"
                             className={styles.form_error} />
                           <Field
-                            name="email"
-                            disabled
-                            value={user?.email ?? ''}
+                            name="valor"
                             placeholder=''
                             className={styles.input_form} />
                         </div>
@@ -141,35 +170,28 @@ export function AdminPanel() {
                     </div>
                     <div className={styles.row_box}>
                       <div className={styles.field_box}>
-                        <div className={styles.field_box}>
-                          <p>Cargo</p>
-                          <Dropdown value={user?.role || ''} onChange={handleRoleChange} />
+                        <p>Descrição</p>
+                        <div className={styles.input_box}>
+                          <ErrorMessage
+                            component={CustomErrorMessage}
+                            name="description"
+                            className={styles.form_error} />
+                          <Field
+                            name="description"
+                            placeholder=''
+                            value={finance?.description}
+                            className={styles.input_form} />
                         </div>
                       </div>
                     </div>
                     <div className={styles.button_box}>
                       <CustomButton
-                        onClick={() => updateSelectedUser(user!)}
-                        text="ATUALIZAR"
+                        text="CONFIRMAR"
                         padding="1rem"
                         textColor="white"
                         backgroundColor="#006dac"
                         textColorHover="white"
                         backgroundColorHover="#00bbff"
-                        letterSpacing="4px"
-                        fontSize="16px"
-                        fontWeight="400"
-                        type="submit" />
-                    </div>
-                    <div className={styles.button_box}>
-                      <CustomButton
-                        onClick={() => removeUserSelectedUser(user!)}
-                        text="REMOVER"
-                        padding="1rem"
-                        textColor="white"
-                        backgroundColor="#cc0000"
-                        textColorHover="white"
-                        backgroundColorHover="#ff4444"
                         letterSpacing="4px"
                         fontSize="16px"
                         fontWeight="400"
@@ -210,7 +232,7 @@ export function AdminPanel() {
                       letterSpacing="4px"
                       fontSize="12px"
                       fontWeight="200"
-                      type="submit"
+                      type="button"
                     /></td>
                   </tr>
                 ))}

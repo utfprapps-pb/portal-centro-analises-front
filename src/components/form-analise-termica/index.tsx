@@ -66,8 +66,8 @@ export function FormAnaliseTermica() {
   }
 
   const validationForm = yup.object().shape({
-    nomeAluno: yup.string().required("Informe seu nome"),
-    nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
+    nomeAluno: yup.string(),
+    nomeOrientador: yup.string(),
     descricao: yup.string().required("Informe a descrição"),
   });
 
@@ -149,7 +149,7 @@ export function FormAnaliseTermica() {
           initialValues={{
             nomeAluno: "NOMEALUNO",
             nomeOrientador: "NOME",
-            projeto: 0,
+            projeto: 1,
             descricao: "",
             amostra: 0,
             identificacao: "",

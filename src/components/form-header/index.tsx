@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Field, ErrorMessage } from 'formik';
 import { CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
 import { Project, Teacher } from '@/commons/type';
+import { AuthContext } from '@/contexts';
+import { ROLES } from '@/commons/roles';
 
 export function FormHeader() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [teacher, setTeacher] = useState<Teacher | undefined>();
 	const [projects, setProjects] = useState<Array<Project>>();
 	const [studentFields, setStudentFields] = useState(true);
+	const [professorFields, setProfessorFields] = useState(false);
+  const { authenticatedUser } = useContext(AuthContext);
 
 	var t: any = localStorage.getItem("user");
 	var infoArray = JSON.parse(t);
@@ -19,14 +23,32 @@ export function FormHeader() {
 	useEffect(() => {
 		if (userRole == 'STUDENT') {
 			setStudentFields(true);
+		} else if (userRole == 'PROFESSOR') {
+			setProfessorFields(true);
+			setStudentFields(false);
 		} else {
+			setProfessorFields(false);
 			setStudentFields(false);
 		}
 		async function getProject() {
-			const teacherProject = await api.get("/project/all");
-			setProjects(teacherProject.data.projectDTOS)
-			setTeacher(teacherProject.data.teacherDTO)
-			setIsLoading(false);
+      if(authenticatedUser?.role == ROLES.Professor){
+        const teacherProject = await api.get("/project");
+        setProjects(teacherProject.data)
+
+        const teacher: Teacher = {
+          email: authenticatedUser.email,
+          id: authenticatedUser.id,
+          name: authenticatedUser.displayName
+        }
+
+        setTeacher(teacher)
+        setIsLoading(false);
+      } else {
+        const teacherProject = await api.get("/project/all");
+        setProjects(teacherProject.data.projectDTOS)
+        setTeacher(teacherProject.data.teacherDTO)
+        setIsLoading(false);
+      }
 		}
 		getProject();
 	}, []);
@@ -75,6 +97,26 @@ export function FormHeader() {
 						</div>
 					</div> : <div></div>}
 					{studentFields ? <div className={styles.row_box}>
+						<div className={styles.field_box}>
+							<p>Projeto</p>
+							<div className={styles.input_box}>
+								<Field
+									label="Projeto"
+									as="select"
+									name="projeto"
+									multiple={false}
+									className={styles.select_box}
+								>
+									{projects && projects.map(({ id, description }) => (
+										<option key={id} value={id}>
+											{description}
+										</option>
+									))}
+								</Field>
+							</div>
+						</div>
+					</div> : <div></div>}
+					{professorFields ? <div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Projeto</p>
 							<div className={styles.input_box}>
