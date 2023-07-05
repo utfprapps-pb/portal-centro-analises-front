@@ -40,7 +40,7 @@ export const ProjectPageForm = () => {
 
   const loadStudents = async () => {
     try {
-      const response = await StudentService.findAll();
+      const response = await StudentService.findAllByProfessor(authenticatedUser?.id!);
       if (response.data) {
         setStudents(response.data);
         setApiError("");

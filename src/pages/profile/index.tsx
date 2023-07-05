@@ -17,7 +17,7 @@ export const ProfilePage: React.FC = () => {
     professorSelected,
     setProfessorSelected,
     handleOnSubmitProfessorLink,
-    excludeProfessorLink
+    excludeProfessorLink,
   } = useProfile();
 
   return (
@@ -110,43 +110,45 @@ export const ProfilePage: React.FC = () => {
           </Formik>
           <Divider />
 
-          <Formik onSubmit={handleOnSubmitProfessorLink} initialValues={{}}>
-            <Form className={styles.form}>
-              <Select
-                className={styles.buttonContainer}
-                onChange={(optionsSelected: any) => {
-                  if (optionsSelected == null) {
-                    excludeProfessorLink();
-                  } else {
-                    setProfessorSelected(optionsSelected);
+          {professors.length > 0 && (
+            <Formik onSubmit={handleOnSubmitProfessorLink} initialValues={{}}>
+              <Form className={styles.form}>
+                <Select
+                  className={styles.buttonContainer}
+                  onChange={(optionsSelected: any) => {
+                    if (optionsSelected == null) {
+                      excludeProfessorLink();
+                    } else {
+                      setProfessorSelected(optionsSelected);
+                    }
+                  }}
+                  aria-label="Professores"
+                  placeholder="Professores"
+                  defaultValue={professorSelected}
+                  value={professorSelected}
+                  getOptionValue={(p: ProfessorParams) => p.id.toString()}
+                  getOptionLabel={(p: ProfessorParams) =>
+                    p.siape != null ? p.name + " " + p.siape : p.name
                   }
-                }}
-                aria-label="Professores"
-                placeholder="Professores"
-                defaultValue={professorSelected}
-                value={professorSelected}
-                getOptionValue={(p: ProfessorParams) => p.id.toString()}
-                getOptionLabel={(p: ProfessorParams) =>
-                  p.siape != null ? p.name + " " + p.siape : p.name
-                }
-                isClearable={true}
-                isSearchable={true}
-                options={professors}
-                name="professors"
-              />
-              <Box className={styles.buttonContainer}>
-                <Button
-                  className={styles.button}
-                  color="primary"
-                  variant="contained"
-                  type="submit"
-                  disabled={professorSelected == null}
-                >
-                  Solicitar vinculo
-                </Button>
-              </Box>
-            </Form>
-          </Formik>
+                  isClearable={true}
+                  isSearchable={true}
+                  options={professors}
+                  name="professors"
+                />
+                <Box className={styles.buttonContainer}>
+                  <Button
+                    className={styles.button}
+                    color="primary"
+                    variant="contained"
+                    type="submit"
+                    disabled={professorSelected == null}
+                  >
+                    Solicitar vinculo
+                  </Button>
+                </Box>
+              </Form>
+            </Formik>
+          )}
         </Paper>
       </div>
     </div>
