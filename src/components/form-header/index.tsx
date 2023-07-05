@@ -9,12 +9,19 @@ export function FormHeader() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [teacher, setTeacher] = useState<Teacher | undefined>();
 	const [projects, setProjects] = useState<Array<Project>>();
+	const [studentFields, setStudentFields] = useState(true);
 
 	var t: any = localStorage.getItem("user");
 	var infoArray = JSON.parse(t);
 	var studentName = infoArray.displayName.toString();
+	var userRole = infoArray.role.toString();
 
 	useEffect(() => {
+		if (userRole == 'STUDENT') {
+			setStudentFields(true);
+		} else {
+			setStudentFields(false);
+		}
 		async function getProject() {
 			const teacherProject = await api.get("/project/all");
 			setProjects(teacherProject.data.projectDTOS)
@@ -32,7 +39,7 @@ export function FormHeader() {
 				<div className={styles.inputs_box}>
 					<div className={styles.row_box}>
 						<div className={styles.field_box}>
-							<p>Nome do Aluno</p>
+							{studentFields ? <p>Nome do Aluno</p> : <p>Nome</p>}
 							<div className={styles.input_box}>
 								<ErrorMessage
 									component={CustomErrorMessage}
@@ -48,7 +55,7 @@ export function FormHeader() {
 							</div>
 						</div>
 					</div>
-					<div className={styles.row_box}>
+					{studentFields ? <div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Nome do Orientador</p>
 							<div className={styles.input_box}>
@@ -66,8 +73,8 @@ export function FormHeader() {
 								/>
 							</div>
 						</div>
-					</div>
-					<div className={styles.row_box}>
+					</div> : <div></div>}
+					{studentFields ? <div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Projeto</p>
 							<div className={styles.input_box}>
@@ -89,7 +96,7 @@ export function FormHeader() {
 								</Field>
 							</div>
 						</div>
-					</div>
+					</div> : <div></div>}
 					<div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Descrição</p>

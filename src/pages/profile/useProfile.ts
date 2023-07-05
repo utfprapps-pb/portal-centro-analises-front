@@ -65,13 +65,11 @@ export const useProfile = () => {
         student: student,
       };
 
-      debugger;
       try {
         const response = await StudentProfessorLinkService.saveLink(
           studentProfessor
         );
 
-        debugger;
         if (response.data) {
           setProfessorSelected(response.data);
         }
@@ -109,7 +107,6 @@ export const useProfile = () => {
   }, []);
 
   const excludeProfessorLink = async () => {
-    debugger;
     if (studentTeacherLink != null) {
       try {
         const response = await StudentProfessorLinkService.deleteLink(
@@ -135,7 +132,6 @@ export const useProfile = () => {
       ra: "",
     };
 
-    debugger;
     try {
       const response = await StudentProfessorLinkService.findByProfessorLink(
         student
