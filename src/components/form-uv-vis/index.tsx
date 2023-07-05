@@ -35,6 +35,7 @@ export const FormUvVis: React.FC = () => {
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
     //
     varredura: string;
     comprimento: string;
@@ -51,6 +52,7 @@ export const FormUvVis: React.FC = () => {
         equipment: {"id": 9},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
         fields: fieldsStr
       }
@@ -75,6 +77,7 @@ export const FormUvVis: React.FC = () => {
             nomeOrientador: "NOME",
             projeto: 0,
             descricao: "",
+            natureza: "",
             varredura: "",
             comprimento: "",
             cubeta: "",

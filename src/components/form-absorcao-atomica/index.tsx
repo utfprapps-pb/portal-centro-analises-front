@@ -35,6 +35,7 @@ export const FormAbsorcaoAtomica: React.FC = () => {
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
     //
     limites: string;
     condicoes: string;
@@ -42,6 +43,7 @@ export const FormAbsorcaoAtomica: React.FC = () => {
     concentracao: string;
     observacoes: string;
   }) {
+    
     try {
       startButtonLoad();
       const { limites, condicoes, elementos, concentracao, observacoes } = values;
@@ -52,10 +54,10 @@ export const FormAbsorcaoAtomica: React.FC = () => {
         equipment: {"id": 10},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
         fields: fieldsStr
       }
-  
       await api.post("/solicitation", payload);
       toast.success('Solicitação efetuada com sucesso!');
       window.setTimeout(() => {
@@ -78,6 +80,7 @@ export const FormAbsorcaoAtomica: React.FC = () => {
             nomeOrientador: "NOME",
             projeto: 1,
             descricao: "",
+            natureza: "",
             limites: "",
             condicoes: "",
             elementos: "", 

@@ -37,6 +37,7 @@ export const FormNir: React.FC = () => {
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
     //
     onda: string;
     resolucao: string;
@@ -55,6 +56,7 @@ export const FormNir: React.FC = () => {
         equipment: {"id": 7},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
         fields: fieldsStr
       }
@@ -79,6 +81,7 @@ export const FormNir: React.FC = () => {
             nomeOrientador: "NOME",
             projeto: 0,
             descricao: "",
+            natureza: "",
             onda: "",
             resolucao: "",
             acumulacao: "",

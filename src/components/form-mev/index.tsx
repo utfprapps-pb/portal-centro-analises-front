@@ -36,6 +36,7 @@ export const FormMev: React.FC = () => {
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
     //
     aproximacao: string;
     tipoMaterial: string;
@@ -53,6 +54,7 @@ export const FormMev: React.FC = () => {
         equipment: {"id": 5},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
         fields: fieldsStr
       }
@@ -77,6 +79,7 @@ export const FormMev: React.FC = () => {
             nomeOrientador: "NOME",
             projeto: 0,
             descricao: "",
+            natureza: "",
             aproximacao: "",
             tipoMaterial: "",
             cuidadosEspeciais: "",
