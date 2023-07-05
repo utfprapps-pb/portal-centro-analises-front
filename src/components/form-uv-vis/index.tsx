@@ -21,8 +21,8 @@ export const FormUvVis: React.FC = () => {
   };
 
   const validationForm = yup.object().shape({
-    nomeAluno: yup.string().required("Informe seu nome"),
-    nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
+    nomeAluno: yup.string(),
+    nomeOrientador: yup.string(),
     descricao: yup.string().required("Informe a descrição"),
     varredura: yup.string().required("Informe o tipo de varredura"),
     comprimento: yup.string().required("Informe o comprimento"),
