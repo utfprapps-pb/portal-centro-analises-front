@@ -4,13 +4,19 @@ import * as yup from "yup";
 import { FormAbsorcaoAtomica, FormAnaliseTermica, FormAtividadeAgua, FormCr, FormDrx, FormFotometroChama, FormFtir, FormGcMs, FormHplc, FormMev, FormNir, FormUvVis  } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
+import { useHistory } from "@/hooks";
 
 export function Solicitar() {
   const [haveTeacher, setHaveTeacher] = useState(false);
   const [permitSolicitation, setPermitSolicitation] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [activeForm, setActiveForm] = useState('');
+  const { navigate } = useHistory();
   
+  function goToProfile() {
+    navigate("/profile");
+  };
+
   const validationForm = yup.object().shape({
     firstName: yup.string().required("Informe seu nome"),
     surname: yup.string().required("Informe seu sobrenome"),
@@ -68,8 +74,10 @@ export function Solicitar() {
       {!haveTeacher && !permitSolicitation ? (
         <>
           <div className={styles.container}>
-            <h1 className={styles.title}>VOCÊ NÃO TEM UM ORIENTADOR</h1> 
-            <h2 className={styles.sub_title}>Para fazer uma solicitação como aluno você deve estar vinculado a um orientador</h2> 
+            <h1 className={styles.title}>VOCÊ NÃO TEM UM ORIENTADOR OU NÃO ESTÁ VINCULADO A UM PROJETO</h1> 
+            <h2 className={styles.sub_title}>Para fazer uma solicitação como aluno você deve estar vinculado a um orientador e a um projeto</h2> 
+            <h2 className={styles.sub_title}>Para realizar o vínculo com o orientador acesse seu perfil <a className={styles.link} onClick={goToProfile}>aqui</a></h2> 
+            <h2 className={styles.sub_title}>Para fazer parte de um projeto, solicite ao seu orientador</h2> 
           </div>
         </>
       ) : (

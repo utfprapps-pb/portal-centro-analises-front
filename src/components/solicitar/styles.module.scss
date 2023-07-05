@@ -156,3 +156,14 @@
   background-position: right 10px center;
   cursor: pointer;
 }
+
+.link {
+  border-bottom: 1px solid #3e00ce;
+  color: #3e00ce;
+  cursor: pointer;
+}
+
+.link:hover {
+  color: #220070;
+  border-bottom: 1px solid #220070;
+}
