@@ -72,6 +72,9 @@ export interface SolicitationAudit {
         name: string;
       }
     }
+    projectNature:{
+      content: string;
+    }
 
   }
 }

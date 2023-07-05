@@ -4,6 +4,7 @@ import { CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
 import { Project, Teacher } from '@/commons/type';
+import DropdownNat from '../dropdownnat';
 
 export function FormHeader() {
 	const [isLoading, setIsLoading] = useState(true);
@@ -11,6 +12,12 @@ export function FormHeader() {
 	const [projects, setProjects] = useState<Array<Project>>();
 	const [studentFields, setStudentFields] = useState(true);
 	const [professorFields, setProfessorFields] = useState(false);
+	const [utfprFields, setUtfprFields] = useState(false);
+	const [nature, setNature] = useState<string | undefined>();
+
+	const handleRoleChange = (selectedValue: string) => {
+		setNature(selectedValue);
+	};
 
 	var t: any = localStorage.getItem("user");
 	var infoArray = JSON.parse(t);
@@ -20,12 +27,15 @@ export function FormHeader() {
 	useEffect(() => {
 		if (userRole == 'STUDENT') {
 			setStudentFields(true);
+			setUtfprFields(true);
 		} else if (userRole == 'PROFESSOR') {
 			setProfessorFields(true);
 			setStudentFields(false);
+			setUtfprFields(true);
 		} else {
 			setProfessorFields(false);
 			setStudentFields(false);
+			setUtfprFields(false);
 		}
 		async function getProject() {
 			const teacherProject = await api.get("/project/all");
@@ -123,6 +133,13 @@ export function FormHeader() {
 									))}
 								</Field>
 							</div>
+						</div>
+					</div> : <div></div>}
+					{utfprFields ? <div className={styles.row_box}>
+						<div className={styles.field_box}>
+							<p>Natureza do Projeto</p>
+							<DropdownNat value={'MASTERS_THESIS'} onChange={ (v) => setNature(v)} />
+
 						</div>
 					</div> : <div></div>}
 					<div className={styles.row_box}>
