@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 
 import TransactionService from '../../../services/api/transaction/TransactionService'
 import {Transaction} from '../model/transaction'
@@ -15,71 +15,54 @@ import TableCell from '@material-ui/core/TableCell'
 import { useNavigate } from "react-router-dom"
 
 import styles from './styles.module.scss'
-import { Button, Grid, TableFooter, TablePagination } from '@material-ui/core'
-import TablePaginationActions from '@material-ui/core/TablePagination/TablePaginationActions'
-import { FilterDrawer } from '@/components/filter-drawer'
+import { Button, Grid } from '@material-ui/core'
+import { AuthContext } from '@/contexts'
+import ProfessorService from '@/services/api/professor/ProfessorService'
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 
 export function TransactionList() {
 
-  const list = [
-    { label: "Id", value: 'id' },
-    { label: "Nome", value: 'name' }
-  ];
-
-  const handleSearchChange = (value: string) => {
-    setSearch(value !== '' ? value : '')
-  }
+  const { authenticatedUser } = useContext(AuthContext);
 
   const [data, setData] = useState([])
-  const [page, setPage] = useState(0);
   const [apiError, setApiError] = useState('')
   const navigate = useNavigate();
-  const rowsPerPage = 10;
-  const [total, setTotal] = useState(0);
-  const [pages, setPages] = useState(0);
-  const [search, setSearch] = useState([])
+  const [balance, setBalance] = useState(0);
+  const [view, setView] = useState(false);
 
   useEffect(() => {
-    loadData(0)
-  }, [search])
-
-  const loadData = (page: number) => {
-    if(search && search.length){
-      TransactionService.search(page,rowsPerPage,'id',true, search)
-      .then((response) => {
-        setTotal(response.data.totalElements)
-        setPages(response.data.totalPages);
-        setData(response.data.content)
-        setApiError('')
-      })
-      .catch((error) => {
-        setApiError('Falha ao carregar a lista de transações')
-      })
-    }else{
-      TransactionService.page(page,rowsPerPage,'id',true)
-      .then((response) => {
-        setTotal(response.data.totalElements)
-        setPages(response.data.totalPages);
-        setData(response.data.content)
-        setApiError('')
-      })
-      .catch((error) => {
-        setApiError('Falha ao carregar a lista de transações')
-      })
+    if(authenticatedUser?.role === 'PROFESSOR'){
+      loadBalance(authenticatedUser?.id)
     }
+    loadData()
+  },[balance])
+
+  const loadBalance = (id:number) => {
+    ProfessorService.findProfessorById(id)
+    .then((response) => {
+      setBalance(response.data.balance)      
+      setApiError('')
+    })
+    .catch((error) => {
+      setApiError('Falha ao carregar professor')
+    })
+  }
+  const loadData = () => {
+      TransactionService.findAll()
+      .then((response) => {
+        setData(response.data)
+        setApiError('')
+      })
+      .catch((error) => {
+        setApiError('Falha ao carregar a lista de transações')
+      })
   }
 
   const onNew = (url: string) => {
     navigate(url);
   };
 
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
-  ) => {
-    setPage(newPage);
-    loadData(newPage)
-  };
   const formatDate = (date:any) => {
     const newDate = new Date(date);
     const formattedDate = `${newDate.toLocaleDateString()} ${newDate.toLocaleTimeString()}`;
@@ -89,14 +72,23 @@ export function TransactionList() {
   return (
       <>
       <Grid container justifyContent="space-between">
-{/*       <FilterDrawer list={list} handleSearchChange={handleSearchChange} />
- */}        <Button
-          variant="outlined"
+      {authenticatedUser?.role === 'ADMIN' &&
+        <Button
+          variant="contained"
           className={styles.buttoncolor}
           onClick={() => { onNew('/transaction/new') } }
           >
           Inserir
+        </Button>}
+        {authenticatedUser?.role === 'PROFESSOR' &&
+        <Button 
+        onClick={() => setView(!view)}
+          variant="contained" 
+          endIcon={ view ? <VisibilityOffIcon /> : <VisibilityIcon />}
+          className={styles.buttoncolor}>
+          { view ? `Seu saldo R$: ${balance}` : 'Visualizar saldo' }
         </Button>
+        }
       </Grid>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="simple table">
@@ -132,24 +124,6 @@ export function TransactionList() {
               </div>
             )}
           </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                colSpan={3}
-                count={total}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[10]}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                ActionsComponent={TablePaginationActions} />
-            </TableRow>
-          </TableFooter>
         </Table>
       </TableContainer>
     </>

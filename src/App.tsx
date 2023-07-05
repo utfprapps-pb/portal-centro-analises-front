@@ -75,6 +75,7 @@ export function App() {
           <Route path="/projeto/form/:id" element={<ProjectPageForm />} />
           <Route path="/aprovacoes" element={<AprovacoesPage />} />
           <Route path="/aprovacoes/view/:id" element={<AprovacoesView />} />
+          <Route path="/transaction" element={<Transaction />} />
         </Route>
 
         <Route
@@ -92,10 +93,8 @@ export function App() {
           <Route path="/equipamento/form/:id" element={<EquipmentPageForm />} />
           <Route path="/partner" element={<PartnerListPage />} />
           <Route path="/partner/new" element={<PartnerPage />} />
-          <Route path="/partner/:id" element={<PartnerPage />} />
-          <Route path="/transaction" element={<Transaction />} />
+          <Route path="/partner/:id" element={<PartnerPage />} />         
           <Route path="/transaction/new" element={<TransactionPageForm />} />
-          <Route path="/transaction/:id" element={<TransactionPageForm />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>

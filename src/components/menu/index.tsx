@@ -31,6 +31,10 @@ export const Menu: React.FC = () => {
               <BusinessCenter style={{ color: '#3f51b5' }} />
               <h2>Projetos</h2>
             </Link>
+            <Link className={styles.tab} to="/transaction">
+              <AttachMoney style={{ color: '#3f51b5' }} />
+              <h2>Transações</h2>
+            </Link>
           </>
         }
         { authenticatedUser && authenticatedUser.role == 'ADMIN' && 
@@ -46,11 +50,7 @@ export const Menu: React.FC = () => {
             <Link className={styles.tab} to="/partner">
               <AccountBalance style={{ color: '#3f51b5' }} />
               <h2>Parceiros</h2>
-            </Link>
-            <Link className={styles.tab} to="/transaction">
-              <AttachMoney style={{ color: '#3f51b5' }} />
-              <h2>Transações</h2>
-            </Link>
+            </Link>            
           </>
         }
       </section>

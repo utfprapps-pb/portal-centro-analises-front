@@ -10,10 +10,6 @@ const remove = (id: number) => api.delete(`/transaction/${id}`)
 
 const findById = (id: number) => api.post(`/transaction/${id}`)
 
-const getBalanceByUserId = (id: number) => api.post(`/transaction/getBalance/${id}`)
-
-const listTransactionByUserId = (id: number) => api.post(`/transaction/findAllByUserId/${id}`)
-
 const page = (page: number, size: number, order: string, asc: boolean) => {
   return api.get(`/transaction/page/?page=${page}&size=${size}&order=${order}&asc=${asc}`)
 }
@@ -34,8 +30,6 @@ const TransactionService = {
   findAll,
   remove,
   findById,
-  getBalanceByUserId,
-  listTransactionByUserId,
   page,
   search
 }
