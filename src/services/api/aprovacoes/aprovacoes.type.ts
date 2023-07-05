@@ -8,6 +8,14 @@ export type ArovacoesParams = {
   status: string
 }
 
+export type VinculoParams = {
+  id?: number
+  createdBy: string
+  aproved: boolean
+  student: StudentsParams
+  teacher: StudentsParams
+}
+
 export type Equipment = {
   id?: number
   form: string
@@ -40,3 +48,4 @@ export type StudentsParams = {
   email: string
   ra: string
 }
+

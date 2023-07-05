@@ -84,10 +84,16 @@
   width: 100%;
   padding: 1rem 0rem;
   border-top: 1px solid black;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
-  text-align: center;
-  align-items: center;
+  text-align: left;
+  align-items: left;
   gap: 1rem;
   width: 100%;
+}
+
+.dropwdown_inside {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }

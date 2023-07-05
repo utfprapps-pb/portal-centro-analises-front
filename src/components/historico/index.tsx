@@ -115,6 +115,7 @@ export function Historico() {
                                         const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
                                         return (
                                           <>
+                                          <div className={styles.dropwdown_inside}>
                                             <CustomStatus
                                               text={
                                                 objeto2.newStatus == 'PENDING_ADVISOR' ? 'Aguardando Confirmação' :
@@ -143,6 +144,7 @@ export function Historico() {
                                               fontWeight="300"
                                               />
                                             <h2 className={styles.text_box}>{formattedDate}</h2>
+                                            </div>
                                           </>
                                         );
                                       }
@@ -162,62 +164,6 @@ export function Historico() {
             )
           })}
         </div>
-        // <div className={styles.container}>
-        //   <h1 className={styles.title}>HISTÓRICO</h1>
-        //   {Array.isArray(history) && history.map(({ id, newStatus, changeDate, solicitation, fileUrl } : any) => {
-        //     console.log(solicitation)
-        //     const date = new Date(changeDate);
-        //     const formattedDate = `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`;
-          
-        //     return (            
-        //       <div key={solicitation.id} className={styles.history_box}>
-        //         <div  className={styles.content_left}>
-        //             <CustomStatus
-        //               text={
-        //                 newStatus == 'PENDING_ADVISOR' ? 'Aguardando Confirmação' :
-        //                 newStatus == 'PENDING_LAB' ? 'Aguardando Laboratório' :
-        //                 newStatus == 'PENDING_SAMPLE' ? 'Aguardando Amostra' :
-        //                 newStatus == 'APPROVED' ? 'Aguardando Análise' :
-        //                 newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
-        //                 newStatus == 'REFUSED' ? 'Recusado' :
-        //                 newStatus == 'FINISHED' ? 'Concluído' :
-        //                 '#000000'
-        //               }
-        //               padding="0.5rem"
-        //               textColor="white"
-        //               backgroundColor={
-        //                 newStatus == 'FINISHED' ? '#00d400' :
-        //                 newStatus == 'PENDING_LAB' ? '#ff5e00' :
-        //                 newStatus == 'PENDING_ADVISOR' ? '#d49f00' :
-        //                 newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
-        //                 newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
-        //                 newStatus == 'APPROVED' ? '#d49f00' :
-        //                 '#000000'
-        //               }
-        //               width="160px"
-        //               letterSpacing="0px"
-        //               fontSize="12px"
-        //               fontWeight="300"
-        //             />
-        //           </div>
-        //           <h2 className={styles.text_box}>{formattedDate}</h2>
-        //           <h2 className={styles.text_box}>{solicitation.equipment.name}</h2>
-        //           {solicitation.value &&
-        //             <h2 className={styles.text_box}>R$ {solicitation.value}</h2>
-        //           }
-        //           <h2 className={styles.text_box}>{solicitation.createdBy.name}</h2>
-        //           <h2 className={styles.text_box}>{solicitation.project.description}</h2>
-        //         {newStatus == 'FINISHED' && 
-        //           <DownloadFile 
-        //             url={fileUrl}
-        //             type="submit"
-        //             onClick={getFile}
-        //           />
-        //         }
-        //       </div>
-        //     )
-        //   })}
-        // </div>
       )}
     </>
   )
