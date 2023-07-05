@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Field, ErrorMessage } from 'formik';
 import { CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
 import { Project, Teacher } from '@/commons/type';
+import { AuthContext } from '@/contexts';
+import { ROLES } from '@/commons/roles';
 import DropdownNat from '../dropdownnat';
 
 export function FormHeader() {
@@ -12,6 +14,7 @@ export function FormHeader() {
 	const [projects, setProjects] = useState<Array<Project>>();
 	const [studentFields, setStudentFields] = useState(true);
 	const [professorFields, setProfessorFields] = useState(false);
+  const { authenticatedUser } = useContext(AuthContext);
 	const [utfprFields, setUtfprFields] = useState(false);
 	const [nature, setNature] = useState<string | undefined>();
 
@@ -38,10 +41,24 @@ export function FormHeader() {
 			setUtfprFields(false);
 		}
 		async function getProject() {
-			const teacherProject = await api.get("/project/all");
-			setProjects(teacherProject.data.projectDTOS)
-			setTeacher(teacherProject.data.teacherDTO)
-			setIsLoading(false);
+      if(authenticatedUser?.role == ROLES.Professor){
+        const teacherProject = await api.get("/project");
+        setProjects(teacherProject.data)
+
+        const teacher: Teacher = {
+          email: authenticatedUser.email,
+          id: authenticatedUser.id,
+          name: authenticatedUser.displayName
+        }
+
+        setTeacher(teacher)
+        setIsLoading(false);
+      } else {
+        const teacherProject = await api.get("/project/all");
+        setProjects(teacherProject.data.projectDTOS)
+        setTeacher(teacherProject.data.teacherDTO)
+        setIsLoading(false);
+      }
 		}
 		getProject();
 	}, []);
@@ -100,9 +117,6 @@ export function FormHeader() {
 									multiple={false}
 									className={styles.select_box}
 								>
-									<option key='1' value='1'>
-										Selecione um projeto
-									</option>
 									{projects && projects.map(({ id, description }) => (
 										<option key={id} value={id}>
 											{description}

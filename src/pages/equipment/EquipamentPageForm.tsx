@@ -66,7 +66,6 @@ export const EquipmentPageForm = () => {
   }, []);
 
   const handleSubmit = (values: EquipmentParams) => {
-    debugger
     const data: EquipmentParams = {
       ...values,
       id: equipment?.id!,

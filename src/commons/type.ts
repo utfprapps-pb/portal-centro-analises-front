@@ -4,6 +4,7 @@ export interface UserLogin {
 }
 
 export interface User {
+  id: number;
   displayName: string;
   email: string;
   password: string;
@@ -16,6 +17,13 @@ export interface EditUser {
   orientador: number;
   email: string;
   role: string;
+}
+
+export interface EditFinance {
+  value: string;
+  type: number;
+  description: string;
+  user: User;
 }
 
 export interface AuthenticationResponse {
@@ -57,11 +65,16 @@ export interface SolicitationAudit {
   id: number;
   changeDate: string;
   newStatus: string;
+  dropdown: boolean;
   solicitation: {
+    changeDate: string;
+    solicitation: any;
+    id: number;
+    newStatus: string;
     createdBy: {
       name: string;
     }
-    equipament: {
+    equipment: {
       form: string;
       name: string;
     };
@@ -72,10 +85,11 @@ export interface SolicitationAudit {
         name: string;
       }
     }
-    projectNature:{
+    value: number;
+    fileUrl: string;
+    projectNature: {
       content: string;
     }
-
   }
 }
 

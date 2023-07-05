@@ -34,13 +34,13 @@ export const FormAtividadeAgua: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-  
+
       const payload = {
         equipment: {"id": 1},
         project: {"id": values.projeto},
         description : values.descricao,
         status : 0,
-        fields: {}
+        fields: ""
       }
   
       await api.post("/solicitation", payload);
