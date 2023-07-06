@@ -6,6 +6,7 @@ import { api } from "../../libs/axiosBase";
 import { Project, Teacher } from '@/commons/type';
 import { AuthContext } from '@/contexts';
 import { ROLES } from '@/commons/roles';
+import { natures } from '@/commons/natureProject';
 
 export function FormHeader() {
 	const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +14,8 @@ export function FormHeader() {
 	const [projects, setProjects] = useState<Array<Project>>();
 	const [studentFields, setStudentFields] = useState(true);
 	const [professorFields, setProfessorFields] = useState(false);
-  const { authenticatedUser } = useContext(AuthContext);
+	const { authenticatedUser } = useContext(AuthContext);
+	const [utfprFields, setUtfprFields] = useState(false);
 
 	var t: any = localStorage.getItem("user");
 	var infoArray = JSON.parse(t);
@@ -23,32 +25,35 @@ export function FormHeader() {
 	useEffect(() => {
 		if (userRole == 'STUDENT') {
 			setStudentFields(true);
+			setUtfprFields(true);
 		} else if (userRole == 'PROFESSOR') {
 			setProfessorFields(true);
 			setStudentFields(false);
+			setUtfprFields(true);
 		} else {
 			setProfessorFields(false);
 			setStudentFields(false);
+			setUtfprFields(false);
 		}
 		async function getProject() {
-      if(authenticatedUser?.role == ROLES.Professor){
-        const teacherProject = await api.get("/project");
-        setProjects(teacherProject.data)
+			if (authenticatedUser?.role == ROLES.Professor) {
+				const teacherProject = await api.get("/project");
+				setProjects(teacherProject.data)
 
-        const teacher: Teacher = {
-          email: authenticatedUser.email,
-          id: authenticatedUser.id,
-          name: authenticatedUser.displayName
-        }
+				const teacher: Teacher = {
+					email: authenticatedUser.email,
+					id: authenticatedUser.id,
+					name: authenticatedUser.displayName
+				}
 
-        setTeacher(teacher)
-        setIsLoading(false);
-      } else {
-        const teacherProject = await api.get("/project/all");
-        setProjects(teacherProject.data.projectDTOS)
-        setTeacher(teacherProject.data.teacherDTO)
-        setIsLoading(false);
-      }
+				setTeacher(teacher)
+				setIsLoading(false);
+			} else {
+				const teacherProject = await api.get("/project/all");
+				setProjects(teacherProject.data.projectDTOS)
+				setTeacher(teacherProject.data.teacherDTO)
+				setIsLoading(false);
+			}
 		}
 		getProject();
 	}, []);
@@ -135,6 +140,27 @@ export function FormHeader() {
 											{description}
 										</option>
 									))}
+								</Field>
+							</div>
+						</div>
+					</div> : <div></div>}
+					{utfprFields ? <div className={styles.row_box}>
+						<div className={styles.field_box}>
+							<p>Natureza</p>
+							<div className={styles.input_box}>
+								<Field
+									label="Natureza"
+									as="select"
+									name="natureza"
+									multiple={false}
+									className={styles.select_box}
+								>
+									<option key='0' value='0'>
+										Selecione a natureza do projeto
+									</option>
+									{natures.map((item) => {
+										return <option key={item.value} value={item.value}>{item.label}</option>;
+									})}
 								</Field>
 							</div>
 						</div>

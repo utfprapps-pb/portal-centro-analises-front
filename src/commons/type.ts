@@ -87,7 +87,9 @@ export interface SolicitationAudit {
     }
     value: number;
     fileUrl: string;
-
+    projectNature: {
+      content: string;
+    }
   }
 }
 

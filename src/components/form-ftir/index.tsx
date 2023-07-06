@@ -32,6 +32,7 @@ export const FormFtir: React.FC = () => {
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
     //
     solventeUtilizado: string
   }) {
@@ -45,6 +46,7 @@ export const FormFtir: React.FC = () => {
         equipment: {"id": 8},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
         fields: fieldsStr
       }
@@ -70,6 +72,7 @@ export const FormFtir: React.FC = () => {
             nomeOrientador: "NOME",
             projeto: 0,
             descricao: "",
+            natureza: "",
             // CAMPOS ÚNICOS DO FORMULÁRIO
             solventeUtilizado: ""
           }}

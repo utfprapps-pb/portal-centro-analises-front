@@ -116,6 +116,7 @@ export function FormAnaliseTermica() {
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
   }) {
     try {
       startButtonLoad();
@@ -126,6 +127,7 @@ export function FormAnaliseTermica() {
         equipment: {"id": 3},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
         fields: fieldsStr
       }
@@ -151,6 +153,7 @@ export function FormAnaliseTermica() {
             nomeOrientador: "NOME",
             projeto: 1,
             descricao: "",
+            natureza: "",
             amostra: 0,
             identificacao: "",
             caracteristicas: "",

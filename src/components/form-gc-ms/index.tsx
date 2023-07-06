@@ -40,6 +40,7 @@ export const FormGcMs: React.FC = () => {
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
     //
     coluna: string;
     gas: string;
@@ -61,6 +62,7 @@ export const FormGcMs: React.FC = () => {
         equipment: {"id": 2},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
         fields: fieldsStr
       }
@@ -86,6 +88,7 @@ export const FormGcMs: React.FC = () => {
             nomeOrientador: "NOME",
             projeto: 0,
             descricao: "",
+            natureza: "",
             coluna: "",
             gas: "",
             fluxo: "",
