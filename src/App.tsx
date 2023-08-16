@@ -5,14 +5,13 @@ import { HomePage } from "./pages/home";
 import { HistoricoPage } from "./pages/historico";
 import { SolicitarPage } from "./pages/solicitar";
 import { RequireAuth } from "./components/required-auth";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "./contexts";
 import { EmailConfirmationPage, SignUpPage, ProfilePage, AdminPage, PartnerListPage, PartnerPage } from "./pages";
 import { NotFound } from "./pages/notFound";
 import { Project } from "./pages/projetc";
 import { ProjectPageForm } from "./pages/projetc/ProjectPageForm";
 import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
 import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
+import { RecoverPasswordPage } from "@/pages/recover-password";
 
 const ROLES = {
   Admin: "ADMIN",
@@ -32,6 +31,7 @@ export function App() {
           path="/email-confirm/:hashKey"
           element={<EmailConfirmationPage />}
         />
+        <Route path="recover-password" element={<RecoverPasswordPage />} />
 
         <Route
           element={
