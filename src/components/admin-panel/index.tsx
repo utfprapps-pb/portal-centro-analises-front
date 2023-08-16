@@ -12,7 +12,7 @@ export function AdminPanel() {
 
   const [activePage, setActivePage] = useState(0);
 
-  const [user, setUser] = useState<EditUser>();
+  const [user, setUser] = useState<EditUser | undefined>();
 
   const [page, setPage] = useState<any>({
     content: [],
@@ -141,7 +141,6 @@ export function AdminPanel() {
                     </div>
                     <div className={styles.row_box}>
                       <div className={styles.field_box}>
-
                         <div className={styles.field_box}>
                           <p>Cargo</p>
                           <Dropdown value={user?.role || ''} onChange={handleRoleChange} />

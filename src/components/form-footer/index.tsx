@@ -1,6 +1,4 @@
 import React from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as yup from "yup";
 import { CustomButton, CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
 

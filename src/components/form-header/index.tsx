@@ -1,36 +1,72 @@
-import React, { useEffect, useState } from 'react'
-import { Formik, Form, Field, ErrorMessage } from 'formik';
-import * as yup from "yup";
+import React, { useContext, useEffect, useState } from 'react'
+import { Field, ErrorMessage } from 'formik';
 import { CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
 import { Project, Teacher } from '@/commons/type';
+import { AuthContext } from '@/contexts';
+import { ROLES } from '@/commons/roles';
+import { natures } from '@/commons/natureProject';
 
-export function FormHeader() { 
+export function FormHeader() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [teacher, setTeacher] = useState<Teacher | undefined>();
 	const [projects, setProjects] = useState<Array<Project>>();
+	const [studentFields, setStudentFields] = useState(true);
+	const [professorFields, setProfessorFields] = useState(false);
+	const { authenticatedUser } = useContext(AuthContext);
+	const [utfprFields, setUtfprFields] = useState(false);
 
-  useEffect(() => {
+	var t: any = localStorage.getItem("user");
+	var infoArray = JSON.parse(t);
+	var studentName = infoArray.displayName.toString();
+	var userRole = infoArray.role.toString();
+
+	useEffect(() => {
+		if (userRole == 'STUDENT') {
+			setStudentFields(true);
+			setUtfprFields(true);
+		} else if (userRole == 'PROFESSOR') {
+			setProfessorFields(true);
+			setStudentFields(false);
+			setUtfprFields(true);
+		} else {
+			setProfessorFields(false);
+			setStudentFields(false);
+			setUtfprFields(false);
+		}
 		async function getProject() {
-				const teacherProject = await api.get("/project/all");
+			if (authenticatedUser?.role == ROLES.Professor) {
+				const teacherProject = await api.get("/project");
+				setProjects(teacherProject.data)
 
+				const teacher: Teacher = {
+					email: authenticatedUser.email,
+					id: authenticatedUser.id,
+					name: authenticatedUser.displayName
+				}
+
+				setTeacher(teacher)
+				setIsLoading(false);
+			} else {
+				const teacherProject = await api.get("/project/all");
 				setProjects(teacherProject.data.projectDTOS)
 				setTeacher(teacherProject.data.teacherDTO)
 				setIsLoading(false);
 			}
-			getProject();
-  }, []);
+		}
+		getProject();
+	}, []);
 
 	return (
 		<>
-		{isLoading ? (
-        <p>Carregando...</p>
-      ) : (
+			{isLoading ? (
+				<p>Carregando...</p>
+			) : (
 				<div className={styles.inputs_box}>
 					<div className={styles.row_box}>
 						<div className={styles.field_box}>
-							<p>Nome do Aluno</p>
+							{studentFields ? <p>Nome do Aluno</p> : <p>Nome</p>}
 							<div className={styles.input_box}>
 								<ErrorMessage
 									component={CustomErrorMessage}
@@ -38,43 +74,15 @@ export function FormHeader() {
 								/>
 								<Field
 									name="nomeAluno"
-									placeholder=""
-									className={styles.input_form}
+									value={studentName ?? ''}
+									placeholder={studentName ?? ''}
+									disabled
+									className={styles.input_form_disable}
 								/>
 							</div>
 						</div>
 					</div>
-					<div className={styles.row_box}>
-						<div className={styles.field_box}>
-							<p>Email do Aluno</p>
-							<div className={styles.input_box}>
-								<ErrorMessage
-									component={CustomErrorMessage}
-									name="emailAluno"
-								/>
-								<Field
-									name="emailAluno"
-									placeholder=""
-									className={styles.input_form}
-								/>
-							</div>
-						</div>
-						<div className={styles.field_box}>
-							<p>Telefone do Aluno</p>
-							<div className={styles.input_box}>
-								<ErrorMessage
-									component={CustomErrorMessage}
-									name="telefoneAluno"
-								/>
-								<Field
-									name="telefoneAluno"
-									placeholder=''
-									className={styles.input_form}
-								/>
-							</div>
-						</div>
-					</div>
-					<div className={styles.row_box}>
+					{studentFields ? <div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Nome do Orientador</p>
 							<div className={styles.input_box}>
@@ -92,8 +100,28 @@ export function FormHeader() {
 								/>
 							</div>
 						</div>
-					</div>
-					<div className={styles.row_box}>
+					</div> : <div></div>}
+					{studentFields ? <div className={styles.row_box}>
+						<div className={styles.field_box}>
+							<p>Projeto</p>
+							<div className={styles.input_box}>
+								<Field
+									label="Projeto"
+									as="select"
+									name="projeto"
+									multiple={false}
+									className={styles.select_box}
+								>
+									{projects && projects.map(({ id, description }) => (
+										<option key={id} value={id}>
+											{description}
+										</option>
+									))}
+								</Field>
+							</div>
+						</div>
+					</div> : <div></div>}
+					{professorFields ? <div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Projeto</p>
 							<div className={styles.input_box}>
@@ -107,7 +135,7 @@ export function FormHeader() {
 									<option key='0' value='0'>
 										Selecione um projeto
 									</option>
-									{projects && projects.map(({id, description}) => (
+									{projects && projects.map(({ id, description }) => (
 										<option key={id} value={id}>
 											{description}
 										</option>
@@ -115,7 +143,28 @@ export function FormHeader() {
 								</Field>
 							</div>
 						</div>
-					</div>
+					</div> : <div></div>}
+					{utfprFields ? <div className={styles.row_box}>
+						<div className={styles.field_box}>
+							<p>Natureza</p>
+							<div className={styles.input_box}>
+								<Field
+									label="Natureza"
+									as="select"
+									name="natureza"
+									multiple={false}
+									className={styles.select_box}
+								>
+									<option key='0' value='0'>
+										Selecione a natureza do projeto
+									</option>
+									{natures.map((item) => {
+										return <option key={item.value} value={item.value}>{item.label}</option>;
+									})}
+								</Field>
+							</div>
+						</div>
+					</div> : <div></div>}
 					<div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Descrição</p>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Formik, Form } from 'formik';
 import * as yup from "yup";
 import { api } from "../../libs/axiosBase";
@@ -6,38 +6,43 @@ import styles from "./styles.module.scss";
 import { FormFooter, FormHeader } from '@/components'
 import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
+import { FormFooterLoad } from '../form-footer-load';
 
 export const FormAtividadeAgua: React.FC = () => {
   const { navigate } = useHistory();
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  function startButtonLoad() {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  };
+
   const validationForm = yup.object().shape({
-    nomeAluno: yup.string().required("Informe seu nome"),
-    emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
-    telefoneAluno: yup.string().required("Informe seu telefone"),
-    nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
-    emailOrientador: yup.string().email("Email inválido").required("Informe o email do seu orientador"),
-    telefoneOrientador: yup.string().required("Informe o telefone"),
-    departamento: yup.string().required("Informe o departamento"),
-    naturezaProjeto: yup.string().required("Informe a natureza do projeto"),
-    descricao: yup.string().required("Informe a descrição")
+    nomeAluno: yup.string(),
+    nomeOrientador: yup.string(),
+    descricao: yup.string().required("Informe a descrição"),
   });
   
   async function handleClickForm(values: {
     nomeAluno: string;
-    emailAluno: string;
-    telefoneAluno: string;
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
   }) {
     try {
-  
+      startButtonLoad();
+
       const payload = {
         equipment: {"id": 1},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
-        fields: {}
+        fields: ""
       }
   
       await api.post("/solicitation", payload);
@@ -56,15 +61,11 @@ export const FormAtividadeAgua: React.FC = () => {
       <div>
         <Formik
           initialValues={{
-            nomeAluno: "",
-            emailAluno: "",
-            telefoneAluno: "",
-            nomeOrientador: "",
-            emailOrientador: "",
-            telefoneOrientador: "",
-            departamento: "",
-            naturezaProjeto: "",
-            descricao: ""
+            nomeAluno: "NOMEALUNO",
+            nomeOrientador: "NOME",
+            projeto: 1,
+            descricao: "",
+            natureza: ""
           }}
           onSubmit={handleClickForm}
           validationSchema={validationForm}
@@ -73,7 +74,7 @@ export const FormAtividadeAgua: React.FC = () => {
             <div className={styles.inputs_box}>
               <FormHeader />
             </div>
-            <FormFooter />
+            {isLoading ? <FormFooterLoad /> : <FormFooter />}
           </Form>
         </Formik>
       </div>

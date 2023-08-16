@@ -14,11 +14,22 @@ import { Add } from '@material-ui/icons'
 import { api } from "../../libs/axiosBase";
 import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
+import { FormFooterLoad } from '../form-footer-load';
 import Button from '@material-ui/core/Button';
 import RemoveIcon from '@material-ui/icons/Remove';
 
 export function FormAnaliseTermica() {
   const { navigate } = useHistory();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  function startButtonLoad() {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
+  };
+
   interface RowData {
     amostra: number;
     identificacao: string;
@@ -55,10 +66,8 @@ export function FormAnaliseTermica() {
   }
 
   const validationForm = yup.object().shape({
-    nomeAluno: yup.string().required("Informe seu nome"),
-    emailAluno: yup.string().email("Email inválido").required("Informe seu email"),
-    telefoneAluno: yup.string().required("Informe seu telefone"),
-    nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
+    nomeAluno: yup.string(),
+    nomeOrientador: yup.string(),
     descricao: yup.string().required("Informe a descrição"),
   });
 
@@ -104,13 +113,13 @@ export function FormAnaliseTermica() {
 
   async function handleClickForm(values: {
     nomeAluno: string;
-    emailAluno: string;
-    telefoneAluno: string;
     nomeOrientador: string;
     projeto: number;
     descricao: string;
+    natureza: string;
   }) {
     try {
+      startButtonLoad();
       const fields = { rows };
       const fieldsStr = JSON.stringify(fields);
   
@@ -118,6 +127,7 @@ export function FormAnaliseTermica() {
         equipment: {"id": 3},
         project: {"id": values.projeto},
         description : values.descricao,
+        projectNature : values.natureza,
         status : 0,
         fields: fieldsStr
       }
@@ -139,12 +149,11 @@ export function FormAnaliseTermica() {
       <div>
         <Formik
           initialValues={{
-            nomeAluno: "",
-            emailAluno: "",
-            telefoneAluno: "",
+            nomeAluno: "NOMEALUNO",
             nomeOrientador: "NOME",
-            projeto: 0,
+            projeto: 1,
             descricao: "",
+            natureza: "",
             amostra: 0,
             identificacao: "",
             caracteristicas: "",
@@ -334,7 +343,7 @@ export function FormAnaliseTermica() {
                   </Table>
                 </TableContainer>
               </div>
-              <FormFooter />
+              {isLoading ? <FormFooterLoad /> : <FormFooter />}
             </Form>
           )}
         </Formik>

@@ -16,7 +16,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 
 const validationSchema = Yup.object().shape({
-  subject: Yup.string().required("Assunto é obrigatório"),
+  subject: Yup.string().required("Título é obrigatório"),
   description: Yup.string().required("Descrição é obrigatória"),
 });
 
@@ -40,7 +40,7 @@ export const ProjectPageForm = () => {
 
   const loadStudents = async () => {
     try {
-      const response = await StudentService.findAll();
+      const response = await StudentService.findAllByProfessor(authenticatedUser?.id!);
       if (response.data) {
         setStudents(response.data);
         setApiError("");
@@ -122,7 +122,7 @@ export const ProjectPageForm = () => {
                 <Field
                   as={TextField}
                   className={styles.textField}
-                  label="Assunto"
+                  label="Título"
                   name="subject"
                   error={touched.subject && !!errors.subject}
                   helperText={touched.subject && errors.subject}

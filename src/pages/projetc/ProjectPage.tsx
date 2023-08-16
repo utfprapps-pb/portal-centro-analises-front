@@ -71,10 +71,10 @@ export const ProjectPage = () => {
           <TableHead>
             <TableRow>
               <StyledTableCell>#</StyledTableCell>
-              <StyledTableCell align="right">Subject</StyledTableCell>
-              <StyledTableCell align="right">Description</StyledTableCell>
-              <StyledTableCell align="right">Students</StyledTableCell>
-              <StyledTableCell align="right">Functions</StyledTableCell>
+              <StyledTableCell align="right">Título</StyledTableCell>
+              <StyledTableCell align="right">Descrição</StyledTableCell>
+              <StyledTableCell align="right">Estudantes</StyledTableCell>
+              <StyledTableCell align="right">Ações</StyledTableCell>
             </TableRow>
           </TableHead>
           <TableBody>
