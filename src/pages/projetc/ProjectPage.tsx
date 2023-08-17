@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { DeleteRounded, EditRounded } from '@material-ui/icons'
-import { Button, Grid, IconButton } from '@mui/material'
+import { Button, Grid, IconButton, TableFooter, TablePagination } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -16,28 +16,35 @@ import { ProjectParams } from '../../services/api/project/project.type'
 import ProjectService from '@/services/api/project/ProjectService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
+import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
 
 export const ProjectPage = () => {
   const navigate = useNavigate()
   const [data, setData] = useState<ProjectParams[]>([])
   const [apiError, setApiError] = useState('')
 
-  const loadData = () => {
-    ProjectService.findAll()
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
+  const [total, setTotal] = useState(0);
+  const [pages, setPages] = useState(0);
+
+  const loadData = (page: number) => {
+    ProjectService.page(page,rowsPerPage,'id',true)
     .then((response) => {
-      setData(response.data)
+      setData(response.data.content);
+      setTotal(response.data.totalElements);
+      setPages(response.data.totalPages);
       setApiError('')
     })
     .catch((responseError: any) => {
-      setApiError('Falha ao carregar lista de categorias.')
+      setApiError('Falha ao carregar lista de projetos.')
       toast.error(apiError)
       // eslint-disable-next-line no-console
-      console.log(responseError)
     })
   }
 
   useEffect(() => {
-    loadData()
+    loadData(0)
   }, [])
 
   const removeProject = (id: number) => {
@@ -45,7 +52,7 @@ export const ProjectPage = () => {
     .then((response) => {
       toast.success("Removido com sucesso")
       setApiError('')
-      loadData()
+      loadData(0)
     })
     .catch((responseError) => {
       setApiError('Falha ao remover projeto.')
@@ -54,8 +61,16 @@ export const ProjectPage = () => {
     })
   }
 
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage);
+    loadData(newPage)
+  };
+
   return (
-    <div>
+    <>
       <Grid container justifyContent="flex-end">
         <Button
           variant="outlined"
@@ -99,13 +114,27 @@ export const ProjectPage = () => {
               </StyledTableRow>
             ))}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                colSpan={5}
+                count={total}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[10]}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                ActionsComponent={TablePaginationActions} />
+            </TableRow>
+          </TableFooter>
         </Table>
       </TableContainer>
-      {data.length === 0 && (
-        <div className={styles.container_white}>
-          Nenhum dado para ser exibido
-        </div>
-      )}
-    </div>
+     
+    </>
   )
 }
