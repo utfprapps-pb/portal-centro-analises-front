@@ -1,5 +1,5 @@
 import { EditRounded, DeleteRounded } from "@material-ui/icons";
-import { Button, Grid, IconButton } from "@mui/material";
+import { Button, Grid, IconButton, TableFooter, TablePagination } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import styles from "./styles.module.scss";
 import Table from "@mui/material/Table";
@@ -15,38 +15,53 @@ import { StyledTableRow } from "@/layouts/StyledTableRow";
 import { EquipmentParams } from "@/services/api/equipment/equipment.type";
 import EquipmentService from "@/services/api/equipment/EquipmentService";
 import { Header, Menu } from "@/components";
+import TablePaginationActions from "@mui/material/TablePagination/TablePaginationActions";
 
 export const EquipmentsPage = () => {
   const navigate = useNavigate();
   const [data, setData] = useState<EquipmentParams[]>([]);
+  const [apiError, setApiError] = useState('');
 
-  const loadData = async () => {
-    try {
-      const response = await EquipmentService.findAll();
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
+  const [total, setTotal] = useState(0);
+  const [pages, setPages] = useState(0);
 
-      if (response.data) {
-        setData(response.data);
-      }
-    } catch (error) {
+  const loadData = (page: number) => {
+     EquipmentService.page(page,rowsPerPage,'id',true)
+     .then((response) => {
+       setData(response.data.content);
+       setTotal(response.data.totalElements);
+       setPages(response.data.totalPages);
+       setApiError('')
+    }).catch ((responseError: any) => {
       toast.error("Falha ao carregar lista de equipamentos");
-      console.log(error);
-    }
+      console.log(responseError);
+    })
   };
 
   useEffect(() => {
-    loadData();
+    loadData(0);
   }, []);
 
   const removeEquipment = (id: number) => {
     EquipmentService.remove(id)
       .then((response) => {
         toast.success("Removido com sucesso");
-        loadData();
+        loadData(0);
       })
       .catch((responseError) => {
         toast.error("Falha ao remover projeto.");
         console.log(responseError);
       });
+  };
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage);
+    loadData(newPage)
   };
 
   return (
@@ -132,6 +147,24 @@ export const EquipmentsPage = () => {
                   </StyledTableRow>
                 ))}
               </TableBody>
+              <TableFooter>
+            <TableRow>
+              <TablePagination
+                colSpan={4}
+                count={total}
+                rowsPerPage={rowsPerPage}
+                rowsPerPageOptions={[10]}
+                page={page}
+                SelectProps={{
+                  inputProps: {
+                    'aria-label': 'rows per page',
+                  },
+                  native: true,
+                }}
+                onPageChange={handleChangePage}
+                ActionsComponent={TablePaginationActions} />
+            </TableRow>
+          </TableFooter>
             </Table>
           </TableContainer>
           {data.length === 0 && (
