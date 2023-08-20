@@ -7,13 +7,30 @@ import { CustomButton } from '../custom-button';
 import Dropdown from '../dropdown';
 import { api } from '@/libs/axiosBase';
 import { EditUser } from '@/commons/type';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination } from '@mui/material';
+
+import Table from '@mui/material/Table'
+import TableBody from '@mui/material/TableBody'
+import TableContainer from '@mui/material/TableContainer'
+import TableHead from '@mui/material/TableHead'
+import TableRow from '@mui/material/TableRow'
+
+import { StyledTableCell } from '@/layouts/StyldeTableCell'
+import { StyledTableRow } from '@/layouts/StyledTableRow'
+import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
+import UserService from '@/services/api/user/UserService';
 
 export function AdminPanel() {
 
   const [activePage, setActivePage] = useState(0);
 
   const [open, setOpen] = React.useState(false);
+
+  const [data, setData] = useState([])
+  const [page, setPage] = useState(0);
+  const rowsPerPage = 10;
+  const [total, setTotal] = useState(0);
+  const [pages, setPages] = useState(0);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -25,29 +42,28 @@ export function AdminPanel() {
 
   const [user, setUser] = useState<EditUser | undefined>();
 
-  const [page, setPage] = useState<any>({
-    content: [],
-    first: true,
-    last: true,
-    number: 0,
-    totalElements: 0,
-    totalPages: 0
-  });
-
   useEffect(() => {
-    loadData()
-  }, [activePage]);
+    loadData(0)
+  }, []);
 
-  function loadData() {
-    api.get("/users")
-      .then(response => {
-        const data = response.data;
-        setPage((state: any) => ({
-          ...state,
-          content: data
-        }));
+  const loadData = (page: number) => {
+    UserService.page(page, rowsPerPage, 'id', true)
+      .then((response) => {
+        setData(response.data.content);
+        setTotal(response.data.totalElements);
+        setPages(response.data.totalPages);
+      })
+      .catch((responseError: any) => {
       })
   }
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number,
+  ) => {
+    setPage(newPage);
+    loadData(newPage)
+  };
 
   const changePage = (index: number) => {
     setActivePage(index);
@@ -62,7 +78,7 @@ export function AdminPanel() {
     if (selected != null && selected.id != null) {
       api.post(`admin/edit/role/${selected.id}`, selected.role).then((response) => {
         handleClose();
-        loadData();
+        loadData(0);
         //window.location.reload();
       });
     }
@@ -73,7 +89,7 @@ export function AdminPanel() {
       api.delete('users/' + selected.id)
         .then((response) => {
           handleClose();
-          loadData();
+          loadData(0);
           //window.location.reload();
         });
 
@@ -113,7 +129,7 @@ export function AdminPanel() {
       ) : (
         <><div className={styles.inputs_box}>
           <div className={styles.container}>
-            <Dialog open={open} onClose={handleClose}  style={{ overflowY: 'visible' }}>
+            <Dialog open={open} onClose={handleClose} style={{ overflowY: 'visible' }}>
               <DialogTitle>Usuário</DialogTitle>
               <DialogContent style={{ overflowY: 'visible' }}>
                 <Formik
@@ -218,47 +234,66 @@ export function AdminPanel() {
               </DialogActions>
             </Dialog>
             <h1 className={styles.title}>PAINEL DO ADMINISTRADOR</h1>
-            <div>
-
-            </div>
           </div>
         </div>
-          <div className="table-responsive">
-            <table className={styles.tableAdmin}>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nome</th>
-                  <th>Tipo</th>
-                  <th>Email</th>
-                  <th>Seleção</th>
-                </tr>
-              </thead>
-              <tbody>
-                {page.content?.map((user: any) => (
-                  <tr key={user.id}>
-                    <td>{user.id}</td>
-                    <td>{user.name}</td>
-                    <td>{user.role}</td>
-                    <td>{user.email}</td>
-                    <td><CustomButton
-                      onClick={() => getUser(user)}
-                      text="Selecionar"
-                      padding="0.5rem"
-                      textColor="white"
-                      backgroundColor="#006dac"
-                      textColorHover="white"
-                      backgroundColorHover="#00bbff"
-                      letterSpacing="4px"
-                      fontSize="12px"
-                      fontWeight="200"
-                      type="submit"
-                    /></td>
-                  </tr>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>ID</StyledTableCell>
+                  <StyledTableCell align="center">Nome</StyledTableCell>
+                  <StyledTableCell align="center">Tipo</StyledTableCell>
+                  <StyledTableCell align="center">E-mail</StyledTableCell>
+                  <StyledTableCell align="center">Seleção</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((user: any) => (
+                  <StyledTableRow key={user.id}>
+                    <StyledTableCell component="th" scope="row">
+                      {user.id}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{user.name}</StyledTableCell>
+                    <StyledTableCell align="center">{user.role}</StyledTableCell>
+                    <StyledTableCell align="center">{user.email}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <CustomButton
+                        onClick={() => getUser(user)}
+                        text="Selecionar"
+                        padding="0.5rem"
+                        textColor="white"
+                        backgroundColor="#006dac"
+                        textColorHover="white"
+                        backgroundColorHover="#00bbff"
+                        letterSpacing="4px"
+                        fontSize="12px"
+                        fontWeight="200"
+                        type="submit"
+                      />
+                    </StyledTableCell>
+                  </StyledTableRow>
                 ))}
-              </tbody>
-            </table>
-          </div>
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    colSpan={5}
+                    count={total}
+                    rowsPerPage={rowsPerPage}
+                    rowsPerPageOptions={[10]}
+                    page={page}
+                    SelectProps={{
+                      inputProps: {
+                        'aria-label': 'rows per page',
+                      },
+                      native: true,
+                    }}
+                    onPageChange={handleChangePage}
+                    ActionsComponent={TablePaginationActions} />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
         </>
       )}
     </>
