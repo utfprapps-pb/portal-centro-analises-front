@@ -6,11 +6,20 @@ import * as yup from "yup";
 
 import styles from "./styles.module.scss";
 import { CustomButton, CustomErrorMessage } from "@/components";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, TextField } from "@material-ui/core";
+import SendCodeRecoverPasswordService from "@/services/api/send-code-recover-password";
 
 export const RecoverPasswordPage: React.FC = () => {
   const [apiError, setApiError] = useState("");
   const [pendingApiCall, setPendingApiCall] = useState(false);
+  const [form, setForm] = useState({
+    email: "",
+    code: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const [emailValue, setEmailValue] = useState("");
 
   const navigate = useNavigate();
 
@@ -60,6 +69,16 @@ export const RecoverPasswordPage: React.FC = () => {
       .required("Informe o código enviado por email"),
   });
 
+  function sendCodeRecoverPassword() {
+    console.log(emailValue);
+    if (emailValue !== "")
+      SendCodeRecoverPasswordService.send(emailValue);
+  }
+
+  const handleEmailChange = (e: any) => {
+    setEmailValue(e.target.value);
+  };
+
   return <div>
     <div className={styles.container}>
       <div className={styles.modal_content}>
@@ -67,12 +86,7 @@ export const RecoverPasswordPage: React.FC = () => {
           <h2 className={styles.title}>Recuperação de senha!</h2>
         </div>
         <Formik
-          initialValues={{
-            email: "",
-            code: "",
-            password: "",
-            confirmPassword: "",
-          }}
+          initialValues={form}
           onSubmit={handleSubmit}
           validationSchema={validationForm}
         >
@@ -93,6 +107,7 @@ export const RecoverPasswordPage: React.FC = () => {
                       type="text"
                       placeholder="Confirme seu email"
                       className={styles.input_form}
+                      onChange={handleEmailChange} nao funcionou, trava o campo
                     />
                   </div>
                 </div>
@@ -103,8 +118,7 @@ export const RecoverPasswordPage: React.FC = () => {
                   <div className={`${styles.row_box} ${styles.justify_content_space_between}`}>
                     <p>Código enviado por email</p>
                     <div className={styles.recover_password_link}>
-                      {/* <a onClick={goToRecoverPassword}> */}
-                      <a>
+                      <a onClick={sendCodeRecoverPassword}>
                         Receber código por email
                       </a>
                     </div>
