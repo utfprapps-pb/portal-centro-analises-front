@@ -31,11 +31,10 @@ export const RecoverPasswordPage: React.FC = () => {
           newPassword: values.password,
         }
       ).then((response) => {
-          setPendingApiCall(false);
-          console.log(response);
-          navigate("/login");
-          toast.success(response?.data?.message ?? 'Senha recuperada com sucesso.');
-        })
+        setPendingApiCall(false);
+        navigate("/login");
+        toast.success(response?.data?.message ?? 'Senha recuperada com sucesso.');
+      })
         .catch((apiError) => {
           let messageError = apiError?.response?.data?.message ?? 'Erro ao recuperar senha.';
           toast.error(messageError);
@@ -79,7 +78,7 @@ export const RecoverPasswordPage: React.FC = () => {
           }}
           onSubmit={handleSubmit}
           validationSchema={validationForm}>
-          <RecoverPasswordPageForm/>
+          <RecoverPasswordPageForm />
         </Formik>
       </div>
     </div>
@@ -88,7 +87,7 @@ export const RecoverPasswordPage: React.FC = () => {
 
 const RecoverPasswordPageForm: React.FC = () => {
   const [apiError, setApiError] = useState("");
-  const { values } = useFormikContext<RecoverPasswordPageFormValues>();
+  const { values, validateField, errors, setFieldTouched } = useFormikContext<RecoverPasswordPageFormValues>();
   const [pendingApiCall, setPendingApiCall] = useState(false);
   const [pendingApiRecoverPasswordCall, setPendingApiRecoverPasswordCall] = useState(false);
   const navigate = useNavigate();
@@ -98,20 +97,27 @@ const RecoverPasswordPageForm: React.FC = () => {
   }
 
   function sendCodeRecoverPassword() {
-    if (values?.email !== "") {
-      setPendingApiRecoverPasswordCall(true);
-      UserService.sendEmailCodeRecoverPassword(values.email)
-        .then((response) => {
-          setPendingApiRecoverPasswordCall(false);
-          toast.success('Código enviado com sucesso.');
-        })
-        .catch((apiError) => {
-          let messageError = apiError?.response?.data?.message ?? 'Erro ao enviar código por email.';
-          toast.error(messageError);
-          setApiError(messageError);
-          setPendingApiRecoverPasswordCall(false);
-        });
+    setFieldTouched('email', true, true);
+    validateField('email');
+
+    let validEmail = ((values?.email !== "") && (!errors.email));
+    if (!validEmail) {
+      toast.error('Email inválido. Informe um email válido para receber o código.');
+      return;
     }
+
+    setPendingApiRecoverPasswordCall(true);
+    UserService.sendEmailCodeRecoverPassword(values.email)
+      .then((response) => {
+        setPendingApiRecoverPasswordCall(false);
+        toast.success('Código enviado com sucesso.');
+      })
+      .catch((apiError) => {
+        let messageError = apiError?.response?.data?.message ?? 'Erro ao enviar código por email.';
+        toast.error(messageError);
+        setApiError(messageError);
+        setPendingApiRecoverPasswordCall(false);
+      });
   }
 
   return <Form className={styles.inputs_container}>
