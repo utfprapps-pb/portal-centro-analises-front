@@ -9,8 +9,8 @@ const remove = (id: number) => api.delete(`/equipments/${id}`)
 
 const findById = (id: number) => api.post(`/equipments/${id}`)
 
-const page = (page: number, size: number, order: string, asc: boolean) => {
-  return api.get(`/equipments/page/?page=${page}&size=${size}&order=${order}&asc=${asc}`)
+const page = (page: number, size: number, order: string, sort: boolean) => {
+  return api.get(`/equipments/page/?page=${page}&size=${size}&order=${order}&sort=${sort}`)
 }
 
 const EquipmentService = {

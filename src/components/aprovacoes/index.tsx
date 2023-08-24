@@ -33,7 +33,7 @@ export const Aprovacoes = () => {
       setApiError('')
     })
     .catch((responseError: any) => {
-      setApiError('Falha ao carregar lista de categorias.')
+      setApiError('Falha ao carregar lista de solicitações pendentes.')
       toast.error(apiError)
       // eslint-disable-next-line no-console
     })
@@ -45,7 +45,7 @@ export const Aprovacoes = () => {
       setApiError('')
     })
     .catch((responseError: any) => {
-      setApiError('Falha ao carregar lista de categorias.')
+      setApiError('Falha ao carregar lista de vínculos pendentes.')
       toast.error(apiError)
       // eslint-disable-next-line no-console
     })

@@ -14,18 +14,18 @@ const findAll = () => {
   return api.get('/partners')
 }
 
-const page = (page: number, size: number, order: string, asc: boolean) => {
-  return api.get(`/partners/page/?page=${page}&size=${size}&order=${order}&asc=${asc}`)
+const page = (page: number, size: number, order: string, sort: boolean) => {
+  return api.get(`/partners/page/?page=${page}&size=${size}&order=${order}&sort=${sort}`)
 }
 
 const search = (
   page: number,
   size: number,
   order: string,
-  asc: boolean,
+  sort: boolean,
   search: string
 ) => {
-  return api.get(`/partners/search?page=${page}&size=${size}&order=${order}&asc=${asc}&search=${search}`)
+  return api.get(`/partners/search?page=${page}&size=${size}&order=${order}&sort=${sort}&search=${search}`)
 }
 
 const findOne = (id: number) => {

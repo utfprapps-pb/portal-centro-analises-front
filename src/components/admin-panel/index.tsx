@@ -47,7 +47,7 @@ export function AdminPanel() {
   }, []);
 
   const loadData = (page: number) => {
-    UserService.page(page, rowsPerPage, 'id', true)
+    UserService.page(page, rowsPerPage, "id", true)
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);

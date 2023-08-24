@@ -4,9 +4,10 @@ import Select from 'react-select';
 interface DropdownProps {
   value: number;
   onChange: (selectedValue: number) => void;
+  nome:string;
 }
 
-const DropdownMov: React.FC<DropdownProps> = ({ value, onChange }) => {
+const DropdownMov: React.FC<DropdownProps> = ({ value, nome, onChange }) => {
   const [selectedOption, setSelectedOption] = useState( { value: 0, label: 'Depositar' },);
 
   const options = [
@@ -41,6 +42,7 @@ const DropdownMov: React.FC<DropdownProps> = ({ value, onChange }) => {
   return (
     <div>
       <Select
+        name={nome}
         value={selectedOption}
         onChange={handleSelect}
         options={options}
