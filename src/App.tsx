@@ -15,6 +15,7 @@ import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
 import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
 import { AprovacoesView } from "./pages/aprovacoes/AprovacoesView";
 import { ROLES } from "./commons/roles";
+import { RecoverPasswordPage } from "@/pages/recover-password";
 
 export function App() {
   return (
@@ -27,6 +28,7 @@ export function App() {
           path="/email-confirm/:hashKey"
           element={<EmailConfirmationPage />}
         />
+        <Route path="recover-password" element={<RecoverPasswordPage />} />
 
         <Route
           element={
