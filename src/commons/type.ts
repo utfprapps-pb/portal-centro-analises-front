@@ -55,11 +55,11 @@ export interface Teacher {
 }
 
 export type SignUpParams = {
-  name: string
-  username: string
-  password: string
-  email: string
-}
+  name: string;
+  username: string;
+  password: string;
+  email: string;
+};
 
 export interface SolicitationAudit {
   id: number;
@@ -73,7 +73,7 @@ export interface SolicitationAudit {
     newStatus: string;
     createdBy: {
       name: string;
-    }
+    };
     equipment: {
       form: string;
       name: string;
@@ -83,17 +83,17 @@ export interface SolicitationAudit {
       subject: string;
       teacher: {
         name: string;
-      }
-    }
+      };
+    };
     value: number;
     fileUrl: string;
     projectNature: {
       content: string;
-    }
-  }
+    };
+  };
 }
 
 export type LabelValue = {
-  label: string,
-  value: string
-}
+  label: string;
+  value: string;
+};
