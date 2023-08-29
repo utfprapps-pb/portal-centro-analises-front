@@ -10,7 +10,7 @@
     "lint": "eslint ./ --ext .tsx --ext .ts --ext .js --cache --cache-strategy content",
     "lint:fix": "npm run lint --fix",
     "prepare": "husky install",
-    "test": ""
+    "test": "echo \"Error: no test specified\""
   },
   "dependencies": {
     "@emotion/react": "^11.10.8",
