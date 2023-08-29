@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbUp, ThumbDown, OpenInBrowser } from '@material-ui/icons'
-import { IconButton } from '@mui/material'
+import { IconButton, TableFooter, TablePagination } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -10,26 +10,34 @@ import TableRow from '@mui/material/TableRow'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import styles from './styles.module.scss'
-import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
 import { VinculoParams } from '@/services/api/aprovacoes/aprovacoes.type'
+import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
+import StudentProfessorLinkService from '@/services/api/studentProfessorLink/StudentProfessorLinkService'
 
 export const AprovacaoVinculoPanel = () => {
     const navigate = useNavigate()
     const [dataVinculo, setDataVinculo] = useState<VinculoParams[]>([])
     const [apiError, setApiError] = useState('')
+
+    const [page, setPage] = useState(0);
+    const rowsPerPage = 10;
+    const [total, setTotal] = useState(0);
+    const [pages, setPages] = useState(0);
+
     var t: any = localStorage.getItem("user");
     var infoArray = JSON.parse(t);
     var userId = infoArray.id.toString();
 
 
 
-    const loadData = () => {
-        AprovacoesService.getVinculoPending(userId)
+    const loadData = (page: number) => {
+        StudentProfessorLinkService.pageVinculoPending(page, rowsPerPage, "id", true, userId)
             .then((response: any) => {
-                setDataVinculo(response.data)
-                console.log(response.data)
+                setDataVinculo(response.data.content);
+                setTotal(response.data.totalElements);
+                setPages(response.data.totalPages);
                 setApiError('')
             })
             .catch((responseError: any) => {
@@ -42,7 +50,7 @@ export const AprovacaoVinculoPanel = () => {
     }
 
     useEffect(() => {
-        loadData();
+        loadData(0);
     }, [])
 
     const approveVinculo = (id: number, student: object, teacher: object) => {
@@ -52,11 +60,11 @@ export const AprovacaoVinculoPanel = () => {
             teacher: teacher,
             aproved: true
         }
-        AprovacoesService.approveVinculo(payload)
+        StudentProfessorLinkService.approveVinculo(payload)
             .then((response) => {
                 toast.success("Aprovado com sucesso!")
                 setApiError('')
-                loadData()
+                loadData(0)
             })
             .catch((responseError) => {
                 setApiError('Falha ao aprovar.')
@@ -66,11 +74,11 @@ export const AprovacaoVinculoPanel = () => {
     }
 
     const rejectVinculo = (id: number) => {
-        AprovacoesService.rejectVinculo(id)
+        StudentProfessorLinkService.rejectVinculo(id)
             .then((response) => {
                 toast.success("Rejeitado!")
                 setApiError('')
-                loadData()
+                loadData(0)
             })
             .catch((responseError) => {
                 setApiError('Falha ao rejeitar.')
@@ -79,10 +87,18 @@ export const AprovacaoVinculoPanel = () => {
             })
     }
 
+    const handleChangePage = (
+        event: React.MouseEvent<HTMLButtonElement> | null,
+        newPage: number,
+    ) => {
+        setPage(newPage);
+        loadData(newPage)
+    };
+
     return (
         <>
             <div className={styles.container}>
-                <h1 className={styles.title}>APROVAÇÕES</h1>
+                <h1 className={styles.title}>APROVAÇÕES DE VÍNCULO</h1>
                 <>
                     <TableContainer component={Paper}>
                         <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -111,6 +127,24 @@ export const AprovacaoVinculoPanel = () => {
                                     </StyledTableRow>
                                 ))}
                             </TableBody>
+                            <TableFooter>
+                                <TableRow>
+                                    <TablePagination
+                                        colSpan={5}
+                                        count={total}
+                                        rowsPerPage={rowsPerPage}
+                                        rowsPerPageOptions={[10]}
+                                        page={page}
+                                        SelectProps={{
+                                            inputProps: {
+                                                'aria-label': 'rows per page',
+                                            },
+                                            native: true,
+                                        }}
+                                        onPageChange={handleChangePage}
+                                        ActionsComponent={TablePaginationActions} />
+                                </TableRow>
+                            </TableFooter>
                         </Table>
                     </TableContainer>
                 </>
