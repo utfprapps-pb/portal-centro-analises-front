@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint ./ --ext .tsx --ext .ts --ext .js --cache --cache-strategy content",
-    "lint:fix": "npm run lint --fix"
+    "lint:fix": "npm run lint --fix",
+    "prepare": "husky install",
+    "test": ""
   },
   "dependencies": {
     "@emotion/react": "^11.10.8",
@@ -45,6 +47,7 @@
     "eslint-plugin-n": "^16.0.2",
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.33.2",
+    "husky": "^8.0.3",
     "prettier": "3.0.3",
     "typescript": "^5.2.2",
     "vite": "^4.1.0"
