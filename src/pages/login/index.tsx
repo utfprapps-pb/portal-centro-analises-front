@@ -41,10 +41,8 @@ export const LoginPage: React.FC = () => {
 
         if(errorData === 'Email not verified'){
           toast.error('E-mail não foi verificado');
-          setApiError("E-mail não foi verificado");
         } else {
           toast.error('Usuário ou senha inválidos!');
-          setApiError("Usuário ou senha inválidos!");
         }
         
         setPendingApiCall(false);
