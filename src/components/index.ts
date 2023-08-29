@@ -29,4 +29,5 @@ export * from '@/components/partner/list'
 export * from '@/components/filter-drawer'
 export * from '@/components/admin-panel'
 export * from '@/components/aprovacoes'
-
+export * from '@/components/aprovacao-solicitacao-panel'
+export * from '@/components/aprovacao-vinculo-panel'

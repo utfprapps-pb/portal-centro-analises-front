@@ -1,4 +1,4 @@
-export type ArovacoesParams = {
+export type AprovacoesParams = {
   id?: number
   createdBy: CreatedBy
   description: string

@@ -13,11 +13,11 @@ import styles from './styles.module.scss'
 import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
-import { ArovacoesParams, VinculoParams } from '@/services/api/aprovacoes/aprovacoes.type'
+import { AprovacoesParams, VinculoParams } from '@/services/api/aprovacoes/aprovacoes.type'
 
 export const Aprovacoes = () => {
   const navigate = useNavigate()
-  const [dataSolicitation, setDataSolicitation] = useState<ArovacoesParams[]>([])
+  const [dataSolicitation, setDataSolicitation] = useState<AprovacoesParams[]>([])
   const [dataVinculo, setDataVinculo] = useState<VinculoParams[]>([])
   const [apiError, setApiError] = useState('')
   var t: any = localStorage.getItem("user");

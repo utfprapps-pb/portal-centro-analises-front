@@ -1,7 +1,7 @@
-import { ArovacoesParams } from './aprovacoes.type'
+import { AprovacoesParams } from './aprovacoes.type'
 import { api } from '@/libs'
 
-const save = (project: ArovacoesParams) => api.post('/project', project)
+const save = (project: AprovacoesParams) => api.post('/project', project)
 
 const findAll = () => api.get('/project')
 
