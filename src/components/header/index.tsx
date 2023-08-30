@@ -14,6 +14,10 @@ export function Header() {
     navigate("/profile");
   };
 
+  const goToConfigEmail = () => {
+    navigate("/config-email");
+  };
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -55,6 +59,7 @@ export function Header() {
           }}
         >
           <MenuItem onClick={goToProfile}>Meu Perfil</MenuItem>
+          <MenuItem onClick={goToConfigEmail}>Config. Email</MenuItem>
           <MenuItem
             onClick={() => {
               AuthService.logOut();

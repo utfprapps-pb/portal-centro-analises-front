@@ -16,6 +16,7 @@ import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
 import { AprovacoesView } from "./pages/aprovacoes/AprovacoesView";
 import { ROLES } from "./commons/roles";
 import { RecoverPasswordPage } from "@/pages/recover-password";
+import { ConfigEmailPage } from "@/pages/config/email";
 
 export function App() {
   return (
@@ -47,6 +48,7 @@ export function App() {
           <Route path="/historico" element={<HistoricoPage />} />
           <Route path="/solicitar" element={<SolicitarPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/config-email" element={<ConfigEmailPage />} />
         </Route>
 
         <Route
