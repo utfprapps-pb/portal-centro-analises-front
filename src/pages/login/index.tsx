@@ -8,11 +8,8 @@ import { AuthContext } from "../../contexts/auth";
 import AuthService from "../../services/AuthService"
 import { UserLogin } from "../../commons/type";
 import { toast } from "react-hot-toast";
-import { AccountBalance } from '@material-ui/icons';
 
 export const LoginPage: React.FC = () => {
-  const [apiError, setApiError] = useState("");
-  const [pendingApiCall, setPendingApiCall] = useState(false);
   const navigate = useNavigate();
   const { handleLogin, loading } = useContext(AuthContext);
 
@@ -25,7 +22,6 @@ export const LoginPage: React.FC = () => {
   }
 
   function handleSubmit(values: { email: string; password: string }) {
-    setPendingApiCall(true);
     const userLogin: UserLogin = {
       email: values.email,
       password: values.password,
@@ -33,7 +29,6 @@ export const LoginPage: React.FC = () => {
     AuthService.login(userLogin)
       .then((response) => {
         handleLogin(response.data);
-        setPendingApiCall(false);
         navigate("/");
       })
       .catch((apiError) => {
@@ -44,8 +39,6 @@ export const LoginPage: React.FC = () => {
         } else {
           toast.error('Usuário ou senha inválidos!');
         }
-        
-        setPendingApiCall(false);
       });
   }
 
