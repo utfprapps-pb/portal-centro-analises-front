@@ -7,6 +7,8 @@ import { CustomButton } from '../custom-button';
 import Dropdown from '../dropdown';
 import { api } from '@/libs/axiosBase';
 import { EditUser } from '@/commons/type';
+import { toast } from 'react-hot-toast';
+import { Button } from '@mui/material';
 
 export function AdminPanel() {
 
@@ -24,14 +26,7 @@ export function AdminPanel() {
   });
 
   useEffect(() => {
-    api.get("/users")
-      .then(response => {
-        const data = response.data;
-        setPage((state: any) => ({
-          ...state,
-          content: data
-        }));
-      })
+    showActive()
   }, [activePage]);
 
   const changePage = (index: number) => {
@@ -42,21 +37,62 @@ export function AdminPanel() {
     setUser(selected);
   }
 
+  //mostra a lista de usuários ativos 
+  //(é o padrão para quando o usuário 
+  //entrar no painel admin por isso
+  //esta função é chamada no useEffect)
+  function showActive(){
+    api.get("/users")
+      .then(response => {
+        const data = response.data;
+        setPage((state: any) => ({
+          ...state,
+          content: data
+        }));
+    })
+  }
+
+  //mostra a lista de usuários inativos
+  function showInactive(){
+    api.get("/users/findInactive")
+      .then(response => {
+        const data = response.data;
+        setPage((state: any) => ({
+            ...state,
+            content: data
+        }));
+      })
+  }
+
   function updateSelectedUser(selected: EditUser) {
     if (selected != null && selected.id != null) {
       api.post(`admin/edit/role/${selected.id}`, selected.role).then((response) => {
         window.location.reload();
+      }).catch((responseError) => {
+        toast.error("Não é possível editar um usuário inativo.");
+        console.log(responseError);
       });
     }
   }
 
-  function removeUserSelectedUser(selected: EditUser) {
+  /*Remove se o usuário não tiver nenhum vinculo com um projeto
+  OU Inativa se o usuário tiver vínculos com um ou mais projetos*/
+  function removeOrInactiveSelectedUser(selected: EditUser) {
     if (selected != null && selected.id != null) {
       api.delete('users/' + selected.id)
         .then((response) => {
           window.location.reload();
         });
+    }
+  }
 
+  function activeSelectedUser(selected: EditUser) {
+    if (selected != null && selected.id != null) {
+      if(selected)
+      api.put('users/activatedUser/' + selected.id)
+        .then((response) => {
+          window.location.reload();
+        });
     }
   }
 
@@ -161,19 +197,17 @@ export function AdminPanel() {
                         fontWeight="400"
                         type="submit" />
                     </div>
+
                     <div className={styles.button_box}>
-                      <CustomButton
-                        onClick={() => removeUserSelectedUser(user!)}
-                        text="REMOVER"
-                        padding="1rem"
-                        textColor="white"
-                        backgroundColor="#cc0000"
-                        textColorHover="white"
-                        backgroundColorHover="#ff4444"
-                        letterSpacing="4px"
-                        fontSize="16px"
-                        fontWeight="400"
-                        type="submit" />
+                        <Button color="error" onClick={() => removeOrInactiveSelectedUser(user!)} variant="contained" size="large" sx={{ mr: 1}}>DEIXAR INATIVO</Button>
+                        
+                        <Button color="success" onClick={() => activeSelectedUser(user!)} variant="contained" size="large">DEIXAR ATIVO</Button>
+                    </div>
+                    
+                    <div className={styles.button_box}>
+                      <Button color="secondary" onClick={() => showInactive()} variant="outlined" size="large" sx={{ mr: 1}}>VER INATIVOS</Button>
+
+                      <Button color="secondary" onClick={() => showActive()} variant="outlined" size="large">VER ATIVOS</Button>
                     </div>
                   </div>
                 </Form>
