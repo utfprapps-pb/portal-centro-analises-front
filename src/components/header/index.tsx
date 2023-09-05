@@ -59,7 +59,11 @@ export function Header() {
           }}
         >
           <MenuItem onClick={goToProfile}>Meu Perfil</MenuItem>
-          <MenuItem onClick={goToConfigEmail}>Config. Email</MenuItem>
+          {authenticatedUser && authenticatedUser.role == 'ADMIN' &&
+            <>
+              <MenuItem onClick={goToConfigEmail}>Config. Email </MenuItem>
+            </>
+          }
           <MenuItem
             onClick={() => {
               AuthService.logOut();
@@ -70,6 +74,6 @@ export function Header() {
           </MenuItem>
         </Menu>
       </h2>
-    </div>
+    </div >
   );
 }

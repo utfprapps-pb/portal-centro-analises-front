@@ -48,7 +48,6 @@ export function App() {
           <Route path="/historico" element={<HistoricoPage />} />
           <Route path="/solicitar" element={<SolicitarPage />} />
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/config-email" element={<ConfigEmailPage />} />
         </Route>
 
         <Route
@@ -95,6 +94,7 @@ export function App() {
           <Route path="/partner" element={<PartnerListPage />} />
           <Route path="/partner/new" element={<PartnerPage />} />
           <Route path="/partner/:id" element={<PartnerPage />} />
+          <Route path="/config-email" element={<ConfigEmailPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
