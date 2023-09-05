@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as yup from "yup";
-
-import { api } from "@/libs/axiosBase";
-import { EditUser } from "@/commons/type";
-import Dropdown from "../dropdown";
-import { CustomButton } from "../custom-button";
-import { CustomErrorMessage } from "../error-message";
-import styles from "./styles.module.scss";
+import { CustomButton } from '../custom-button';
+import Dropdown from '../dropdown';
+import { api } from '@/libs/axiosBase';
+import { EditUser } from '@/commons/type';
+import { toast } from 'react-hot-toast';
+import { Button } from '@mui/material';
 
 export function AdminPanel() {
   const [activePage, setActivePage] = useState(0);
@@ -22,6 +21,10 @@ export function AdminPanel() {
     totalPages: 0,
   });
 
+  useEffect(() => {
+    showActive()
+  }, [activePage]);
+
   const changePage = (index: number) => {
     setActivePage(index);
   };
@@ -30,21 +33,62 @@ export function AdminPanel() {
     setUser(selected);
   }
 
+  //mostra a lista de usuários ativos
+  //(é o padrão para quando o usuário
+  //entrar no painel admin por isso
+  //esta função é chamada no useEffect)
+  function showActive(){
+    api.get("/users")
+      .then(response => {
+        const data = response.data;
+        setPage((state: any) => ({
+          ...state,
+          content: data
+        }));
+    })
+  }
+
+  //mostra a lista de usuários inativos
+  function showInactive(){
+    api.get("/users/findInactive")
+      .then(response => {
+        const data = response.data;
+        setPage((state: any) => ({
+            ...state,
+            content: data
+        }));
+      })
+  }
+
   function updateSelectedUser(selected: EditUser) {
     if (selected != null && selected.id != null) {
-      api
-        .post(`admin/edit/role/${selected.id}`, selected.role)
+      api.post(`admin/edit/role/${selected.id}`, selected.role).then((response) => {
+        window.location.reload();
+      }).catch((responseError) => {
+        toast.error("Não é possível editar um usuário inativo.");
+        console.log(responseError);
+      });
+    }
+  }
+
+  /*Remove se o usuário não tiver nenhum vinculo com um projeto
+  OU Inativa se o usuário tiver vínculos com um ou mais projetos*/
+  function removeOrInactiveSelectedUser(selected: EditUser) {
+    if (selected != null && selected.id != null) {
+      api.delete('users/' + selected.id)
         .then((response) => {
           window.location.reload();
         });
     }
   }
 
-  function removeUserSelectedUser(selected: EditUser) {
+  function activeSelectedUser(selected: EditUser) {
     if (selected != null && selected.id != null) {
-      api.delete("users/" + selected.id).then((response) => {
-        window.location.reload();
-      });
+      if(selected)
+      api.put('users/activatedUser/' + selected.id)
+        .then((response) => {
+          window.location.reload();
+        });
     }
   }
 
@@ -189,9 +233,35 @@ export function AdminPanel() {
                         />
                       </div>
                     </div>
-                  </Form>
-                </Formik>
-              </div>
+                    <div className={styles.button_box}>
+                      <CustomButton
+                        onClick={() => updateSelectedUser(user!)}
+                        text="ATUALIZAR"
+                        padding="1rem"
+                        textColor="white"
+                        backgroundColor="#006dac"
+                        textColorHover="white"
+                        backgroundColorHover="#00bbff"
+                        letterSpacing="4px"
+                        fontSize="16px"
+                        fontWeight="400"
+                        type="submit" />
+                    </div>
+
+                    <div className={styles.button_box}>
+                        <Button color="error" onClick={() => removeOrInactiveSelectedUser(user!)} variant="contained" size="large" sx={{ mr: 1}}>DEIXAR INATIVO</Button>
+
+                        <Button color="success" onClick={() => activeSelectedUser(user!)} variant="contained" size="large">DEIXAR ATIVO</Button>
+                    </div>
+
+                    <div className={styles.button_box}>
+                      <Button color="secondary" onClick={() => showInactive()} variant="outlined" size="large" sx={{ mr: 1}}>VER INATIVOS</Button>
+
+                      <Button color="secondary" onClick={() => showActive()} variant="outlined" size="large">VER ATIVOS</Button>
+                    </div>
+                  </div>
+                </Form>
+              </Formik>
             </div>
           </div>
           <div className="table-responsive">
