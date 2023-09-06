@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./styles.module.scss";
 import { Header, Menu } from "@/components";
 import { Field, Form, Formik, useFormikContext } from "formik";
@@ -6,6 +6,7 @@ import { Box, Paper, TextField, Button } from "@mui/material";
 import * as yup from 'yup';
 import ConfigEmailService from "@/services/api/config-email";
 import toast from "react-hot-toast";
+import { AxiosError, HttpStatusCode } from "axios";
 
 export interface ConfigEmailPageFormValues {
   id: number;
@@ -16,6 +17,8 @@ export interface ConfigEmailPageFormValues {
 }
 
 export const ConfigEmailPage = () => {
+  const didMountRef = useRef(false);
+
   const [configEmail, setConfigEmail] = useState<ConfigEmailPageFormValues>({
     id: 0,
     emailFrom: "",
@@ -46,6 +49,10 @@ export const ConfigEmailPage = () => {
   );
 
   useEffect(() => {
+    if (didMountRef.current)
+      return;
+
+    didMountRef.current = true;
     ConfigEmailService.find()
       .then((response) => {
         if (response.data) {
@@ -59,6 +66,9 @@ export const ConfigEmailPage = () => {
         };
       })
       .catch((apiError) => {
+        if (apiError?.response?.status == HttpStatusCode.NotFound)
+          return;
+
         let messageError = apiError?.response?.data?.message ?? 'Falha ao carregar configuração do email.';
         toast.error(messageError);
       })
