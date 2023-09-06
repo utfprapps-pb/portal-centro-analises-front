@@ -9,11 +9,17 @@ const remove = (id: number) => api.delete(`/equipments/${id}`)
 
 const findById = (id: number) => api.post(`/equipments/${id}`)
 
+const findAllInactive = () => api.get('/equipments/findInactive')
+
+const activeEquipmentById = (id: number) => api.put(`/equipments/activatedEquipment/${id}`)
+
 const EquipmentService = {
   save,
   findAll,
   remove,
-  findById
+  findById,
+  findAllInactive,
+  activeEquipmentById
 }
 
 export default EquipmentService
