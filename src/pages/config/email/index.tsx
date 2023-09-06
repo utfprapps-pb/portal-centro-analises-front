@@ -6,7 +6,7 @@ import { Box, Paper, TextField, Button } from "@mui/material";
 import * as yup from 'yup';
 import ConfigEmailService from "@/services/api/config-email";
 import toast from "react-hot-toast";
-import { AxiosError, HttpStatusCode } from "axios";
+import { HttpStatusCode } from "axios";
 
 export interface ConfigEmailPageFormValues {
   id: number;
@@ -39,6 +39,7 @@ export const ConfigEmailPage = () => {
         }
       ).then((response) => {
         toast.success(response?.data?.message ?? 'Configurações do email salvas com sucesso.');
+        searchConfigEmail();
       })
         .catch((apiError) => {
           let messageError = apiError?.response?.data?.message ?? 'Erro ao salvar configurações do email.';
@@ -52,27 +53,31 @@ export const ConfigEmailPage = () => {
     if (didMountRef.current)
       return;
 
+    searchConfigEmail();
     didMountRef.current = true;
-    ConfigEmailService.find()
-      .then((response) => {
-        if (response.data) {
-          setConfigEmail({
-            id: response.data.id,
-            emailFrom: response.data.emailFrom,
-            passwordEmailFrom: response.data.passwordEmailFrom,
-            sendHost: response.data.sendHost,
-            sendPort: response.data.sendPort,
-          });
-        };
-      })
-      .catch((apiError) => {
-        if (apiError?.response?.status == HttpStatusCode.NotFound)
-          return;
-
-        let messageError = apiError?.response?.data?.message ?? 'Falha ao carregar configuração do email.';
-        toast.error(messageError);
-      })
   }, []);
+
+  const searchConfigEmail = () => {
+    ConfigEmailService.find()
+    .then((response) => {
+      if (response.data) {
+        setConfigEmail({
+          id: response.data.id,
+          emailFrom: response.data.emailFrom,
+          passwordEmailFrom: response.data.passwordEmailFrom,
+          sendHost: response.data.sendHost,
+          sendPort: response.data.sendPort,
+        });
+      };
+    })
+    .catch((apiError) => {
+      if (apiError?.response?.status == HttpStatusCode.NotFound)
+        return;
+
+      let messageError = apiError?.response?.data?.message ?? 'Falha ao carregar configuração do email.';
+      toast.error(messageError);
+    })
+  }
 
   const validationForm = yup.object().shape({
     emailFrom: yup
