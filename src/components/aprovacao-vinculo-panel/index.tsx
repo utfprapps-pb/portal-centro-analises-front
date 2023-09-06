@@ -25,12 +25,11 @@ export const AprovacaoVinculoPanel = () => {
     const rowsPerPage = 10;
     const [total, setTotal] = useState(0);
     const [pages, setPages] = useState(0);
+    const [empty, setEmpty] = useState(0);
 
     var t: any = localStorage.getItem("user");
     var infoArray = JSON.parse(t);
     var userId = infoArray.id.toString();
-
-
 
     const loadData = (page: number) => {
         StudentProfessorLinkService.pageVinculoPending(page, rowsPerPage, "id", true, userId)
@@ -38,6 +37,7 @@ export const AprovacaoVinculoPanel = () => {
                 setDataVinculo(response.data.content);
                 setTotal(response.data.totalElements);
                 setPages(response.data.totalPages);
+                setEmpty(Math.max(0, (1 + page) * rowsPerPage - dataVinculo.length))
                 setApiError('')
             })
             .catch((responseError: any) => {
@@ -64,7 +64,7 @@ export const AprovacaoVinculoPanel = () => {
             .then((response) => {
                 toast.success("Aprovado com sucesso!")
                 setApiError('')
-                loadData(0)
+                handleChangePage(null, 0)
             })
             .catch((responseError) => {
                 setApiError('Falha ao aprovar.')
@@ -78,7 +78,7 @@ export const AprovacaoVinculoPanel = () => {
             .then((response) => {
                 toast.success("Rejeitado!")
                 setApiError('')
-                loadData(0)
+                handleChangePage(null, 0)
             })
             .catch((responseError) => {
                 setApiError('Falha ao rejeitar.')
@@ -112,7 +112,7 @@ export const AprovacaoVinculoPanel = () => {
                             <TableBody>
                                 {dataVinculo.filter((v) => v.aproved === null).map((v) => (
                                     <StyledTableRow key={v.id}>
-                                        <StyledTableCell component="th" scope="row">
+                                        <StyledTableCell scope="row">
                                             {v.id}
                                         </StyledTableCell>
                                         <StyledTableCell align="center">{v.student.name}</StyledTableCell>
@@ -126,6 +126,15 @@ export const AprovacaoVinculoPanel = () => {
                                         </StyledTableCell>
                                     </StyledTableRow>
                                 ))}
+                                {empty > 0 && (
+                                    <StyledTableRow
+                                        style={{
+                                            height: 58 * empty,
+                                        }}
+                                    >
+                                        <StyledTableCell colSpan={5} />
+                                    </StyledTableRow>
+                                )}
                             </TableBody>
                             <TableFooter>
                                 <TableRow>

@@ -25,6 +25,7 @@ export const AprovacaoSolicitacaoPanel = () => {
     const rowsPerPage = 10;
     const [total, setTotal] = useState(0);
     const [pages, setPages] = useState(0);
+    const [empty, setEmpty] = useState(0);
 
     var t: any = localStorage.getItem("user");
     var infoArray = JSON.parse(t);
@@ -36,6 +37,7 @@ export const AprovacaoSolicitacaoPanel = () => {
                 setDataSolicitation(response.data.content)
                 setTotal(response.data.totalElements);
                 setPages(response.data.totalPages);
+                setEmpty(Math.max(0, (1 + page) * rowsPerPage - dataSolicitation.length))
                 setApiError('')
             })
             .catch((responseError: any) => {
@@ -54,7 +56,7 @@ export const AprovacaoSolicitacaoPanel = () => {
             .then((response) => {
                 toast.success("Aprovado com sucesso!")
                 setApiError('')
-                loadData(0)
+                handleChangePage(null, 0);
             })
             .catch((responseError) => {
                 setApiError('Falha ao aprovar.')
@@ -68,7 +70,7 @@ export const AprovacaoSolicitacaoPanel = () => {
             .then((response) => {
                 toast.success("Rejeitado!")
                 setApiError('')
-                loadData(0)
+                handleChangePage(null, 0);
             })
             .catch((responseError) => {
                 setApiError('Falha ao rejeitar.')
@@ -80,10 +82,10 @@ export const AprovacaoSolicitacaoPanel = () => {
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
         newPage: number,
-      ) => {
+    ) => {
         setPage(newPage);
         loadData(newPage)
-      };
+    };
 
     return (
         <>
@@ -104,7 +106,7 @@ export const AprovacaoSolicitacaoPanel = () => {
                         <TableBody>
                             {dataSolicitation.map((p) => (
                                 <StyledTableRow key={p.id}>
-                                    <StyledTableCell component="th" scope="row">
+                                    <StyledTableCell scope="row">
                                         {p.id}
                                     </StyledTableCell>
                                     <StyledTableCell align="center" className={styles.icon_open}>
@@ -125,23 +127,32 @@ export const AprovacaoSolicitacaoPanel = () => {
                                     </StyledTableCell>
                                 </StyledTableRow>
                             ))}
+                            {empty > 0 && (
+                                <StyledTableRow
+                                    style={{
+                                        height: 58 * empty,
+                                    }}
+                                >
+                                    <StyledTableCell colSpan={5} />
+                                </StyledTableRow>
+                            )}
                         </TableBody>
                         <TableFooter>
                             <TableRow>
-                            <TablePagination
-                                colSpan={5}
-                                count={total}
-                                rowsPerPage={rowsPerPage}
-                                rowsPerPageOptions={[10]}
-                                page={page}
-                                SelectProps={{
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                                }}
-                                onPageChange={handleChangePage}
-                                ActionsComponent={TablePaginationActions} />
+                                <TablePagination
+                                    colSpan={5}
+                                    count={total}
+                                    rowsPerPage={rowsPerPage}
+                                    rowsPerPageOptions={[10]}
+                                    page={page}
+                                    SelectProps={{
+                                        inputProps: {
+                                            'aria-label': 'rows per page',
+                                        },
+                                        native: true,
+                                    }}
+                                    onPageChange={handleChangePage}
+                                    ActionsComponent={TablePaginationActions} />
                             </TableRow>
                         </TableFooter>
                     </Table>

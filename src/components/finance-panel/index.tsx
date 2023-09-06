@@ -35,7 +35,7 @@ export const FinancePanel: React.FC = () => {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
-
+  const [empty, setEmpty] = useState(0);
 
   useEffect(() => {
     loadData(0)
@@ -47,6 +47,7 @@ export const FinancePanel: React.FC = () => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
         setPages(response.data.totalPages);
+        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
       })
       .catch((responseError: any) => {
       })
@@ -117,9 +118,8 @@ export const FinancePanel: React.FC = () => {
 
     updatedFinance.type = type;
     updatedFinance.description = description;
-    updatedFinance.value = valor;   
-    console.log(updatedFinance);  
-    
+    updatedFinance.value = valor;
+
     if (updatedFinance && updatedFinance.user
       && updatedFinance.type != null && updatedFinance.value) {
       FinanceService.save({
@@ -131,8 +131,7 @@ export const FinancePanel: React.FC = () => {
         "description": updatedFinance.description
       }).then((response) => {
         handleClose();
-        loadData(0)
-        //window.location.reload();
+        handleChangePage(null, 0)
       });
     }
   }
@@ -142,117 +141,114 @@ export const FinancePanel: React.FC = () => {
       {isLoading ? (
         <p>Carregando...</p>
       ) : (
-        <><div className={styles.inputs_box}>
-          <div className={styles.container}>
-            <Dialog open={open} onClose={handleClose} style={{ overflowY: 'visible' }}>
-              <DialogTitle>Movimentação</DialogTitle>
-              <DialogContent style={{ overflowY: 'visible' }}>              
-              <Formik
-                initialValues={{
-                  nome: "",
-                  type: 0,
-                  valor: "",
-                  description: "",
-                }}
-                onSubmit={handleClickForm}
-                validationSchema={validationForm}
-              >
-                <Form className={styles.inputs_container}>
-                  <div className={styles.inputs_box}>
-                    <div className={styles.row_box}>
-                      <div className={styles.field_box}>
-                        <p>Nome</p>
-                        <div className={styles.input_box}>
-                          <ErrorMessage
-                            component={CustomErrorMessage}
-                            name="nome"
-                            className={styles.form_error} />
-                          <Field
-                            name="nome"
-                            disabled
-                            value={user?.name ?? ''}
-                            placeholder=''
-                            className={styles.input_form} />
+        <>
+          <div className={styles.inputs_box}>
+            <div className={styles.container}>
+              <Dialog open={open} onClose={handleClose} style={{ overflowY: 'visible' }}>
+                <DialogTitle>Movimentação</DialogTitle>
+                <DialogContent style={{ overflowY: 'visible' }}>
+                  <Formik
+                    initialValues={{
+                      nome: "",
+                      type: 0,
+                      valor: "",
+                      description: "",
+                    }}
+                    onSubmit={handleClickForm}
+                    validationSchema={validationForm}
+                  >
+                    <Form className={styles.inputs_container}>
+                      <div className={styles.inputs_box}>
+                        <div className={styles.row_box}>
+                          <div className={styles.field_box}>
+                            <p>Nome</p>
+                            <div className={styles.input_box}>
+                              <ErrorMessage
+                                component={CustomErrorMessage}
+                                name="nome"
+                                className={styles.form_error} />
+                              <Field
+                                name="nome"
+                                disabled
+                                value={user?.name ?? ''}
+                                placeholder=''
+                                className={styles.input_form} />
+                            </div>
+                          </div>
+
+                          <div className={styles.field_box}>
+                            <div className={styles.field_box}>
+                              <p>Movimentação</p>
+                              <DropdownMov nome={"nome"} value={0} onChange={handleTypeChange} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.row_box}>
+                          <div className={styles.field_box}>
+                            <p>Valor</p>
+                            <div className={styles.input_box}>
+                              <ErrorMessage
+                                component={CustomErrorMessage}
+                                name="valor"
+                                className={styles.form_error} />
+                              <Field
+                                name="valor"
+                                placeholder=''
+                                className={styles.input_form} />
+                            </div>
+                          </div>
+
+                          <div className={styles.field_box}>
+                            <p>Descrição</p>
+                            <div className={styles.input_box}>
+                              <ErrorMessage
+                                component={CustomErrorMessage}
+                                name="description"
+                                className={styles.form_error} />
+                              <Field
+                                name="description"
+                                placeholder=''
+                                className={styles.input_form} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.row_box}>
+                          <div className={styles.button_box}>
+                            <CustomButton
+                              onClick={() => handleClose()}
+                              text="Cancelar"
+                              padding="1rem"
+                              textColor="white"
+                              backgroundColor="#676767"
+                              textColorHover="white"
+                              backgroundColorHover="#9f9f9f"
+                              letterSpacing="4px"
+                              fontSize="16px"
+                              fontWeight="400"
+                              type="submit" />
+                          </div>
+                          <div className={styles.button_box}>
+                            <CustomButton
+                              text="CONFIRMAR"
+                              padding="1rem"
+                              textColor="white"
+                              backgroundColor="#006dac"
+                              textColorHover="white"
+                              backgroundColorHover="#00bbff"
+                              letterSpacing="4px"
+                              fontSize="16px"
+                              fontWeight="400"
+                              type="submit" />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className={styles.row_box}>
-                      <div className={styles.field_box}>
-                        <div className={styles.field_box}>
-                          <p>Movimentação</p>
-                          <DropdownMov nome={"nome"} value={0} onChange={handleTypeChange} />
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.row_box}>
-                      <div className={styles.field_box}>
-                        <p>Valor</p>
-                        <div className={styles.input_box}>
-                          <ErrorMessage
-                            component={CustomErrorMessage}
-                            name="valor"
-                            className={styles.form_error} />
-                          <Field
-                            name="valor"
-                            placeholder=''
-                            className={styles.input_form} />
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.row_box}>
-                      <div className={styles.field_box}>
-                        <p>Descrição</p>
-                        <div className={styles.input_box}>
-                          <ErrorMessage
-                            component={CustomErrorMessage}
-                            name="description"
-                            className={styles.form_error} />
-                          <Field
-                            name="description"
-                            placeholder=''
-                            className={styles.input_form} />
-                        </div>
-                      </div>
-                    </div>
-                    <div className={styles.button_box}>
-                      <CustomButton
-                        text="CONFIRMAR"
-                        padding="1rem"
-                        textColor="white"
-                        backgroundColor="#006dac"
-                        textColorHover="white"
-                        backgroundColorHover="#00bbff"
-                        letterSpacing="4px"
-                        fontSize="16px"
-                        fontWeight="400"
-                        type="submit" />
-                    </div>
-                  </div>
-                </Form>
-              </Formik>
-              </DialogContent>
-              <DialogActions>
-                <div className={styles.button_box}>
-                  <CustomButton
-                    onClick={() => handleClose()}
-                    text="Cancelar"
-                    padding="1rem"
-                    textColor="white"
-                    backgroundColor="#676767"
-                    textColorHover="white"
-                    backgroundColorHover="#9f9f9f"
-                    letterSpacing="4px"
-                    fontSize="16px"
-                    fontWeight="400"
-                    type="submit" />
-                </div>
-               
-                
-              </DialogActions>
-            </Dialog>          
+                    </Form>
+                  </Formik>
+                </DialogContent>
+              </Dialog>
+              <h1 className={styles.title}>PAINEL FINANCEIRO</h1>
             </div>
-        </div>
-          <h1 className={styles.title}>PAINEL FINANCEIRO</h1>
+          </div>
           <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
@@ -267,7 +263,7 @@ export const FinancePanel: React.FC = () => {
               <TableBody>
                 {data.map((user: any) => (
                   <StyledTableRow key={user.id}>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell scope="row">
                       {user.id}
                     </StyledTableCell>
                     <StyledTableCell align="center">{user.name}</StyledTableCell>
@@ -290,6 +286,15 @@ export const FinancePanel: React.FC = () => {
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
+                {empty > 0 && (
+                  <StyledTableRow
+                    style={{
+                      height: 58 * empty,
+                    }}
+                  >
+                    <StyledTableCell colSpan={5} />
+                  </StyledTableRow>
+                )}
               </TableBody>
               <TableFooter>
                 <TableRow>

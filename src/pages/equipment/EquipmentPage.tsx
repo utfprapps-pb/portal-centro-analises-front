@@ -26,18 +26,20 @@ export const EquipmentsPage = () => {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
+  const [empty, setEmpty] = useState(0);
 
   const loadData = (page: number) => {
-     EquipmentService.page(page,rowsPerPage,'id',true)
-     .then((response) => {
-       setData(response.data.content);
-       setTotal(response.data.totalElements);
-       setPages(response.data.totalPages);
-       setApiError('')
-    }).catch ((responseError: any) => {
-      toast.error("Falha ao carregar lista de equipamentos");
-      console.log(responseError);
-    })
+    EquipmentService.page(page, rowsPerPage, 'id', true)
+      .then((response) => {
+        setData(response.data.content);
+        setTotal(response.data.totalElements);
+        setPages(response.data.totalPages);
+        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
+        setApiError('')
+      }).catch((responseError: any) => {
+        toast.error("Falha ao carregar lista de equipamentos");
+        console.log(responseError);
+      })
   };
 
   useEffect(() => {
@@ -48,11 +50,10 @@ export const EquipmentsPage = () => {
     EquipmentService.remove(id)
       .then((response) => {
         toast.success("Removido com sucesso");
-        loadData(0);
+        handleChangePage(null, 0)
       })
       .catch((responseError) => {
         toast.error("Falha ao remover projeto.");
-        console.log(responseError);
       });
   };
 
@@ -107,27 +108,27 @@ export const EquipmentsPage = () => {
               <TableBody>
                 {data.map((e) => (
                   <StyledTableRow key={e.id}>
-                    <StyledTableCell component="th" scope="row">
+                    <StyledTableCell scope="row">
                       {e.id}
                     </StyledTableCell>
                     <StyledTableCell align="left">{e.name}</StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueHourUtfpr?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+                      {e.valueHourUtfpr?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueHourPartner?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+                      {e.valueHourPartner?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueHourPfPj?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+                      {e.valueHourPfPj?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueSampleUtfpr?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+                      {e.valueSampleUtfpr?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueSamplePartner?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+                      {e.valueSamplePartner?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {e.valueSamplePfPj?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
+                      {e.valueSamplePfPj?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
                     </StyledTableCell>
 
                     <StyledTableCell
@@ -146,25 +147,34 @@ export const EquipmentsPage = () => {
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
+                {empty > 0 && (
+                  <StyledTableRow
+                    style={{
+                      height: 58 * empty,
+                    }}
+                  >
+                    <StyledTableCell colSpan={4} />
+                  </StyledTableRow>
+                )}
               </TableBody>
               <TableFooter>
-            <TableRow>
-              <TablePagination
-                colSpan={4}
-                count={total}
-                rowsPerPage={rowsPerPage}
-                rowsPerPageOptions={[10]}
-                page={page}
-                SelectProps={{
-                  inputProps: {
-                    'aria-label': 'rows per page',
-                  },
-                  native: true,
-                }}
-                onPageChange={handleChangePage}
-                ActionsComponent={TablePaginationActions} />
-            </TableRow>
-          </TableFooter>
+                <TableRow>
+                  <TablePagination
+                    colSpan={4}
+                    count={total}
+                    rowsPerPage={rowsPerPage}
+                    rowsPerPageOptions={[10]}
+                    page={page}
+                    SelectProps={{
+                      inputProps: {
+                        'aria-label': 'rows per page',
+                      },
+                      native: true,
+                    }}
+                    onPageChange={handleChangePage}
+                    ActionsComponent={TablePaginationActions} />
+                </TableRow>
+              </TableFooter>
             </Table>
           </TableContainer>
           {data.length === 0 && (

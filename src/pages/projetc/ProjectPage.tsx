@@ -27,20 +27,22 @@ export const ProjectPage = () => {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
+  const [empty, setEmpty] = useState(0);
 
   const loadData = (page: number) => {
-    ProjectService.page(page,rowsPerPage,'id',true)
-    .then((response) => {
-      setData(response.data.content);
-      setTotal(response.data.totalElements);
-      setPages(response.data.totalPages);
-      setApiError('')
-    })
-    .catch((responseError: any) => {
-      setApiError('Falha ao carregar lista de projetos.')
-      toast.error(apiError)
-      // eslint-disable-next-line no-console
-    })
+    ProjectService.page(page, rowsPerPage, 'id', true)
+      .then((response) => {
+        setData(response.data.content);
+        setTotal(response.data.totalElements);
+        setPages(response.data.totalPages);
+        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
+        setApiError('')
+      })
+      .catch((responseError: any) => {
+        setApiError('Falha ao carregar lista de projetos.')
+        toast.error(apiError)
+        // eslint-disable-next-line no-console
+      })
   }
 
   useEffect(() => {
@@ -49,16 +51,16 @@ export const ProjectPage = () => {
 
   const removeProject = (id: number) => {
     ProjectService.remove(id)
-    .then((response) => {
-      toast.success("Removido com sucesso")
-      setApiError('')
-      loadData(0)
-    })
-    .catch((responseError) => {
-      setApiError('Falha ao remover projeto.')
-      toast.error(apiError)
-      console.log(responseError)
-    })
+      .then((response) => {
+        toast.success("Removido com sucesso")
+        setApiError('')
+        handleChangePage(null, 0)
+      })
+      .catch((responseError) => {
+        setApiError('Falha ao remover projeto.')
+        toast.error(apiError)
+        console.log(responseError)
+      })
   }
 
   const handleChangePage = (
@@ -77,7 +79,7 @@ export const ProjectPage = () => {
           sx={{ m: 1 }}
           className={styles.buttoncolor}
           onClick={() => navigate('/projeto/form')}
-          >
+        >
           Inserir
         </Button>
       </Grid>
@@ -95,7 +97,7 @@ export const ProjectPage = () => {
           <TableBody>
             {data.map((p) => (
               <StyledTableRow key={p.id}>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell scope="row">
                   {p.id}
                 </StyledTableCell>
                 <StyledTableCell align="right">{p.subject}</StyledTableCell>
@@ -105,14 +107,23 @@ export const ProjectPage = () => {
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   <IconButton aria-label="delete" color="error">
-                    <DeleteRounded onClick={() => removeProject(p.id!)}/>
+                    <DeleteRounded onClick={() => removeProject(p.id!)} />
                   </IconButton>
                   <IconButton aria-label="delete" color="info">
-                    <EditRounded onClick={ () => navigate(`/projeto/form/${p.id!}`)}/>
+                    <EditRounded onClick={() => navigate(`/projeto/form/${p.id!}`)} />
                   </IconButton>
                 </StyledTableCell>
               </StyledTableRow>
             ))}
+            {empty > 0 && (
+              <StyledTableRow
+                style={{
+                  height: 58 * empty,
+                }}
+              >
+                <StyledTableCell colSpan={5} />
+              </StyledTableRow>
+            )}
           </TableBody>
           <TableFooter>
             <TableRow>
@@ -134,7 +145,7 @@ export const ProjectPage = () => {
           </TableFooter>
         </Table>
       </TableContainer>
-     
+
     </>
   )
 }

@@ -43,6 +43,7 @@ export function PartnerList() {
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
   const [search, setSearch] = useState([])
+  const [empty, setEmpty] = useState(0);
 
   useEffect(() => {
     loadData(0)
@@ -54,7 +55,8 @@ export function PartnerList() {
       .then((response) => {
         setTotal(response.data.totalElements)
         setPages(response.data.totalPages);
-        setData(response.data.content)
+        setData(response.data.content);
+        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
         setApiError('')
       })
       .catch((error) => {
@@ -66,6 +68,7 @@ export function PartnerList() {
         setTotal(response.data.totalElements)
         setPages(response.data.totalPages);
         setData(response.data.content)
+        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
         setApiError('')
       })
       .catch((error) => {
@@ -81,7 +84,7 @@ export function PartnerList() {
   const onRemove = (id: number) => {
     PartnerService.remove(id)
       .then((response) => {
-        loadData(0)
+        handleChangePage(null,0);
         setApiError('')
       })
       .catch((erro) => {
@@ -138,10 +141,14 @@ export function PartnerList() {
                 </TableCell>
               </TableRow>
             ))}
-            {data.length === 0 && (
-              <div className={styles.container_white}>
-                Nenhum dado para ser exibido
-              </div>
+            {empty > 0 && (
+              <TableRow
+                style={{
+                  height: 58 * empty,
+                }}
+              >
+                <TableCell colSpan={3} />
+              </TableRow>
             )}
           </TableBody>
           <TableFooter>
