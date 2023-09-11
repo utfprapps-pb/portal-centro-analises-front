@@ -17,7 +17,6 @@ export function Historico() {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
-  const [empty, setEmpty] = useState(0);
 
   const [historyItens, setHistoryItens] = useState([]);
 
@@ -46,7 +45,6 @@ export function Historico() {
         setTotal(response.data.totalElements)
         setPages(response.data.totalPages);
         setData(response.data.content)
-        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
         setApiError('')
       })
       .catch((error) => {

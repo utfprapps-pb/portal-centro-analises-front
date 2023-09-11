@@ -26,7 +26,6 @@ export const EquipmentsPage = () => {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
-  const [empty, setEmpty] = useState(0);
 
   const loadData = (page: number) => {
     EquipmentService.page(page, rowsPerPage, 'id', true)
@@ -34,7 +33,6 @@ export const EquipmentsPage = () => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
         setPages(response.data.totalPages);
-        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
         setApiError('')
       }).catch((responseError: any) => {
         toast.error("Falha ao carregar lista de equipamentos");
@@ -147,19 +145,11 @@ export const EquipmentsPage = () => {
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
-                {empty > 0 && (
-                  <StyledTableRow
-                    style={{
-                      height: 58 * empty,
-                    }}
-                  >
-                    <StyledTableCell colSpan={4} />
-                  </StyledTableRow>
-                )}
               </TableBody>
               <TableFooter>
                 <TableRow>
                   <TablePagination
+                    labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
                     colSpan={4}
                     count={total}
                     rowsPerPage={rowsPerPage}

@@ -43,7 +43,6 @@ export function PartnerList() {
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
   const [search, setSearch] = useState([])
-  const [empty, setEmpty] = useState(0);
 
   useEffect(() => {
     loadData(0)
@@ -56,7 +55,6 @@ export function PartnerList() {
         setTotal(response.data.totalElements)
         setPages(response.data.totalPages);
         setData(response.data.content);
-        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
         setApiError('')
       })
       .catch((error) => {
@@ -68,7 +66,6 @@ export function PartnerList() {
         setTotal(response.data.totalElements)
         setPages(response.data.totalPages);
         setData(response.data.content)
-        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
         setApiError('')
       })
       .catch((error) => {
@@ -141,19 +138,11 @@ export function PartnerList() {
                 </TableCell>
               </TableRow>
             ))}
-            {empty > 0 && (
-              <TableRow
-                style={{
-                  height: 58 * empty,
-                }}
-              >
-                <TableCell colSpan={3} />
-              </TableRow>
-            )}
           </TableBody>
           <TableFooter>
             <TableRow>
               <TablePagination
+                labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
                 colSpan={3}
                 count={total}
                 rowsPerPage={rowsPerPage}

@@ -31,7 +31,6 @@ export function AdminPanel() {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
-  const [empty, setEmpty] = useState(0);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -53,7 +52,6 @@ export function AdminPanel() {
         setData(response.data.content);
         setTotal(response.data.totalElements);
         setPages(response.data.totalPages);
-        setEmpty(Math.max(0, (1 + page) * rowsPerPage - data.length))
       })
       .catch((responseError: any) => {
       })
@@ -281,19 +279,11 @@ export function AdminPanel() {
                     </StyledTableCell>
                   </StyledTableRow>
                 ))}
-                {empty > 0 && (
-                  <StyledTableRow
-                    style={{
-                      height: 58 * empty,
-                    }}
-                  >
-                    <StyledTableCell colSpan={5} />
-                  </StyledTableRow>
-                )}
               </TableBody>
               <TableFooter>
                 <TableRow>
                   <TablePagination
+                    labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
                     colSpan={5}
                     count={total}
                     rowsPerPage={rowsPerPage}
