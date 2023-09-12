@@ -20,27 +20,25 @@ export function PartnerForm() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (id) {
-      PartnerService.findOne(parseInt(id))
-        .then((response) => {
-          if (response.data) {
-            setPartner({
-              id: response.data.id,
-              name: response.data.name
-            })
-            setApiError('')
-          } else {
-            setApiError('Falha ao carregar a instituição parceira')
-          }
-        })
-        .catch((erro) => {
+    PartnerService.findOne(parseInt(id))
+      .then((response) => {
+        if (response.data) {
+          setPartner({
+            id: response.data.id,
+            name: response.data.name
+          })
+          setApiError('')
+        } else {
           setApiError('Falha ao carregar a instituição parceira')
-        })
-    }
-  }, [id])
+        }
+      })
+      .catch((erro) => {
+        setApiError('Falha ao carregar a instituição parceira')
+      })
+  }, [])
 
   const validationSchema = yup.object().shape({
-    name: yup.string().min(4,"Deve informar no mínimo 4 caracteres").required("Nome é obrigatório"),
+    name: yup.string().min(4, "Deve informar no mínimo 4 caracteres").required("Nome é obrigatório"),
   });
 
   const onSubmit = (values: Partner) => {
@@ -70,31 +68,31 @@ export function PartnerForm() {
       <div className={styles.container}>
         <h1 className={styles.title}>Instituição Parceira</h1>
         <Formik
-            initialValues={partner}
-            validationSchema={validationSchema}
-            onSubmit={onSubmit}
-            enableReinitialize={true}
-          >
-            {({ errors, touched }) => (
-              <Form className={styles.form}>
-                <Field
-                  as={TextField}
-                  className={styles.textField}
-                  label="Nome"
-                  name="name"
-                  error={touched.name && !!errors.name}
-                  helperText={touched.name && errors.name}
-                  fullWidth
-                  required
-                  variant="outlined"
-                />
-                <div className={styles.button_box}>
-                  <Button variant="contained" color="primary" type="submit">
-                    Salvar
-                  </Button>
-                </div>
-              </Form>
-            )}
+          initialValues={partner}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}
+          enableReinitialize={true}
+        >
+          {({ errors, touched }) => (
+            <Form className={styles.form}>
+              <Field
+                as={TextField}
+                className={styles.textField}
+                label="Nome"
+                name="name"
+                error={touched.name && !!errors.name}
+                helperText={touched.name && errors.name}
+                fullWidth
+                required
+                variant="outlined"
+              />
+              <div className={styles.button_box}>
+                <Button variant="contained" color="primary" type="submit">
+                  Salvar
+                </Button>
+              </div>
+            </Form>
+          )}
         </Formik>
       </div>
     </>
