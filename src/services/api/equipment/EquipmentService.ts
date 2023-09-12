@@ -12,13 +12,18 @@ const findById = (id: number) => api.post(`/equipments/${id}`)
 const page = (page: number, size: number, order: string, sort: boolean) => {
   return api.get(`/equipments/page/?page=${page}&size=${size}&order=${order}&sort=${sort}`)
 }
+const findAllInactive = () => api.get('/equipments/findInactive')
+
+const activeEquipmentById = (id: number) => api.put(`/equipments/activatedEquipment/${id}`)
 
 const EquipmentService = {
   save,
   findAll,
   remove,
   findById,
-  page
+  page,
+  findAllInactive,
+  activeEquipmentById
 }
 
 export default EquipmentService

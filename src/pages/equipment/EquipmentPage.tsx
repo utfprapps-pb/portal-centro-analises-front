@@ -1,4 +1,4 @@
-import { EditRounded, DeleteRounded } from "@material-ui/icons";
+import { EditRounded, AddCircleOutlineRounded, RemoveCircleOutlineRounded } from "@material-ui/icons";
 import { Button, Grid, IconButton, TableFooter, TablePagination } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import styles from "./styles.module.scss";
@@ -44,14 +44,16 @@ export const EquipmentsPage = () => {
     loadData(0);
   }, []);
 
+  //modificar este para chamar o inativar equipamento
   const removeEquipment = (id: number) => {
     EquipmentService.remove(id)
       .then((response) => {
-        toast.success("Removido com sucesso");
+        toast.success("Inativado com sucesso");
         handleChangePage(null, 0)
       })
       .catch((responseError) => {
-        toast.error("Falha ao remover projeto.");
+        toast.error("Falha ao deixar o equipamento inativo.");
+        console.log(responseError);
       });
   };
 
@@ -62,6 +64,31 @@ export const EquipmentsPage = () => {
     setPage(newPage);
     loadData(newPage)
   };
+
+  //carrega a lista de usuários inativos no front
+  function showInactive(){
+    EquipmentService.findAllInactive()
+    .then(response => {
+      setData(response.data);
+    }).catch((responseError) => {
+      toast.error("Falha ao carregar lista de equipamentos Inativos");
+      console.log(responseError);
+    });
+  }
+
+  //chama a função que torna os equipamentos inativos em
+  //ativos novamente
+  const activeSelectedUser = (id: number) => {
+    EquipmentService.activeEquipmentById(id)
+      .then((response) => {
+        toast.success("Ativado com sucesso");
+        showInactive();
+      })
+      .catch((responseError) => {
+        toast.error("Falha ao deixar o equipamento ativo.");
+        console.log(responseError);
+      });
+  }
 
   return (
     <div className={styles.container}>
@@ -78,6 +105,14 @@ export const EquipmentsPage = () => {
               onClick={() => navigate("/equipamento/form")}
             >
               Inserir
+            </Button>
+
+            <Button color="secondary" onClick={() => showInactive()} variant="outlined" sx={{ m: 1}}>
+              Inativos
+            </Button>
+
+            <Button color="secondary" onClick={() => loadData()} variant="outlined" sx={{ m: 1}}>
+              Ativos
             </Button>
           </Grid>
           <TableContainer component={Paper}>
@@ -132,15 +167,20 @@ export const EquipmentsPage = () => {
                     <StyledTableCell
                       align="center"
                       style={{ paddingInline: 5! }}
-                      width={90}
+                      width={150}
                     >
-                      <IconButton aria-label="delete" color="info">
+                      <IconButton aria-label="editar" color="info">
                         <EditRounded
                           onClick={() => navigate(`/equipamento/form/${e.id!}`)}
                         />
                       </IconButton>
-                      <IconButton aria-label="delete" color="error">
-                        <DeleteRounded onClick={() => removeEquipment(e.id!)} />
+
+                      <IconButton aria-label="deixar ativo" color="success">
+                        <AddCircleOutlineRounded onClick={() => activeSelectedUser(e.id!)} />
+                      </IconButton>
+
+                      <IconButton aria-label="deixar inativo" color="error">
+                        <RemoveCircleOutlineRounded onClick={() => removeEquipment(e.id!)} />
                       </IconButton>
                     </StyledTableCell>
                   </StyledTableRow>

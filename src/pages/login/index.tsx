@@ -10,17 +10,18 @@ import { UserLogin } from "../../commons/type";
 import { toast } from "react-hot-toast";
 
 export const LoginPage: React.FC = () => {
-  const [apiError, setApiError] = useState("");
-  const [pendingApiCall, setPendingApiCall] = useState(false);
   const navigate = useNavigate();
   const { handleLogin, loading } = useContext(AuthContext);
-  
+
   function goToSignUp() {
     navigate('/sign-up')
   }
 
-  function handleSubmit (values: { email: string; password: string }) {
-    setPendingApiCall(true);
+  function goToRecoverPassword() {
+    navigate('/recover-password');
+  }
+
+  function handleSubmit(values: { email: string; password: string }) {
     const userLogin: UserLogin = {
       email: values.email,
       password: values.password,
@@ -28,15 +29,18 @@ export const LoginPage: React.FC = () => {
     AuthService.login(userLogin)
       .then((response) => {
         handleLogin(response.data);
-        setPendingApiCall(false);
         navigate("/");
       })
       .catch((apiError) => {
-        toast.error('Usuário ou senha inválidos!');
-        setApiError("Usuário ou senha inválidos!");
-        setPendingApiCall(false);
+        const errorData = apiError.response.data;
+
+        if(errorData === 'Email not verified'){
+          toast.error('E-mail não foi verificado');
+        } else {
+          toast.error('Usuário ou senha inválidos!');
+        }
       });
-    }
+  }
 
   const validationForm = yup.object().shape({
     email: yup.string().required("Informe seu email"),
@@ -84,7 +88,16 @@ export const LoginPage: React.FC = () => {
                 </div>
                 <div className={styles.row_box}>
                   <div className={styles.field_box}>
-                    <p>Senha</p>
+
+                    <div className={`${styles.row_box} ${styles.justify_content_space_between}`}>
+                      <p>Senha</p>
+                      <div className={styles.recover_password_link}>
+                        <a onClick={goToRecoverPassword}>
+                          Recuperar senha
+                        </a>
+                      </div>
+                    </div>
+
                     <div className={styles.input_box}>
                       <ErrorMessage
                         component={CustomErrorMessage}

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import styles from './styles.module.scss'
-import { ErrorMessage, Field, Form, Formik, validateYupSchema } from 'formik'
-import { CustomErrorMessage } from '../error-message'
+import React, { useEffect, useState } from "react";
+import styles from "./styles.module.scss";
+import { ErrorMessage, Field, Form, Formik, validateYupSchema } from "formik";
+import { CustomErrorMessage } from "../error-message";
 import * as yup from "yup";
-import { CustomButton } from '../custom-button';
-import Dropdown from '../dropdown';
-import { api } from '@/libs/axiosBase';
+import { CustomButton } from "../custom-button";
+import { api } from "@/libs/axiosBase";
+import { EditFinance, EditUser, User } from "@/commons/type";
+import DropdownMov from "../dropdownmov";
 import { EditFinance, EditUser } from '@/commons/type';
-import DropdownMov from '../dropdownmov';
 import { useSubmit } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination } from '@mui/material';
 
@@ -27,8 +27,8 @@ export const FinancePanel: React.FC = () => {
   const [activePage, setActivePage] = useState(0);
   const [open, setOpen] = useState(false);
 
-  const [user, setUser] = useState<EditUser | undefined>();
-  const [finance, setFinance] = useState<EditFinance | undefined>();
+  const [user, setUser] = useState<User>();
+  const [finance, setFinance] = useState<EditFinance>();
 
   const [data, setData] = useState([])
   const [page, setPage] = useState(0);
@@ -53,9 +53,9 @@ export const FinancePanel: React.FC = () => {
 
   const changePage = (index: number) => {
     setActivePage(index);
-  }
+  };
 
-  function getUser(selected: EditUser): void | undefined {
+  function getUser(selected: User): void | undefined {
     setUser(selected);
     handleClickOpen();
   }
@@ -79,27 +79,31 @@ export const FinancePanel: React.FC = () => {
   const handleValue = (value: any) => {
     let updatedFinance = { ...finance };
     updatedFinance.value = value;
-  }
+  };
 
   const handleDesc = (desc: string) => {
     let updatedFinance = { ...finance };
     updatedFinance.description = desc;
-  }
+  };
 
   const handleTypeChange = (selectedValue: number) => {
-    let updatedFinance = {
-      value: finance?.value,
-      type: selectedValue,
-      description: finance?.description,
-      user: user,
-    };
-    setFinance(updatedFinance);
+    setFinance((financeInformation) => {
+      if (financeInformation && user) {
+        return {
+          ...financeInformation,
+          type: selectedValue,
+          user: user,
+        };
+      }
+
+      return financeInformation;
+    });
   };
 
   const [isLoading, setIsLoading] = useState(false);
 
   const validationForm = yup.object().shape({
-    nome: yup.string()
+    nome: yup.string(),
   });
 
   const handleClickForm = (values: any) => {
@@ -108,10 +112,10 @@ export const FinancePanel: React.FC = () => {
     let updatedFinance = { ...finance };
     updatedFinance.user = {
       id: user!.id,
-      displayName: '',
-      email: '',
-      password: '',
-      role: '',
+      displayName: "",
+      email: "",
+      password: "",
+      role: "",
     };
 
     updatedFinance.type = type;
@@ -309,5 +313,5 @@ export const FinancePanel: React.FC = () => {
         </>
       )}
     </>
-  )
-}
+  );
+};
