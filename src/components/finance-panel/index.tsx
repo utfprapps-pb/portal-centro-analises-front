@@ -7,7 +7,6 @@ import { CustomButton } from "../custom-button";
 import { api } from "@/libs/axiosBase";
 import { EditFinance, EditUser, User } from "@/commons/type";
 import DropdownMov from "../dropdownmov";
-import { EditFinance, EditUser } from '@/commons/type';
 import { useSubmit } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination } from '@mui/material';
 
@@ -172,7 +171,7 @@ export const FinancePanel: React.FC = () => {
                               <Field
                                 name="nome"
                                 disabled
-                                value={user?.name ?? ''}
+                                value={user?.displayName  ?? ''}
                                 placeholder=''
                                 className={styles.input_form} />
                             </div>
