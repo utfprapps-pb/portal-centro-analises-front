@@ -23,8 +23,6 @@ import TablePaginationActions from '@mui/material/TablePagination/TablePaginatio
 import UserService from '@/services/api/user/UserService';
 
 export function AdminPanel() {
-  const [activePage, setActivePage] = useState(0);
-
   const [open, setOpen] = React.useState(false);
 
   const [data, setData] = useState([])
@@ -32,6 +30,8 @@ export function AdminPanel() {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
+  const [status, setStatus] = useState(true);
+
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,10 +45,10 @@ export function AdminPanel() {
 
   useEffect(() => {
     loadData(0)
-  }, []);
+  }, [status]);
 
   const loadData = (page: number) => {
-    UserService.page(page, rowsPerPage, "id", true)
+    UserService.pageStatus(page, rowsPerPage, "id", true, status)
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
@@ -66,10 +66,6 @@ export function AdminPanel() {
     loadData(newPage)
   };
 
-  const changePage = (index: number) => {
-    setActivePage(index)
-  }
-
   function getUser(selected: EditUser): void | undefined {
     setUser(selected);
     handleClickOpen();
@@ -79,25 +75,13 @@ export function AdminPanel() {
   //(é o padrão para quando o usuário
   //entrar no painel admin por isso
   //esta função é chamada no useEffect)
-  function showActive() {
-    api.get('/users').then((response) => {
-      const data = response.data
-      setPage((state: any) => ({
-        ...state,
-        content: data
-      }))
-    })
+  const showActive = () => {
+    setStatus(true);
   }
 
   //mostra a lista de usuários inativos
-  function showInactive() {
-    api.get('/users/findInactive').then((response) => {
-      const data = response.data
-      setPage((state: any) => ({
-        ...state,
-        content: data
-      }))
-    })
+  const showInactive = () => {
+    setStatus(false);
   }
 
   function updateSelectedUser(selected: EditUser) {
@@ -124,274 +108,274 @@ export function AdminPanel() {
         console.log(responseError)
       })
   }
-}
 
-/*Remove se o usuário não tiver nenhum vinculo com um projeto
-OU Inativa se o usuário tiver vínculos com um ou mais projetos*/
-function removeOrInactiveSelectedUser(selected: EditUser) {
-  if (selected != null && selected.id != null) {
-    api.delete('users/' + selected.id)
-      .then((response) => {
-        handleClose();
-        handleChangePage(null, 0);
-      });
 
+  /*Remove se o usuário não tiver nenhum vinculo com um projeto
+  OU Inativa se o usuário tiver vínculos com um ou mais projetos*/
+  function removeOrInactiveSelectedUser(selected: EditUser) {
+    if (selected != null && selected.id != null) {
+      api.delete('users/' + selected.id)
+        .then((response) => {
+          handleClose();
+          handleChangePage(null, 0);
+        });
+
+    }
   }
-}
 
-function activeSelectedUser(selected: EditUser) {
-  if (selected != null && selected.id != null) {
-    if (selected)
-      api.put('users/activatedUser/' + selected.id).then((response) => {
-        handleClose();
-        handleChangePage(null, 0);
-      })
+  function activeSelectedUser(selected: EditUser) {
+    if (selected != null && selected.id != null) {
+      if (selected)
+        api.put('users/activatedUser/' + selected.id).then((response) => {
+          handleClose();
+          handleChangePage(null, 0);
+        })
+    }
   }
-}
 
-const handleRoleChange = (selectedValue: string) => {
-  let updatedUser = { ...user }
-  updatedUser.role = selectedValue
-  setUser(updatedUser)
-}
-
-const [isLoading, setIsLoading] = useState(false)
-
-const validationForm = yup.object().shape({
-  name: yup.string(),
-  cargo: yup.string().required('Informe o cargo'),
-  email: yup.string()
-})
-
-async function handleClickForm(values: {
-  name: string
-  cargo: string
-  email: string
-  orientador: string
-}) {
-  try {
-  } catch (error) {
-    console.error('error', error)
+  const handleRoleChange = (selectedValue: string) => {
+    let updatedUser = { ...user }
+    updatedUser.role = selectedValue
+    setUser(updatedUser)
   }
-}
 
-return (
-  <>
-    {isLoading ? (
-      <p>Carregando...</p>
-    ) : (
-      <>
-        <div className={styles.inputs_box}>
-          <div className={styles.container}>
-            <Dialog open={open} onClose={handleClose} style={{ overflowY: 'visible' }}
-              PaperProps={{
-                sx: {
-                  width: "50%",
-                  minHeight: 400
-                }
-              }}
-            >
-              <DialogTitle>Usuário</DialogTitle>
-              <DialogContent style={{ overflowY: 'visible' }}>
-                <Formik
-                  initialValues={{
-                    name: '',
-                    cargo: '',
-                    orientador: '',
-                    email: ''
-                  }}
-                  onSubmit={handleClickForm}
-                  validationSchema={validationForm}
-                >
-                  <Form className={styles.inputs_container}>
-                    <div className={styles.inputs_box}>
-                      <div className={styles.row_box}>
-                        <div className={styles.field_box}>
-                          <p>Nome</p>
-                          <div className={styles.input_box}>
-                            <ErrorMessage
-                              component={CustomErrorMessage}
-                              name="nome"
-                              className={styles.form_error} />
-                            <Field
-                              name="nome"
-                              disabled
-                              value={user?.name ?? ''}
-                              placeholder=""
-                              className={styles.input_form} />
-                          </div>
-                        </div>
-                        <div className={styles.field_box}>
-                          <p>Email</p>
-                          <div className={styles.input_box}>
-                            <ErrorMessage
-                              component={CustomErrorMessage}
-                              name="email"
-                              className={styles.form_error} />
-                            <Field
-                              name="email"
-                              disabled
-                              value={user?.email ?? ''}
-                              placeholder=""
-                              className={styles.input_form} />
-                          </div>
-                        </div>
-                      </div>
-                      <div className={styles.row_box}>
-                        <div className={styles.field_box}>
+  const [isLoading, setIsLoading] = useState(false)
+
+  const validationForm = yup.object().shape({
+    name: yup.string(),
+    cargo: yup.string().required('Informe o cargo'),
+    email: yup.string()
+  })
+
+  async function handleClickForm(values: {
+    name: string
+    cargo: string
+    email: string
+    orientador: string
+  }) {
+    try {
+    } catch (error) {
+      console.error('error', error)
+    }
+  }
+
+  return (
+    <>
+      {isLoading ? (
+        <p>Carregando...</p>
+      ) : (
+        <>
+          <div className={styles.inputs_box}>
+            <div className={styles.container}>
+              <Dialog open={open} onClose={handleClose} style={{ overflowY: 'visible' }}
+                PaperProps={{
+                  sx: {
+                    width: "50%",
+                    minHeight: 400
+                  }
+                }}
+              >
+                <DialogTitle>Usuário</DialogTitle>
+                <DialogContent style={{ overflowY: 'visible' }}>
+                  <Formik
+                    initialValues={{
+                      name: '',
+                      cargo: '',
+                      orientador: '',
+                      email: ''
+                    }}
+                    onSubmit={handleClickForm}
+                    validationSchema={validationForm}
+                  >
+                    <Form className={styles.inputs_container}>
+                      <div className={styles.inputs_box}>
+                        <div className={styles.row_box}>
                           <div className={styles.field_box}>
-                            <p>Cargo</p>
-                            <Dropdown value={user?.role || ''} onChange={handleRoleChange} />
+                            <p>Nome</p>
+                            <div className={styles.input_box}>
+                              <ErrorMessage
+                                component={CustomErrorMessage}
+                                name="nome"
+                                className={styles.form_error} />
+                              <Field
+                                name="nome"
+                                disabled
+                                value={user?.name ?? ''}
+                                placeholder=""
+                                className={styles.input_form} />
+                            </div>
+                          </div>
+                          <div className={styles.field_box}>
+                            <p>Email</p>
+                            <div className={styles.input_box}>
+                              <ErrorMessage
+                                component={CustomErrorMessage}
+                                name="email"
+                                className={styles.form_error} />
+                              <Field
+                                name="email"
+                                disabled
+                                value={user?.email ?? ''}
+                                placeholder=""
+                                className={styles.input_form} />
+                            </div>
+                          </div>
+                        </div>
+                        <div className={styles.row_box}>
+                          <div className={styles.field_box}>
+                            <div className={styles.field_box}>
+                              <p>Cargo</p>
+                              <Dropdown value={user?.role || ''} onChange={handleRoleChange} />
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </Form>
-                </Formik>
-              </DialogContent>
-              <DialogActions>
-                <div className={styles.button_box}>
-                  <CustomButton
-                    onClick={() => handleClose()}
-                    text="Cancelar"
-                    padding="1rem"
-                    textColor="white"
-                    backgroundColor="#676767"
-                    textColorHover="white"
-                    backgroundColorHover="#9f9f9f"
-                    letterSpacing="4px"
-                    fontSize="16px"
-                    fontWeight="400"
-                    type="submit" />
-                </div>
-                <div className={styles.button_box}>
-                  <CustomButton
-                    onClick={() => removeOrInactiveSelectedUser(user!)}
-                    text="DEIXAR INATIVO"
-                    padding="1rem"
-                    textColor="white"
-                    backgroundColor="#cc0000"
-                    textColorHover="white"
-                    backgroundColorHover="#ff4444"
-                    letterSpacing="4px"
-                    fontSize="16px"
-                    fontWeight="400"
-                    type="submit" />
-                </div>
-                <div className={styles.button_box}>
-                  <CustomButton
-                    onClick={() => activeSelectedUser(user!)}
-                    text="DEIXAR ATIVO"
-                    padding="1rem"
-                    textColor="white"
-                    backgroundColor="#cc0000"
-                    textColorHover="white"
-                    backgroundColorHover="#ff4444"
-                    letterSpacing="4px"
-                    fontSize="16px"
-                    fontWeight="400"
-                    type="submit" />
-                </div>
-                <div className={styles.button_box}>
-                  <CustomButton
-                    onClick={() => updateSelectedUser(user!)}
-                    text="ATUALIZAR"
-                    padding="1rem"
-                    textColor="white"
-                    backgroundColor="#006dac"
-                    textColorHover="white"
-                    backgroundColorHover="#00bbff"
-                    letterSpacing="4px"
-                    fontSize="16px"
-                    fontWeight="400"
-                    type="submit" />
-                </div>
-              </DialogActions>
-            </Dialog>
-            <h1 className={styles.title}>PAINEL DO ADMINISTRADOR</h1>
-          </div>
-        </div>
-        <div className={styles.button_box}>
-          <Button
-            color="secondary"
-            onClick={() => showInactive()}
-            variant="outlined"
-            size="large"
-            sx={{ mr: 1 }}
-          >
-            VER INATIVOS
-          </Button>
-
-          <Button
-            color="secondary"
-            onClick={() => showActive()}
-            variant="outlined"
-            size="large"
-          >
-            VER ATIVOS
-          </Button>
-        </div>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 700 }} aria-label="customized table">
-            <TableHead>
-              <TableRow>
-                <StyledTableCell>ID</StyledTableCell>
-                <StyledTableCell align="center">Nome</StyledTableCell>
-                <StyledTableCell align="center">Tipo</StyledTableCell>
-                <StyledTableCell align="center">E-mail</StyledTableCell>
-                <StyledTableCell align="center">Seleção</StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.map((user: any) => (
-                <StyledTableRow key={user.id}>
-                  <StyledTableCell scope="row">
-                    {user.id}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{user.name}</StyledTableCell>
-                  <StyledTableCell align="center">{user.role}</StyledTableCell>
-                  <StyledTableCell align="center">{user.email}</StyledTableCell>
-                  <StyledTableCell align="center">
+                    </Form>
+                  </Formik>
+                </DialogContent>
+                <DialogActions>
+                  <div className={styles.button_box}>
                     <CustomButton
-                      onClick={() => getUser(user)}
-                      text="Selecionar"
-                      padding="0.5rem"
+                      onClick={() => handleClose()}
+                      text="Cancelar"
+                      padding="1rem"
+                      textColor="white"
+                      backgroundColor="#676767"
+                      textColorHover="white"
+                      backgroundColorHover="#9f9f9f"
+                      letterSpacing="4px"
+                      fontSize="16px"
+                      fontWeight="400"
+                      type="submit" />
+                  </div>
+                  <div className={styles.button_box}>
+                    <CustomButton
+                      onClick={() => removeOrInactiveSelectedUser(user!)}
+                      text="DEIXAR INATIVO"
+                      padding="1rem"
+                      textColor="white"
+                      backgroundColor="#cc0000"
+                      textColorHover="white"
+                      backgroundColorHover="#ff4444"
+                      letterSpacing="4px"
+                      fontSize="16px"
+                      fontWeight="400"
+                      type="submit" />
+                  </div>
+                  <div className={styles.button_box}>
+                    <CustomButton
+                      onClick={() => activeSelectedUser(user!)}
+                      text="DEIXAR ATIVO"
+                      padding="1rem"
+                      textColor="white"
+                      backgroundColor="#cc0000"
+                      textColorHover="white"
+                      backgroundColorHover="#ff4444"
+                      letterSpacing="4px"
+                      fontSize="16px"
+                      fontWeight="400"
+                      type="submit" />
+                  </div>
+                  <div className={styles.button_box}>
+                    <CustomButton
+                      onClick={() => updateSelectedUser(user!)}
+                      text="ATUALIZAR"
+                      padding="1rem"
                       textColor="white"
                       backgroundColor="#006dac"
                       textColorHover="white"
                       backgroundColorHover="#00bbff"
                       letterSpacing="4px"
-                      fontSize="12px"
-                      fontWeight="200"
-                      type="submit"
-                    />
-                  </StyledTableCell>
-                </StyledTableRow>
-              ))}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TablePagination
-                  labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
-                  colSpan={5}
-                  count={total}
-                  rowsPerPage={rowsPerPage}
-                  rowsPerPageOptions={[10]}
-                  page={page}
-                  SelectProps={{
-                    inputProps: {
-                      'aria-label': 'rows per page',
-                    },
-                    native: true,
-                  }}
-                  onPageChange={handleChangePage}
-                  ActionsComponent={TablePaginationActions} />
-              </TableRow>
-            </TableFooter>
-          </Table>
-        </TableContainer>
-      </>
-    )}
+                      fontSize="16px"
+                      fontWeight="400"
+                      type="submit" />
+                  </div>
+                </DialogActions>
+              </Dialog>
+              <h1 className={styles.title}>PAINEL DO ADMINISTRADOR</h1>
+            </div>
+          </div>
+          <div className={styles.button_box}>
+            <Button
+              color="secondary"
+              onClick={() => showInactive()}
+              variant="outlined"
+              size="large"
+              sx={{ mr: 1 }}
+            >
+              VER INATIVOS
+            </Button>
+
+            <Button
+              color="secondary"
+              onClick={() => showActive()}
+              variant="outlined"
+              size="large"
+            >
+              VER ATIVOS
+            </Button>
+          </div>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 700 }} aria-label="customized table">
+              <TableHead>
+                <TableRow>
+                  <StyledTableCell>ID</StyledTableCell>
+                  <StyledTableCell align="center">Nome</StyledTableCell>
+                  <StyledTableCell align="center">Tipo</StyledTableCell>
+                  <StyledTableCell align="center">E-mail</StyledTableCell>
+                  <StyledTableCell align="center">Seleção</StyledTableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((user: any) => (
+                  <StyledTableRow key={user.id}>
+                    <StyledTableCell scope="row">
+                      {user.id}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">{user.name}</StyledTableCell>
+                    <StyledTableCell align="center">{user.role}</StyledTableCell>
+                    <StyledTableCell align="center">{user.email}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      <CustomButton
+                        onClick={() => getUser(user)}
+                        text="Selecionar"
+                        padding="0.5rem"
+                        textColor="white"
+                        backgroundColor="#006dac"
+                        textColorHover="white"
+                        backgroundColorHover="#00bbff"
+                        letterSpacing="4px"
+                        fontSize="12px"
+                        fontWeight="200"
+                        type="submit"
+                      />
+                    </StyledTableCell>
+                  </StyledTableRow>
+                ))}
+              </TableBody>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+                    colSpan={5}
+                    count={total}
+                    rowsPerPage={rowsPerPage}
+                    rowsPerPageOptions={[10]}
+                    page={page}
+                    SelectProps={{
+                      inputProps: {
+                        'aria-label': 'rows per page',
+                      },
+                      native: true,
+                    }}
+                    onPageChange={handleChangePage}
+                    ActionsComponent={TablePaginationActions} />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
+        </>
+      )}
     </>
   )
 }

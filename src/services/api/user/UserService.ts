@@ -1,7 +1,7 @@
 import { api } from '@/libs'
 
-const page = (page: number, size: number, order: string, sort: boolean) => {
-    return api.get(`/users/page/?page=${page}&size=${size}&order=${order}&sort=${sort}`)
+const pageStatus = (page: number, size: number, order: string, sort: boolean, active:boolean) => {
+    return api.get(`/users/pagestatus/?page=${page}&size=${size}&order=${order}&sort=${sort}&active=${active}`)
 }
 
 const pageRole = (page: number, size: number, order: string, sort: boolean, role:string) => {
@@ -9,7 +9,7 @@ const pageRole = (page: number, size: number, order: string, sort: boolean, role
 }
 
 const UserService = {
-    page,
+    pageStatus,
     pageRole
 }
   
