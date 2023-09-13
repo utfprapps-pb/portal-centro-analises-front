@@ -1,11 +1,11 @@
 import { api } from '@/libs'
 
-const pageStatus = (page: number, size: number, order: string, sort: boolean, active:boolean) => {
-    return api.get(`/users/pagestatus/?page=${page}&size=${size}&order=${order}&sort=${sort}&active=${active}`)
+const pageStatus = (page: number, size: number, order: string, asc: boolean, active:boolean) => {
+    return api.get(`/users/pagestatus/?page=${page}&size=${size}&order=${order}&asc=${asc}&active=${active}`)
 }
 
-const pageRole = (page: number, size: number, order: string, sort: boolean, role:string) => {
-  return api.get(`/users/pagerole/?page=${page}&size=${size}&order=${order}&sort=${sort}&role=${role}`)
+const pageRole = (page: number, size: number, order: string, asc: boolean, role:string) => {
+  return api.get(`/users/pagerole/?page=${page}&size=${size}&order=${order}&asc=${asc}&role=${role}`)
 }
 
 const UserService = {
