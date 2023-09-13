@@ -1,5 +1,5 @@
 import { EditRounded, AddCircleOutlineRounded, RemoveCircleOutlineRounded } from "@material-ui/icons";
-import { Button, Grid, IconButton, TableFooter, TablePagination } from "@mui/material";
+import { Button, Grid, IconButton, TableFooter, TablePagination, TableSortLabel } from "@mui/material";
 import Paper from "@mui/material/Paper";
 import styles from "./styles.module.scss";
 import Table from "@mui/material/Table";
@@ -28,9 +28,22 @@ export const EquipmentsPage = () => {
   const [pages, setPages] = useState(0);
   const [status, setStatus] = useState(true);
 
+  const [orderBy, setOrderBy] = useState("id");
+  const [asc, setAsc] = useState(true);
+
+  const listHeader = [
+    { label: "Código", value: "id" },
+    { label: "Nome", value: "name" },
+    { label: "$/h UTFPR", value: "valueHourUtfpr" },
+    { label: "$/h Parceiro", value: "valueHourPartner" },
+    { label: "$/h Externo", value: "valueHourPfPj" },
+    { label: "$/amostra UTFPR", value: "valueSampleUtfpr" },
+    { label: "$/amostra Parceiro", value: "valueSamplePartner" },
+    { label: "$/amostra Externo", value: "valueSamplePfPj" }
+  ];
 
   const loadData = (page: number) => {
-    EquipmentService.pageStatus(page, rowsPerPage, 'id', true, status)
+    EquipmentService.pageStatus(page, rowsPerPage, orderBy, asc, status)
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
@@ -44,7 +57,7 @@ export const EquipmentsPage = () => {
 
   useEffect(() => {
     loadData(0);
-  }, [status]);
+  }, [status, orderBy, asc]);
 
   //modificar este para chamar o inativar equipamento
   const removeEquipment = (id: number) => {
@@ -68,11 +81,11 @@ export const EquipmentsPage = () => {
   };
 
   //carrega a lista de usuários inativos no front
-  function showInactive(){
+  function showInactive() {
     setStatus(false);
   }
 
-  function showActive(){
+  function showActive() {
     setStatus(true);
   }
 
@@ -88,6 +101,11 @@ export const EquipmentsPage = () => {
         toast.error("Falha ao deixar o equipamento ativo.");
         console.log(responseError);
       });
+  }
+
+  const handleSort = (id: any) => {
+    setOrderBy(id);
+    setAsc(!asc);
   }
 
   return (
@@ -107,11 +125,11 @@ export const EquipmentsPage = () => {
               Inserir
             </Button>
 
-            <Button color="secondary" onClick={() => showInactive()} variant="outlined" sx={{ m: 1}}>
+            <Button color="secondary" onClick={() => showInactive()} variant="outlined" sx={{ m: 1 }}>
               Inativos
             </Button>
 
-            <Button color="secondary" onClick={() => showActive()} variant="outlined" sx={{ m: 1}}>
+            <Button color="secondary" onClick={() => showActive()} variant="outlined" sx={{ m: 1 }}>
               Ativos
             </Button>
           </Grid>
@@ -119,22 +137,15 @@ export const EquipmentsPage = () => {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>#</StyledTableCell>
-                  <StyledTableCell align="left">Nome</StyledTableCell>
-                  <StyledTableCell align="center">$/h UTFPR </StyledTableCell>
-                  <StyledTableCell align="center">
-                    $/h Parceiro{" "}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">$/h Externo </StyledTableCell>
-                  <StyledTableCell align="center">
-                    $/amostra UTFPR{" "}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    $/amostra Parceiro{" "}
-                  </StyledTableCell>
-                  <StyledTableCell align="center">
-                    $/amostra Externo{" "}
-                  </StyledTableCell>
+                  {listHeader.map((head) => (
+                    <StyledTableCell key={head.value}>{head.label}
+                      <TableSortLabel active={orderBy === head.value}
+                        direction={asc ? 'asc' : 'desc'}
+                        onClick={() => handleSort(head.value)}
+                      >
+                      </TableSortLabel>
+                    </StyledTableCell>
+                  ))}
                   <StyledTableCell align="right" />
                 </TableRow>
               </TableHead>
