@@ -8,7 +8,7 @@ import Dropdown from '../dropdown'
 import { api } from '@/libs/axiosBase'
 import { EditUser } from '@/commons/type'
 import { toast } from 'react-hot-toast'
-import { Button } from '@mui/material'
+import { Button, TableSortLabel } from '@mui/material'
 import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination } from '@mui/material';
 
 import Table from '@mui/material/Table'
@@ -32,6 +32,15 @@ export function AdminPanel() {
   const [pages, setPages] = useState(0);
   const [status, setStatus] = useState(true);
 
+  const [orderBy, setOrderBy] = useState("id");
+  const [asc, setAsc] = useState(true);
+
+  const listHeader = [
+    { label: "Código", value: "id" },
+    { label: "Nome", value: "name" },
+    { label: "Tipo", value: "role" },
+    { label: "E-mail", value: "email" }
+  ];
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,10 +54,10 @@ export function AdminPanel() {
 
   useEffect(() => {
     loadData(0)
-  }, [status]);
+  }, [status, orderBy, asc]);
 
   const loadData = (page: number) => {
-    UserService.pageStatus(page, rowsPerPage, "id", true, status)
+    UserService.pageStatus(page, rowsPerPage, orderBy, asc, status)
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
@@ -109,7 +118,6 @@ export function AdminPanel() {
       })
   }
 
-
   /*Remove se o usuário não tiver nenhum vinculo com um projeto
   OU Inativa se o usuário tiver vínculos com um ou mais projetos*/
   function removeOrInactiveSelectedUser(selected: EditUser) {
@@ -157,6 +165,11 @@ export function AdminPanel() {
     } catch (error) {
       console.error('error', error)
     }
+  }
+
+  const handleSort = (id: any) => {
+    setOrderBy(id);
+    setAsc(!asc);
   }
 
   return (
@@ -319,10 +332,15 @@ export function AdminPanel() {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>ID</StyledTableCell>
-                  <StyledTableCell align="center">Nome</StyledTableCell>
-                  <StyledTableCell align="center">Tipo</StyledTableCell>
-                  <StyledTableCell align="center">E-mail</StyledTableCell>
+                  {listHeader.map((head) => (
+                    <StyledTableCell align="center" key={head.value}>{head.label}
+                      <TableSortLabel active={orderBy === head.value}
+                        direction={asc ? 'asc' : 'desc'}
+                        onClick={() => handleSort(head.value)}
+                      >
+                      </TableSortLabel>
+                    </StyledTableCell>
+                  ))}
                   <StyledTableCell align="center">Seleção</StyledTableCell>
                 </TableRow>
               </TableHead>
