@@ -101,7 +101,7 @@ export const ProjectPage = () => {
           <TableHead>
             <TableRow>
             {listHeader.map((head) => (
-                <StyledTableCell key={head.value}>{head.label}
+                <StyledTableCell key={head.value} align="center">{head.label}
                 <TableSortLabel active={orderBy === head.value}
                     direction={asc ? 'asc' : 'desc'}
                     onClick={() => handleSort(head.value)}
@@ -116,11 +116,11 @@ export const ProjectPage = () => {
           <TableBody>
             {data.map((p) => (
               <StyledTableRow key={p.id}>
-                <StyledTableCell scope="row">
+                <StyledTableCell scope="row" align="center">
                   {p.id}
                 </StyledTableCell>
-                <StyledTableCell align="right">{p.subject}</StyledTableCell>
-                <StyledTableCell align="right">{p.description}</StyledTableCell>
+                <StyledTableCell align="center">{p.subject}</StyledTableCell>
+                <StyledTableCell align="center">{p.description}</StyledTableCell>
                 <StyledTableCell align="right">
                   {p.students.length}
                 </StyledTableCell>
