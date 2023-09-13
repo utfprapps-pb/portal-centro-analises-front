@@ -19,7 +19,7 @@ import TableCell from "@material-ui/core/TableCell";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./styles.module.scss";
-import { Button, Grid, TableFooter, TablePagination } from "@material-ui/core";
+import { Button, Grid, TableFooter, TablePagination, TableSortLabel } from "@material-ui/core";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 import { FilterDrawer } from "@/components/filter-drawer";
 import { Partner } from "../model/partner";
@@ -34,8 +34,11 @@ export function PartnerList() {
   const [pages, setPages] = useState(0);
   const [search, setSearch] = useState<string>("");
 
-  const list = [
-    { label: "Id", value: "id" },
+  const [orderBy, setOrderBy] = useState("id");
+  const [asc, setAsc] = useState(true);
+
+  const listHeader = [
+    { label: "Código", value: "id" },
     { label: "Nome", value: "name" },
   ];
 
@@ -45,11 +48,11 @@ export function PartnerList() {
 
   useEffect(() => {
     loadData(0);
-  }, [search]);
+  }, [search, orderBy, asc]);
 
   const loadData = (page: number) => {
     if (search && search.length) {
-      PartnerService.search(page, rowsPerPage, "id", true, search)
+      PartnerService.search(page, rowsPerPage, orderBy, asc, search)
         .then((response) => {
           setTotal(response.data.totalElements);
           setPages(response.data.totalPages);
@@ -60,7 +63,7 @@ export function PartnerList() {
           setApiError("Falha ao carregar a lista de instituições parceiras");
         });
     } else {
-      PartnerService.page(page, rowsPerPage, "id", true)
+      PartnerService.page(page, rowsPerPage, orderBy, asc)
         .then((response) => {
           setTotal(response.data.totalElements);
           setPages(response.data.totalPages);
@@ -96,10 +99,15 @@ export function PartnerList() {
     loadData(newPage);
   };
 
+  const handleSort = (id: any) => {
+    setOrderBy(id);
+    setAsc(!asc);
+  }
+
   return (
     <>
       <Grid container justifyContent="space-between">
-        <FilterDrawer list={list} handleSearchChange={handleSearchChange} />
+        <FilterDrawer list={listHeader} handleSearchChange={handleSearchChange} />
         <Button
           variant="outlined"
           className={styles.buttoncolor}
@@ -114,8 +122,15 @@ export function PartnerList() {
         <Table sx={{ minWidth: 700 }} aria-label="simple table">
           <TableHead>
             <TableRow sx={{ backgroundColor: "#3f51b5", color: "#ffffff" }}>
-              <TableCell>Código</TableCell>
-              <TableCell>Nome</TableCell>
+              {listHeader.map((head) => (
+                <TableCell key={head.value}>{head.label}
+                <TableSortLabel active={orderBy === head.value}
+                    direction={asc ? 'asc' : 'desc'}
+                    onClick={() => handleSort(head.value)}
+                  >
+                </TableSortLabel>
+              </TableCell>
+              ))}              
               <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>
