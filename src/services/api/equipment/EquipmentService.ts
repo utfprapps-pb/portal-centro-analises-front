@@ -9,12 +9,16 @@ const remove = (id: number) => api.delete(`/equipments/${id}`)
 
 const findById = (id: number) => api.post(`/equipments/${id}`)
 
-const page = (page: number, size: number, order: string, sort: boolean) => {
-  return api.get(`/equipments/page/?page=${page}&size=${size}&order=${order}&sort=${sort}`)
+const page = (page: number, size: number, order: string, asc: boolean) => {
+  return api.get(`/equipments/page/?page=${page}&size=${size}&order=${order}&asc=${asc}`)
 }
 const findAllInactive = () => api.get('/equipments/findInactive')
 
 const activeEquipmentById = (id: number) => api.put(`/equipments/activatedEquipment/${id}`)
+
+const pageStatus = (page: number, size: number, order: string, asc: boolean, active:boolean) => {
+  return api.get(`/equipments/pagestatus/?page=${page}&size=${size}&order=${order}&asc=${asc}&active=${active}`)
+}
 
 const EquipmentService = {
   save,
@@ -23,7 +27,8 @@ const EquipmentService = {
   findById,
   page,
   findAllInactive,
-  activeEquipmentById
+  activeEquipmentById,
+  pageStatus,
 }
 
 export default EquipmentService

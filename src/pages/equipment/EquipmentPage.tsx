@@ -26,9 +26,11 @@ export const EquipmentsPage = () => {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
+  const [status, setStatus] = useState(true);
+
 
   const loadData = (page: number) => {
-    EquipmentService.page(page, rowsPerPage, 'id', true)
+    EquipmentService.pageStatus(page, rowsPerPage, 'id', true, status)
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
@@ -42,7 +44,7 @@ export const EquipmentsPage = () => {
 
   useEffect(() => {
     loadData(0);
-  }, []);
+  }, [status]);
 
   //modificar este para chamar o inativar equipamento
   const removeEquipment = (id: number) => {
@@ -67,22 +69,20 @@ export const EquipmentsPage = () => {
 
   //carrega a lista de usuários inativos no front
   function showInactive(){
-    EquipmentService.findAllInactive()
-    .then(response => {
-      setData(response.data);
-    }).catch((responseError) => {
-      toast.error("Falha ao carregar lista de equipamentos Inativos");
-      console.log(responseError);
-    });
+    setStatus(false);
+  }
+
+  function showActive(){
+    setStatus(true);
   }
 
   //chama a função que torna os equipamentos inativos em
   //ativos novamente
-  const activeSelectedUser = (id: number) => {
+  const activeSelectedEquipment = (id: number) => {
     EquipmentService.activeEquipmentById(id)
       .then((response) => {
         toast.success("Ativado com sucesso");
-        showInactive();
+        loadData(0);
       })
       .catch((responseError) => {
         toast.error("Falha ao deixar o equipamento ativo.");
@@ -111,7 +111,7 @@ export const EquipmentsPage = () => {
               Inativos
             </Button>
 
-            <Button color="secondary" onClick={() => loadData()} variant="outlined" sx={{ m: 1}}>
+            <Button color="secondary" onClick={() => showActive()} variant="outlined" sx={{ m: 1}}>
               Ativos
             </Button>
           </Grid>
@@ -176,7 +176,7 @@ export const EquipmentsPage = () => {
                       </IconButton>
 
                       <IconButton aria-label="deixar ativo" color="success">
-                        <AddCircleOutlineRounded onClick={() => activeSelectedUser(e.id!)} />
+                        <AddCircleOutlineRounded onClick={() => activeSelectedEquipment(e.id!)} />
                       </IconButton>
 
                       <IconButton aria-label="deixar inativo" color="error">
