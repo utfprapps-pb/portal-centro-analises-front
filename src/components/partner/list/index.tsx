@@ -130,7 +130,7 @@ export function PartnerList() {
                   >
                 </TableSortLabel>
               </TableCell>
-              ))}              
+              ))}             
               <TableCell align="right">Ações</TableCell>
             </TableRow>
           </TableHead>

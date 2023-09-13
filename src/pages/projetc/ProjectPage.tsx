@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { DeleteRounded, EditRounded } from '@material-ui/icons'
-import { Button, Grid, IconButton, TableFooter, TablePagination } from '@mui/material'
+import { Button, Grid, IconButton, TableFooter, TablePagination, TableSortLabel } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -28,8 +28,17 @@ export const ProjectPage = () => {
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
 
+  const [orderBy, setOrderBy] = useState("id");
+  const [asc, setAsc] = useState(true);
+
+  const listHeader = [
+    { label: "#", value: "id" },
+    { label: "Título", value: "subject" },
+    { label: "Descrição", value: "description" }
+  ];
+
   const loadData = (page: number) => {
-    ProjectService.page(page, rowsPerPage, 'id', true)
+    ProjectService.page(page, rowsPerPage, orderBy, asc)
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
@@ -45,7 +54,7 @@ export const ProjectPage = () => {
 
   useEffect(() => {
     loadData(0)
-  }, [])
+  }, [orderBy, asc]);
 
   const removeProject = (id: number) => {
     ProjectService.remove(id)
@@ -69,6 +78,12 @@ export const ProjectPage = () => {
     loadData(newPage)
   };
 
+  
+  const handleSort = (id: any) => {
+    setOrderBy(id);
+    setAsc(!asc);
+  }
+  
   return (
     <>
       <Grid container justifyContent="flex-end">
@@ -85,9 +100,15 @@ export const ProjectPage = () => {
         <Table sx={{ minWidth: 700 }} aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>#</StyledTableCell>
-              <StyledTableCell align="right">Título</StyledTableCell>
-              <StyledTableCell align="right">Descrição</StyledTableCell>
+            {listHeader.map((head) => (
+                <StyledTableCell key={head.value}>{head.label}
+                <TableSortLabel active={orderBy === head.value}
+                    direction={asc ? 'asc' : 'desc'}
+                    onClick={() => handleSort(head.value)}
+                  >
+                </TableSortLabel>
+              </StyledTableCell>
+              ))}
               <StyledTableCell align="right">Estudantes</StyledTableCell>
               <StyledTableCell align="right">Ações</StyledTableCell>
             </TableRow>
