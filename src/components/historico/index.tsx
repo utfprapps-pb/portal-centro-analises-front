@@ -40,7 +40,7 @@ export function Historico() {
   }, []);
 
   const loadData = (page: number) => {
-    HistoryService.page(page, rowsPerPage, 'id', true)
+    HistoryService.page(page, rowsPerPage, 'id', false)
       .then((response) => {
         setTotal(response.data.totalElements)
         setPages(response.data.totalPages);
