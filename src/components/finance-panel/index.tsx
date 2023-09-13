@@ -8,7 +8,7 @@ import { api } from "@/libs/axiosBase";
 import { EditFinance, EditUser, User } from "@/commons/type";
 import DropdownMov from "../dropdownmov";
 import { useSubmit } from 'react-router-dom';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination, TableSortLabel } from '@mui/material';
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -35,12 +35,22 @@ export const FinancePanel: React.FC = () => {
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
 
+  const [orderBy, setOrderBy] = useState("id");
+  const [asc, setAsc] = useState(true);
+
+  const listHeader = [
+    { label: "Código", value: "id" },
+    { label: "Nome", value: "name" },
+    { label: "Tipo", value: "role" },
+    { label: "E-mail", value: "email" }
+  ];
+
   useEffect(() => {
     loadData(0)
-  }, []);
+  }, [orderBy, asc]);
 
   const loadData = (page: number) => {
-    UserService.pageRole(page, rowsPerPage, 'id', true, 'PROFESSOR')
+    UserService.pageRole(page, rowsPerPage, orderBy, asc, 'PROFESSOR')
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
@@ -137,6 +147,11 @@ export const FinancePanel: React.FC = () => {
     }
   }
 
+  const handleSort = (id: any) => {
+    setOrderBy(id);
+    setAsc(!asc);
+  }
+
   return (
     <>
       {isLoading ? (
@@ -171,7 +186,7 @@ export const FinancePanel: React.FC = () => {
                               <Field
                                 name="nome"
                                 disabled
-                                value={user?.displayName  ?? ''}
+                                value={user?.displayName ?? ''}
                                 placeholder=''
                                 className={styles.input_form} />
                             </div>
@@ -254,10 +269,15 @@ export const FinancePanel: React.FC = () => {
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
               <TableHead>
                 <TableRow>
-                  <StyledTableCell>ID</StyledTableCell>
-                  <StyledTableCell align="center">Nome</StyledTableCell>
-                  <StyledTableCell align="center">Tipo</StyledTableCell>
-                  <StyledTableCell align="center">E-mail</StyledTableCell>
+                  {listHeader.map((head) => (
+                    <StyledTableCell align="center" key={head.value}>{head.label}
+                      <TableSortLabel active={orderBy === head.value}
+                        direction={asc ? 'asc' : 'desc'}
+                        onClick={() => handleSort(head.value)}
+                      >
+                      </TableSortLabel>
+                    </StyledTableCell>
+                  ))}
                   <StyledTableCell align="center">Seleção</StyledTableCell>
                 </TableRow>
               </TableHead>
