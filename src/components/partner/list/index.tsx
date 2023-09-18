@@ -124,12 +124,12 @@ export function PartnerList() {
             <TableRow sx={{ backgroundColor: "#3f51b5", color: "#ffffff" }}>
               {listHeader.map((head) => (
                 <TableCell key={head.value}>{head.label}
-                <TableSortLabel active={orderBy === head.value}
+                  <TableSortLabel active={orderBy === head.value}
                     direction={asc ? 'asc' : 'desc'}
                     onClick={() => handleSort(head.value)}
                   >
-                </TableSortLabel>
-              </TableCell>
+                  </TableSortLabel>
+                </TableCell>
               ))}
               <TableCell align="right">Ações</TableCell>
             </TableRow>

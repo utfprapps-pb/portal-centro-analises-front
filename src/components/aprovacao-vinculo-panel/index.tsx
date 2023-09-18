@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbUp, ThumbDown, OpenInBrowser } from '@material-ui/icons'
-import { IconButton, TableFooter, TablePagination } from '@mui/material'
+import { IconButton, TableFooter, TablePagination, TableSortLabel } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -26,12 +26,15 @@ export const AprovacaoVinculoPanel = () => {
     const [total, setTotal] = useState(0);
     const [pages, setPages] = useState(0);
 
+    const [orderBy, setOrderBy] = useState("id");
+    const [asc, setAsc] = useState(true);
+
     var t: any = localStorage.getItem("user");
     var infoArray = JSON.parse(t);
     var userId = infoArray.id.toString();
 
     const loadData = (page: number) => {
-        StudentProfessorLinkService.pageVinculoPending(page, rowsPerPage, "id", true, userId)
+        StudentProfessorLinkService.pageVinculoPending(page, rowsPerPage, orderBy, asc, userId)
             .then((response: any) => {
                 setDataVinculo(response.data.content);
                 setTotal(response.data.totalElements);
@@ -49,7 +52,7 @@ export const AprovacaoVinculoPanel = () => {
 
     useEffect(() => {
         loadData(0);
-    }, [])
+    }, [orderBy, asc])
 
     const approveVinculo = (id: number, student: object, teacher: object) => {
         const payload = {
@@ -93,6 +96,11 @@ export const AprovacaoVinculoPanel = () => {
         loadData(newPage)
     };
 
+    const handleSort = (id: any) => {
+        setOrderBy(id);
+        setAsc(!asc);
+    }
+
     return (
         <>
             <div className={styles.container}>
@@ -102,7 +110,13 @@ export const AprovacaoVinculoPanel = () => {
                         <Table sx={{ minWidth: 700 }} aria-label="customized table">
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell>#</StyledTableCell>
+                                    <StyledTableCell key={"id"}>#
+                                        <TableSortLabel active={orderBy === "id"}
+                                            direction={asc ? 'asc' : 'desc'}
+                                            onClick={() => handleSort("id")}
+                                        >
+                                        </TableSortLabel>
+                                    </StyledTableCell>
                                     <StyledTableCell align="center">Aluno</StyledTableCell>
                                     <StyledTableCell align="right">Aprovar/Reprovar</StyledTableCell>
                                 </TableRow>
