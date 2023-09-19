@@ -20,6 +20,7 @@ export function PartnerForm() {
   const navigate = useNavigate()
 
   useEffect(() => {
+    if(id){
     PartnerService.findOne(parseInt(id))
       .then((response) => {
         if (response.data) {
@@ -35,6 +36,7 @@ export function PartnerForm() {
       .catch((erro) => {
         setApiError('Falha ao carregar a instituição parceira')
       })
+    }
   }, [])
 
   const validationSchema = yup.object().shape({

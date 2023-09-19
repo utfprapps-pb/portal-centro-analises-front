@@ -14,6 +14,7 @@ import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
 import { AprovacoesParams, VinculoParams } from '@/services/api/aprovacoes/aprovacoes.type'
+import StudentProfessorLinkService from '@/services/api/studentProfessorLink/StudentProfessorLinkService'
 
 export const Aprovacoes = () => {
   const navigate = useNavigate()
@@ -38,7 +39,7 @@ export const Aprovacoes = () => {
       // eslint-disable-next-line no-console
     })
 
-    AprovacoesService.getVinculoPending(userId)
+    StudentProfessorLinkService.getVinculoPending(userId)
     .then((response: any) => {
       setDataVinculo(response.data)
       console.log(response.data)
@@ -92,7 +93,7 @@ export const Aprovacoes = () => {
       teacher: teacher,
       aproved: true
     }
-    AprovacoesService.approveVinculo(payload)
+    StudentProfessorLinkService.approveVinculo(payload)
     .then((response) => {
       toast.success("Aprovado com sucesso!")
       setApiError('')
@@ -106,7 +107,7 @@ export const Aprovacoes = () => {
   }
 
   const rejectVinculo = (id: number)  => {    
-    AprovacoesService.rejectVinculo(id)
+    StudentProfessorLinkService.rejectVinculo(id)
     .then((response) => {
       toast.success("Rejeitado!")
       setApiError('')
