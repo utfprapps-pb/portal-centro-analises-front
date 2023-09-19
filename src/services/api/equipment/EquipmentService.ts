@@ -13,13 +13,16 @@ const findAllInactive = () => api.get('/equipments/findInactive')
 
 const activeEquipmentById = (id: number) => api.put(`/equipments/activatedEquipment/${id}`)
 
+const update = async (id: number, equipment: EquipmentParams) => api.put(`/equipments/${id}`, equipment)
+
 const EquipmentService = {
   save,
   findAll,
   remove,
   findById,
   findAllInactive,
-  activeEquipmentById
+  activeEquipmentById,
+  update
 }
 
 export default EquipmentService
