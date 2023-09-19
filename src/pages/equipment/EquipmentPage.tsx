@@ -106,6 +106,7 @@ export const EquipmentsPage = () => {
                 <TableRow>
                   <StyledTableCell>#</StyledTableCell>
                   <StyledTableCell align="left">Nome</StyledTableCell>
+                  <StyledTableCell align="left">Short name</StyledTableCell>
                   <StyledTableCell align="center">$/h UTFPR </StyledTableCell>
                   <StyledTableCell align="center">
                     $/h Parceiro{" "}
@@ -130,6 +131,7 @@ export const EquipmentsPage = () => {
                       {e.id}
                     </StyledTableCell>
                     <StyledTableCell align="left">{e.name}</StyledTableCell>
+                    <StyledTableCell align="center">{e.shortName}</StyledTableCell>
                     <StyledTableCell align="center">
                       {e.valueHourUtfpr?.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}
                     </StyledTableCell>

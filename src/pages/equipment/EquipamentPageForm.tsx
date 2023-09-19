@@ -34,6 +34,7 @@ export const EquipmentPageForm = () => {
     valueSampleUtfpr: undefined,
     valueSamplePartner: undefined,
     valueSamplePfPj: undefined,
+    shortName: undefined,
   });
 
   useEffect(() => {
@@ -45,12 +46,14 @@ export const EquipmentPageForm = () => {
           setEquipment({
             id: response.data.id,
             name: response.data.name ?? '',
+            status: response.data.status ?? '',
             valueHourPartner: response.data.valueHourPartner ?? '',
             valueHourPfPj: response.data.valueHourPfPj ?? '',
             valueHourUtfpr: response.data.valueHourUtfpr ?? '',
             valueSamplePartner: response.data.valueSamplePartner ?? '',
             valueSamplePfPj: response.data.valueSamplePfPj ?? '',
             valueSampleUtfpr: response.data.valueSampleUtfpr ?? '',
+            shortName: response.data.shortName ?? '',
           });
         }
       } catch (error) {
@@ -72,7 +75,17 @@ export const EquipmentPageForm = () => {
       name: values.name,
     };
 
-    EquipmentService.save(data)
+    if (data.id != 0){
+      EquipmentService.update(data.id, data)
+      .then((response) => {
+        toast.success("Sucesso ao atualizar o equipamento.");
+        navigate("/equipamento");
+      })
+      .catch((error) => {
+        toast.error("Falha ao atualizar o equipamento.");
+      });
+    }else {
+      EquipmentService.save(data)
       .then((response) => {
         toast.success("Sucesso ao salvar o equipamento.");
         navigate("/equipamento");
@@ -80,6 +93,7 @@ export const EquipmentPageForm = () => {
       .catch((error) => {
         toast.error("Falha ao salvar o equipamento.");
       });
+    }
   };
 
   return (
@@ -101,7 +115,7 @@ export const EquipmentPageForm = () => {
             {({ errors, touched }) => (
               <Form className={styles.form}>
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={12} md={12}>
+                  <Grid item xs={12} sm={12} md={8}>
                     <Field
                       as={TextField}
                       className={styles.textField}
@@ -111,6 +125,21 @@ export const EquipmentPageForm = () => {
                       required
                       disabled={nameDisable}
                       variant="outlined"
+                    />
+                  </Grid>
+
+                  <Grid item xs={12} sm={12} md={4}>
+                    <Field
+                      as={TextField}
+                      className={styles.textField}
+                      label="Short Name"
+                      name="shortName"
+                      fullWidth
+                      required
+                      variant="outlined"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
                     />
                   </Grid>
                   <Grid item xs={12} sm={12} md={4}>

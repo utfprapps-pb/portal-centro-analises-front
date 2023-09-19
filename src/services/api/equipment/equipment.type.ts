@@ -7,5 +7,7 @@ export type EquipmentParams = {
   valueSampleUtfpr?: number;
   valueSamplePartner?: number;
   valueSamplePfPj?: number;
+  status?: string,
+  shortName?: string;
   form?: number;
 };
