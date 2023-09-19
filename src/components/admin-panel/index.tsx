@@ -8,7 +8,7 @@ import Dropdown from '../dropdown'
 import { api } from '@/libs/axiosBase'
 import { EditUser } from '@/commons/type'
 import { toast } from 'react-hot-toast'
-import { Button, TableSortLabel } from '@mui/material'
+import { Button, Grid, TableSortLabel } from '@mui/material'
 import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination } from '@mui/material';
 
 import Table from '@mui/material/Table'
@@ -246,63 +246,73 @@ export function AdminPanel() {
                     </Form>
                   </Formik>
                 </DialogContent>
-                <DialogActions>
-                  <div className={styles.button_box}>
-                    <CustomButton
-                      onClick={() => handleClose()}
-                      text="Cancelar"
-                      padding="1rem"
-                      textColor="white"
-                      backgroundColor="#676767"
-                      textColorHover="white"
-                      backgroundColorHover="#9f9f9f"
-                      letterSpacing="4px"
-                      fontSize="16px"
-                      fontWeight="400"
-                      type="submit" />
-                  </div>
-                  <div className={styles.button_box}>
-                    <CustomButton
-                      onClick={() => removeOrInactiveSelectedUser(user!)}
-                      text="DEIXAR INATIVO"
-                      padding="1rem"
-                      textColor="white"
-                      backgroundColor="#cc0000"
-                      textColorHover="white"
-                      backgroundColorHover="#ff4444"
-                      letterSpacing="4px"
-                      fontSize="16px"
-                      fontWeight="400"
-                      type="submit" />
-                  </div>
-                  <div className={styles.button_box}>
-                    <CustomButton
-                      onClick={() => activeSelectedUser(user!)}
-                      text="DEIXAR ATIVO"
-                      padding="1rem"
-                      textColor="white"
-                      backgroundColor="#cc0000"
-                      textColorHover="white"
-                      backgroundColorHover="#ff4444"
-                      letterSpacing="4px"
-                      fontSize="16px"
-                      fontWeight="400"
-                      type="submit" />
-                  </div>
-                  <div className={styles.button_box}>
-                    <CustomButton
-                      onClick={() => updateSelectedUser(user!)}
-                      text="ATUALIZAR"
-                      padding="1rem"
-                      textColor="white"
-                      backgroundColor="#006dac"
-                      textColorHover="white"
-                      backgroundColorHover="#00bbff"
-                      letterSpacing="4px"
-                      fontSize="16px"
-                      fontWeight="400"
-                      type="submit" />
-                  </div>
+                <DialogActions style={{ justifyContent: "space-around" }}>
+                  <Grid container spacing={1}>
+                    <Grid item>
+                      <div className={styles.button_box}>
+                        <CustomButton
+                          onClick={() => handleClose()}
+                          text="Cancelar"
+                          padding="1rem"
+                          textColor="white"
+                          backgroundColor="#676767"
+                          textColorHover="white"
+                          backgroundColorHover="#9f9f9f"
+                          letterSpacing="4px"
+                          fontSize="16px"
+                          fontWeight="400"
+                          type="submit" />
+                      </div>
+                    </Grid>
+                    <Grid item>
+                      <div className={styles.button_box}>
+                        <CustomButton
+                          onClick={() => removeOrInactiveSelectedUser(user!)}
+                          text="INATIVAR"
+                          padding="1rem"
+                          textColor="white"
+                          backgroundColor="#cc0000"
+                          textColorHover="white"
+                          backgroundColorHover="#ff4444"
+                          letterSpacing="4px"
+                          fontSize="16px"
+                          fontWeight="400"
+                          type="submit" />
+                      </div>
+                    </Grid>
+                    <Grid item>
+                      <div className={styles.button_box}>
+                        <CustomButton
+                          onClick={() => activeSelectedUser(user!)}
+                          text="ATIVAR"
+                          padding="1rem"
+                          textColor="white"
+                          backgroundColor="#cc0000"
+                          textColorHover="white"
+                          backgroundColorHover="#ff4444"
+                          letterSpacing="4px"
+                          fontSize="16px"
+                          fontWeight="400"
+                          type="submit" />
+                      </div>
+                    </Grid>
+                    <Grid item>
+                      <div className={styles.button_box}>
+                        <CustomButton
+                          onClick={() => updateSelectedUser(user!)}
+                          text="ATUALIZAR"
+                          padding="1rem"
+                          textColor="white"
+                          backgroundColor="#006dac"
+                          textColorHover="white"
+                          backgroundColorHover="#00bbff"
+                          letterSpacing="4px"
+                          fontSize="16px"
+                          fontWeight="400"
+                          type="submit" />
+                      </div>
+                    </Grid>
+                  </Grid>
                 </DialogActions>
               </Dialog>
               <h1 className={styles.title}>PAINEL DO ADMINISTRADOR</h1>
