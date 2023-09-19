@@ -121,7 +121,7 @@ export function PartnerList() {
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 700 }} aria-label="simple table">
           <TableHead>
-            <TableRow sx={{ backgroundColor: "#3f51b5", color: "#ffffff" }}>
+            <TableRow>
               {listHeader.map((head) => (
                 <TableCell key={head.value}>{head.label}
                   <TableSortLabel active={orderBy === head.value}
