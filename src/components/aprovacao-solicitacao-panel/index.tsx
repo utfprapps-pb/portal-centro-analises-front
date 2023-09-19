@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ThumbUp, ThumbDown, OpenInBrowser } from '@material-ui/icons'
-import { IconButton, TableFooter, TablePagination } from '@mui/material'
+import { IconButton, TableFooter, TablePagination, TableSortLabel } from '@mui/material'
 import Paper from '@mui/material/Paper'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -26,12 +26,21 @@ export const AprovacaoSolicitacaoPanel = () => {
     const [total, setTotal] = useState(0);
     const [pages, setPages] = useState(0);
 
+    const [orderBy, setOrderBy] = useState("id");
+    const [asc, setAsc] = useState(true);
+
+    const listHeader = [
+        { label: "Formulário", value: "equipment.form" },
+        { label: "Descrição", value: "description" },
+        { label: "Solicitante", value: "createdBy.name" }
+      ];
+
     var t: any = localStorage.getItem("user");
     var infoArray = JSON.parse(t);
     var userId = infoArray.id.toString();
 
     const loadData = (page: number) => {
-        AprovacoesService.pageSolicitationPending(page, rowsPerPage, "id", true)
+        AprovacoesService.pageSolicitationPending(page, rowsPerPage, orderBy, asc)
             .then((response: any) => {
                 setDataSolicitation(response.data.content)
                 setTotal(response.data.totalElements);
@@ -47,7 +56,7 @@ export const AprovacaoSolicitacaoPanel = () => {
 
     useEffect(() => {
         loadData(0);
-    }, [])
+    }, [orderBy, asc])
 
     const approveSolicitation = (id: number, status: string) => {
         AprovacoesService.approve(id, status)
@@ -85,6 +94,11 @@ export const AprovacaoSolicitacaoPanel = () => {
         loadData(newPage)
     };
 
+    const handleSort = (id: any) => {
+        setOrderBy(id);
+        setAsc(!asc);
+    }
+
     return (
         <>
             <div className={styles.container}>
@@ -93,11 +107,23 @@ export const AprovacaoSolicitacaoPanel = () => {
                     <Table sx={{ minWidth: 700 }} aria-label="customized table">
                         <TableHead>
                             <TableRow>
-                                <StyledTableCell>#</StyledTableCell>
+                                <StyledTableCell key={"id"}>#
+                                    <TableSortLabel active={orderBy === "id"}
+                                        direction={asc ? 'asc' : 'desc'}
+                                        onClick={() => handleSort("id")}
+                                    >
+                                    </TableSortLabel>
+                                </StyledTableCell>
                                 <StyledTableCell align="center">Abrir formulário</StyledTableCell>
-                                <StyledTableCell align="right">Formulário</StyledTableCell>
-                                <StyledTableCell align="right">Descrição</StyledTableCell>
-                                <StyledTableCell align="right">Solicitante</StyledTableCell>
+                                {listHeader.map((head) => (
+                                    <StyledTableCell align="center" key={head.value}>{head.label}
+                                    <TableSortLabel active={orderBy === head.value}
+                                        direction={asc ? 'asc' : 'desc'}
+                                        onClick={() => handleSort(head.value)}
+                                    >
+                                    </TableSortLabel>
+                                    </StyledTableCell>
+                                ))}
                                 <StyledTableCell align="right">Aprovar/Reprovar</StyledTableCell>
                             </TableRow>
                         </TableHead>
@@ -107,7 +133,7 @@ export const AprovacaoSolicitacaoPanel = () => {
                                     <StyledTableCell scope="row">
                                         {p.id}
                                     </StyledTableCell>
-                                    <StyledTableCell align="center" className={styles.icon_open}>
+                                    <StyledTableCell align="right" className={styles.icon_open}>
                                         <IconButton aria-label="approve" color="info">
                                             <OpenInBrowser onClick={() => navigate(`/aprovacoes/view/${p.id!}`)} />
                                         </IconButton>
