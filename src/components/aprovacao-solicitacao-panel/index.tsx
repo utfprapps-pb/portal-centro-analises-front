@@ -33,7 +33,7 @@ export const AprovacaoSolicitacaoPanel = () => {
         { label: "Formulário", value: "equipment.form" },
         { label: "Descrição", value: "description" },
         { label: "Solicitante", value: "createdBy.name" }
-      ];
+    ];
 
     var t: any = localStorage.getItem("user");
     var infoArray = JSON.parse(t);

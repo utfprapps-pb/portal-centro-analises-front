@@ -33,6 +33,11 @@ export const AprovacaoVinculoPanel = () => {
     var infoArray = JSON.parse(t);
     var userId = infoArray.id.toString();
 
+    const listHeader = [
+        { label: "Id", value: "id" },
+        { label: "Aluno", value: "student.name" }
+      ];
+
     const loadData = (page: number) => {
         StudentProfessorLinkService.pageVinculoPending(page, rowsPerPage, orderBy, asc, userId)
             .then((response: any) => {
@@ -110,21 +115,22 @@ export const AprovacaoVinculoPanel = () => {
                         <Table sx={{ minWidth: 700 }} aria-label="customized table">
                             <TableHead>
                                 <TableRow>
-                                    <StyledTableCell key={"id"}>#
-                                        <TableSortLabel active={orderBy === "id"}
+                                    {listHeader.map((head) => (
+                                        <StyledTableCell align="center" key={head.value}>{head.label}
+                                        <TableSortLabel active={orderBy === head.value}
                                             direction={asc ? 'asc' : 'desc'}
-                                            onClick={() => handleSort("id")}
+                                            onClick={() => handleSort(head.value)}
                                         >
                                         </TableSortLabel>
-                                    </StyledTableCell>
-                                    <StyledTableCell align="center">Aluno</StyledTableCell>
+                                        </StyledTableCell>
+                                    ))}
                                     <StyledTableCell align="right">Aprovar/Reprovar</StyledTableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {dataVinculo.filter((v) => v.aproved === null).map((v) => (
                                     <StyledTableRow key={v.id}>
-                                        <StyledTableCell scope="row">
+                                        <StyledTableCell align="center">
                                             {v.id}
                                         </StyledTableCell>
                                         <StyledTableCell align="center">{v.student.name}</StyledTableCell>
