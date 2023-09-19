@@ -3,7 +3,7 @@ import styles from './styles.module.scss'
 import { CustomStatus, DownloadFile } from '@/components'
 import { SolicitationAudit } from "@/commons/type";
 import { ArrowUpward, ArrowDownward } from '@material-ui/icons'
-import { Collapse, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow } from '@mui/material'
+import { Collapse, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel } from '@mui/material'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions';
 import HistoryService from '../../services/api/history/HistoryService';
 
@@ -18,7 +18,19 @@ export function Historico() {
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
 
+  const [orderBy, setOrderBy] = useState("id");
+  const [asc, setAsc] = useState(false);
+
   const [historyItens, setHistoryItens] = useState([]);
+
+  const listHeader = [
+    { label: "Situação", value: "newStatus" },
+    { label: "Data", value: "changeDate" },
+    { label: "Equipamento", value: "solicitation.equipment.name" },
+    { label: "Valor", value: "solicitation.value" },
+    { label: "Criado por", value: "solicitation.createdBy.name" },
+    { label: "Descrição", value: "h.solicitation.project.description}" }
+  ];
 
   function toggleDropdown(id: any, solId: any, newStatus: any) {
     setSelectedSolicitation(id);
@@ -37,10 +49,10 @@ export function Historico() {
 
   useEffect(() => {
     loadData(0);
-  }, []);
+  }, [orderBy, asc]);
 
   const loadData = (page: number) => {
-    HistoryService.page(page, rowsPerPage, 'id', false)
+    HistoryService.page(page, rowsPerPage, orderBy, asc)
       .then((response) => {
         setTotal(response.data.totalElements)
         setPages(response.data.totalPages);
@@ -60,6 +72,11 @@ export function Historico() {
     loadData(newPage)
   };
 
+  const handleSort = (id: any) => {
+    setOrderBy(id);
+    setAsc(!asc);
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -67,18 +84,21 @@ export function Historico() {
           <Table sx={{ minWidth: 700 }} aria-label="customized table">
             <TableHead>
               <TableRow>
-                <TableCell>Situação</TableCell>
-                <TableCell align="left">Data</TableCell>
-                <TableCell align="center">Equipamento</TableCell>
-                <TableCell align="center">Valor</TableCell>
-                <TableCell align="center">Criado por</TableCell>
-                <TableCell align="center">Descrição</TableCell>
+                {listHeader.map((head) => (
+                  <TableCell align="center" key={head.value}>{head.label}
+                    <TableSortLabel active={orderBy === head.value}
+                      direction={asc ? 'asc' : 'desc'}
+                      onClick={() => handleSort(head.value)}
+                    >
+                    </TableSortLabel>
+                  </TableCell>
+                ))}
                 <TableCell align="center">Ações</TableCell>
                 <TableCell align="center"></TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {data.map((h:SolicitationAudit) => (
+              {data.map((h: SolicitationAudit) => (
                 <><TableRow key={h.id}>
                   <TableCell scope="row"><CustomStatus
                     text={h.newStatus == 'PENDING_ADVISOR' ? 'Aguardando Confirmação' :
@@ -124,7 +144,7 @@ export function Historico() {
                       <Collapse in={(mostrarDropdown && (selectedSolicitation === h.id))} timeout="auto" unmountOnExit>
                         <Table>
                           <TableBody>
-                            {historyItens?.map((i:SolicitationAudit) => (
+                            {historyItens?.map((i: SolicitationAudit) => (
                               <TableRow key={i.id}>
                                 <TableCell scope="row">
                                   <CustomStatus
@@ -134,7 +154,7 @@ export function Historico() {
                                               i.newStatus == 'APPROVED' ? 'Aguardando Análise' :
                                               i.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
                                               i.newStatus == 'REFUSED' ? 'Recusado' :
-                                              i.newStatus == 'FINISHED' ? 'Concluído' :
+                                                i.newStatus == 'FINISHED' ? 'Concluído' :
                                                   '#000000'}
                                     padding="0.5rem"
                                     textColor="white"
