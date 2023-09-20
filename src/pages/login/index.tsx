@@ -8,6 +8,7 @@ import { AuthContext } from "../../contexts/auth";
 import AuthService from "../../services/AuthService"
 import { UserLogin } from "../../commons/type";
 import { toast } from "react-hot-toast";
+import { RequestVerifyEmail } from './RequestVerifyEmail';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -111,6 +112,9 @@ export const LoginPage: React.FC = () => {
                         placeholder='Sua senha'
                         className={styles.input_form}
                       />
+                    </div>
+                    <div className={styles.recover_password_link}>
+                      <RequestVerifyEmail />
                     </div>
                   </div>
                 </div>

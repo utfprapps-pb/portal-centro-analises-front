@@ -16,6 +16,7 @@ import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
 import { AprovacoesView } from "./pages/aprovacoes/AprovacoesView";
 import { ROLES } from "./commons/roles";
 import { RecoverPasswordPage } from "@/pages/recover-password";
+import { ConfigEmailPage } from "@/pages/config/email";
 
 export function App() {
   return (
@@ -93,6 +94,7 @@ export function App() {
           <Route path="/partner" element={<PartnerListPage />} />
           <Route path="/partner/new" element={<PartnerPage />} />
           <Route path="/partner/:id" element={<PartnerPage />} />
+          <Route path="/config-email" element={<ConfigEmailPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
