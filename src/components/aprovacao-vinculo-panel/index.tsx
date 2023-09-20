@@ -116,7 +116,7 @@ export const AprovacaoVinculoPanel = () => {
                             <TableHead>
                                 <TableRow>
                                     {listHeader.map((head) => (
-                                        <StyledTableCell align="center" key={head.value}>{head.label}
+                                        <StyledTableCell align={head.value==="id" ?"left":"center"} key={head.value}>{head.label}
                                         <TableSortLabel active={orderBy === head.value}
                                             direction={asc ? 'asc' : 'desc'}
                                             onClick={() => handleSort(head.value)}
@@ -130,7 +130,7 @@ export const AprovacaoVinculoPanel = () => {
                             <TableBody>
                                 {dataVinculo.filter((v) => v.aproved === null).map((v) => (
                                     <StyledTableRow key={v.id}>
-                                        <StyledTableCell align="center">
+                                        <StyledTableCell align="left">
                                             {v.id}
                                         </StyledTableCell>
                                         <StyledTableCell align="center">{v.student.name}</StyledTableCell>

@@ -246,8 +246,8 @@ export function AdminPanel() {
                     </Form>
                   </Formik>
                 </DialogContent>
-                <DialogActions style={{ justifyContent: "space-around" }}>
-                  <Grid container spacing={1}>
+                <DialogActions>
+                  <Grid container spacing={1} alignItems="center">
                     <Grid item>
                       <div className={styles.button_box}>
                         <CustomButton
@@ -343,7 +343,7 @@ export function AdminPanel() {
               <TableHead>
                 <TableRow>
                   {listHeader.map((head) => (
-                    <StyledTableCell align="center" key={head.value}>{head.label}
+                    <StyledTableCell align={head.value==="id" ?"left":"center"} key={head.value}>{head.label}
                       <TableSortLabel active={orderBy === head.value}
                         direction={asc ? 'asc' : 'desc'}
                         onClick={() => handleSort(head.value)}

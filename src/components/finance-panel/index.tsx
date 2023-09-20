@@ -270,7 +270,7 @@ export const FinancePanel: React.FC = () => {
               <TableHead>
                 <TableRow>
                   {listHeader.map((head) => (
-                    <StyledTableCell align="center" key={head.value}>{head.label}
+                    <StyledTableCell align={head.value==="id" ?"left":"center"} key={head.value}>{head.label}
                       <TableSortLabel active={orderBy === head.value}
                         direction={asc ? 'asc' : 'desc'}
                         onClick={() => handleSort(head.value)}
