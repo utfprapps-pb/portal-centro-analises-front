@@ -34,6 +34,7 @@ export const EquipmentsPage = () => {
   const listHeader = [
     { label: "Código", value: "id" },
     { label: "Nome", value: "name" },
+    { label: "Short name", value: "shortName"},
     { label: "$/h UTFPR", value: "valueHourUtfpr" },
     { label: "$/h Parceiro", value: "valueHourPartner" },
     { label: "$/h Externo", value: "valueHourPfPj" },
@@ -156,6 +157,7 @@ export const EquipmentsPage = () => {
                       {e.id}
                     </StyledTableCell>
                     <StyledTableCell align="left">{e.name}</StyledTableCell>
+                    <StyledTableCell align="center">{e.shortName}</StyledTableCell>
                     <StyledTableCell align="center">
                       {e.valueHourUtfpr?.toLocaleString('pt-br', { style: 'currency', currency: 'BRL' })}
                     </StyledTableCell>
