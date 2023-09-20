@@ -73,8 +73,12 @@ export function Historico() {
   };
 
   const handleSort = (id: any) => {
-    setOrderBy(id);
-    setAsc(!asc);
+    if(id !== "id" && id === orderBy && asc === false){
+      setOrderBy("id");
+    }else{
+      setOrderBy(id);
+      setAsc(!asc);
+    }
   }
 
   return (
