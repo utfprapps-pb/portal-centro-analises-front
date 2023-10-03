@@ -32,7 +32,7 @@ const Breadcrumb = () => {
               color="inherit"
               href="/material-ui/getting-started/installation/"
             >
-              Core
+              {path}
             </Link>
           )
         })}
