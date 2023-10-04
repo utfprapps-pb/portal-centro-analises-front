@@ -35,6 +35,7 @@ export const EquipmentPageForm = () => {
     valueSamplePartner: undefined,
     valueSamplePfPj: undefined,
     shortName: undefined,
+    status: 0,
   });
 
   useEffect(() => {
@@ -46,7 +47,7 @@ export const EquipmentPageForm = () => {
           setEquipment({
             id: response.data.id,
             name: response.data.name ?? '',
-            status: response.data.status ?? '',
+            status: response.data.status ?? 0,
             valueHourPartner: response.data.valueHourPartner ?? '',
             valueHourPfPj: response.data.valueHourPfPj ?? '',
             valueHourUtfpr: response.data.valueHourUtfpr ?? '',
@@ -85,6 +86,7 @@ export const EquipmentPageForm = () => {
         toast.error("Falha ao atualizar o equipamento.");
       });
     }else {
+      debugger
       EquipmentService.save(data)
       .then((response) => {
         toast.success("Sucesso ao salvar o equipamento.");
