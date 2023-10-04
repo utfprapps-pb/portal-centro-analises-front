@@ -20,7 +20,7 @@ const approveVinculo = (payload: object) =>  api.put(`/student-teacher/`, payloa
 const rejectVinculo = (id: number) => api.delete(`/student-teacher/${id}`)
 
 const pageVinculoPending = (page: number, size: number, order: string, asc: boolean, userId:number) => {
-  return api.get(`/student-teacher/listByTeacherPage/?page=${page}&size=${size}&order=${order}&asc=${asc}&userid=${userId}`)
+  return api.get(`/student-teacher/listByTeacherPage?page=${page}&size=${size}&order=${order}&asc=${asc}&userid=${userId}`)
 }
 
 const StudentProfessorLinkService = {

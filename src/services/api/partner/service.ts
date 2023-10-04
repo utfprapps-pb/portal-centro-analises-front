@@ -15,7 +15,7 @@ const findAll = () => {
 }
 
 const page = (page: number, size: number, order: string, asc: boolean) => {
-  return api.get(`/partners/page/?page=${page}&size=${size}&order=${order}&asc=${asc}`)
+  return api.get(`/partners/page?page=${page}&size=${size}&order=${order}&asc=${asc}`)
 }
 
 const search = (
