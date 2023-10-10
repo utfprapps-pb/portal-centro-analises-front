@@ -1,111 +1,114 @@
-import styles from "./styles.module.scss";
-import React, { useContext, useEffect, useState } from "react";
-import { TextField, Button, Paper, Box } from "@material-ui/core";
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
-import { ProjectParams } from "@/services/api/project/project.type";
-import ProjectService from "@/services/api/project/ProjectService";
-import { toast } from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "@/contexts";
-import { StudentsParams } from "@/services/api/project/project.type";
-import { Header, Menu } from "@/components";
-import StudentService from "@/services/api/students/StudentService";
+import styles from './styles.module.scss'
+import React, { useContext, useEffect, useState } from 'react'
+import { TextField, Button, Paper, Box } from '@material-ui/core'
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
+import { ProjectParams } from '@/services/api/project/project.type'
+import ProjectService from '@/services/api/project/ProjectService'
+import { toast } from 'react-hot-toast'
+import { useNavigate, useParams } from 'react-router-dom'
+import { AuthContext } from '@/contexts'
+import { StudentsParams } from '@/services/api/project/project.type'
+import { Header, Menu } from '@/components'
+import StudentService from '@/services/api/students/StudentService'
 
-import Select from "react-select";
-import makeAnimated from "react-select/animated";
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
+import Breadcrumb from '@/components/breadcrumb'
 
 const validationSchema = Yup.object().shape({
-  subject: Yup.string().required("Título é obrigatório"),
-  description: Yup.string().required("Descrição é obrigatória"),
-});
+  subject: Yup.string().required('Título é obrigatório'),
+  description: Yup.string().required('Descrição é obrigatória')
+})
 
 export const ProjectPageForm = () => {
-  const animatedComponents = makeAnimated();
-  const navigate = useNavigate();
+  const animatedComponents = makeAnimated()
+  const navigate = useNavigate()
 
-  const [students, setStudents] = useState<StudentsParams[]>([]);
-  const [studentsSelected, setStudentsSelected] = useState<StudentsParams[]>(
-    []
-  );
-  const [apiError, setApiError] = useState("");
-  const { id } = useParams();
-  const { authenticatedUser } = useContext(AuthContext);
+  const [students, setStudents] = useState<StudentsParams[]>([])
+  const [studentsSelected, setStudentsSelected] = useState<StudentsParams[]>([])
+  const [apiError, setApiError] = useState('')
+  const { id } = useParams()
+  const { authenticatedUser } = useContext(AuthContext)
 
   const [project, setProject] = useState<ProjectParams>({
-    description: "",
-    subject: "",
-    students: [],
-  });
+    description: '',
+    subject: '',
+    students: []
+  })
 
   const loadStudents = async () => {
     try {
-      const response = await StudentService.findAllByProfessor(authenticatedUser?.id!);
+      const response = await StudentService.findAllByProfessor(
+        authenticatedUser?.id!
+      )
       if (response.data) {
-        setStudents(response.data);
-        setApiError("");
+        setStudents(response.data)
+        setApiError('')
       }
     } catch (error) {
-      setApiError("Falha ao carregar estudantes.");
-      toast.error(apiError);
-      console.log(error);
+      setApiError('Falha ao carregar estudantes.')
+      toast.error(apiError)
+      console.log(error)
     }
-  };
+  }
 
   useEffect(() => {
-    loadStudents();
+    loadStudents()
 
     const loadData = async () => {
       try {
-        const response = await ProjectService.findById(Number(id));
+        const response = await ProjectService.findById(Number(id))
 
         if (response.data) {
           setProject({
             id: response.data.id,
             description: response.data.description,
             subject: response.data.subject,
-            students: response.data.students,
-          });
+            students: response.data.students
+          })
 
-          setStudentsSelected(response.data.students);
-          setApiError("");
+          setStudentsSelected(response.data.students)
+          setApiError('')
         }
       } catch (error) {
-        setApiError("Falha ao carregar projeto.");
-        toast.error(apiError);
-        console.log(error);
+        setApiError('Falha ao carregar projeto.')
+        toast.error(apiError)
+        console.log(error)
       }
-    };
+    }
 
     if (id) {
-      loadData();
+      loadData()
     }
-  }, []);
+  }, [])
 
   const handleSubmit = (values: ProjectParams) => {
     const data: ProjectParams = {
       ...values,
       id: project.id,
       students: studentsSelected,
-      teacher: authenticatedUser,
-    };
+      teacher: authenticatedUser
+    }
 
     ProjectService.save(data)
       .then((response) => {
-        toast.success("Sucesso ao salvar o projeto.");
-        navigate("/projeto");
+        toast.success('Sucesso ao salvar o projeto.')
+        navigate('/projeto')
       })
       .catch((error) => {
-        toast.error("Falha ao salvar o projeto.");
-        setApiError("Falha ao salvar o projeto.");
-      });
-  };
+        toast.error('Falha ao salvar o projeto.')
+        setApiError('Falha ao salvar o projeto.')
+      })
+  }
 
   return (
     <div className={styles.container}>
       <Menu />
       <div className={styles.middle}>
         <Header />
+        <Breadcrumb />
+
         <Paper
           className={styles.containerForm}
           elevation={3}
@@ -144,7 +147,7 @@ export const ProjectPageForm = () => {
                 <Select
                   name="students"
                   onChange={(optionsSelected: any) => {
-                    setStudentsSelected(optionsSelected);
+                    setStudentsSelected(optionsSelected)
                   }}
                   closeMenuOnSelect={false}
                   className={styles.textField}
@@ -175,5 +178,5 @@ export const ProjectPageForm = () => {
         </Paper>
       </div>
     </div>
-  );
-};
+  )
+}
