@@ -86,7 +86,6 @@ export const EquipmentPageForm = () => {
         toast.error("Falha ao atualizar o equipamento.");
       });
     }else {
-      debugger
       EquipmentService.save(data)
       .then((response) => {
         toast.success("Sucesso ao salvar o equipamento.");
