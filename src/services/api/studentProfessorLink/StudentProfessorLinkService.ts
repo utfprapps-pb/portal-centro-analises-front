@@ -15,7 +15,7 @@ const deleteLink = (id: number) =>
 
 const getVinculoPending = (id: number) => api.get(`/student-teacher/listByTeacher/${id}`) 
 
-const approveVinculo = (payload: object) =>  api.put(`/student-teacher/`, payload)
+const approveVinculo = (payload: object) =>  api.put(`/student-teacher`, payload)
 
 const rejectVinculo = (id: number) => api.delete(`/student-teacher/${id}`)
 
