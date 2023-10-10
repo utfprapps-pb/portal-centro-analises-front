@@ -3,4 +3,5 @@ export const ROLES = {
   Professor: "PROFESSOR",
   Student: "STUDENT",
   External: "EXTERNAL",
+  Partner: "PARTNER",
 };

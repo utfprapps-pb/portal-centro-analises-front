@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "@/contexts";
 import styles from "./styles.module.scss";
-import { PlaylistAdd, History, Check, BusinessCenter, Adjust, Build, AccountBalance } from '@material-ui/icons'
+import { PlaylistAdd, History, Check, BusinessCenter, Adjust, Build, AccountBalance, Domain } from '@material-ui/icons'
 import { Link } from 'react-router-dom';
 
 export const Menu: React.FC = () => {
@@ -21,19 +21,19 @@ export const Menu: React.FC = () => {
           <History style={{ color: '#3f51b5' }} />
           <h2>Histórico</h2>
         </Link>
-        { authenticatedUser && (authenticatedUser.role == 'PROFESSOR' || authenticatedUser.role == 'ADMIN') && 
+        { authenticatedUser && (authenticatedUser.role == 'PROFESSOR' || authenticatedUser.role == 'ADMIN') &&
           <>
             <Link className={styles.tab} to="/aprovacoes">
               <Check style={{ color: '#3f51b5' }} />
               <h2>Aprovações</h2>
-            </Link> 
+            </Link>
             <Link className={styles.tab} to="/projeto">
               <BusinessCenter style={{ color: '#3f51b5' }} />
               <h2>Projetos</h2>
             </Link>
           </>
         }
-        { authenticatedUser && authenticatedUser.role == 'ADMIN' && 
+        { authenticatedUser && authenticatedUser.role == 'ADMIN' &&
           <>
             <Link className={styles.tab} to="/equipamento">
               <Build style={{ color: "#3f51b5" }} />
@@ -46,6 +46,10 @@ export const Menu: React.FC = () => {
             <Link className={styles.tab} to="/partner">
               <AccountBalance style={{ color: '#3f51b5' }} />
               <h2>Parceiros</h2>
+            </Link>
+            <Link className={styles.tab} to="/domain-role">
+              <Domain style={{ color: '#3f51b5' }} />
+              <h2>Domínios</h2>
             </Link>
           </>
         }

@@ -17,6 +17,8 @@ import { AprovacoesView } from "./pages/aprovacoes/AprovacoesView";
 import { ROLES } from "./commons/roles";
 import { RecoverPasswordPage } from "@/pages/recover-password";
 import { ConfigEmailPage } from "@/pages/config/email";
+import { DomainRoleListPage } from "@/pages/domain-role/list";
+import { DomainRolePage } from "@/pages/domain-role/form";
 
 export function App() {
   return (
@@ -95,6 +97,9 @@ export function App() {
           <Route path="/partner/new" element={<PartnerPage />} />
           <Route path="/partner/:id" element={<PartnerPage />} />
           <Route path="/config-email" element={<ConfigEmailPage />} />
+          <Route path="/domain-role" element={<DomainRoleListPage />} />
+          <Route path="/domain-role/new" element={<DomainRolePage />} />
+          <Route path="/domain-role/:id" element={<DomainRolePage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>

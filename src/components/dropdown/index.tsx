@@ -14,6 +14,7 @@ const Dropdown: React.FC<DropdownProps> = ({ value, onChange }) => {
     { value: 'STUDENT', label: 'Estudante' },
     { value: 'EXTERNAL', label: 'Externo' },
     { value: 'ADMIN', label: 'Admin' },
+    { value: 'PARTNER', label: 'Parceiro' },
   ];
 
   const customStyles = {
