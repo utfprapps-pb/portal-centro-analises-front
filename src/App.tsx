@@ -5,8 +5,6 @@ import { HomePage } from './pages/home'
 import { HistoricoPage } from './pages/historico'
 import { SolicitarPage } from './pages/solicitar'
 import { RequireAuth } from './components/required-auth'
-import { useContext, useEffect } from 'react'
-import { AuthContext } from './contexts'
 import {
   EmailConfirmationPage,
   SignUpPage,
@@ -26,6 +24,7 @@ import { ROLES } from './commons/roles'
 import { RecoverPasswordPage } from '@/pages/recover-password'
 import { ConfigEmailPage } from '@/pages/config/email'
 import { DomainRolePage } from "@/pages/domain-role/form";
+import { DomainRoleListPage } from '@/pages/domain-role/list'
 
 export function App() {
   return (
