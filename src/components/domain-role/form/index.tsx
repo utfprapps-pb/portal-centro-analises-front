@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { Button, TextField } from '@material-ui/core'
+import { Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@material-ui/core'
 import { useNavigate, useParams } from 'react-router-dom'
 import * as yup from 'yup'
 
@@ -8,7 +8,7 @@ import styles from './styles.module.scss'
 import { DomainRole } from '../model/domain-role'
 import { Field, Form, Formik } from 'formik'
 import DomainRoleService from '@/services/api/domain-role/service'
-import Dropdown from '@/components/dropdown'
+import { ROLE_OPTIONS } from '@/commons/roles'
 
 export function DomainRoleForm() {
   const { id } = useParams();
@@ -39,15 +39,19 @@ export function DomainRoleForm() {
         .catch((erro) => {
           setApiError('Falha ao carregar domínio.')
         })
+    } else {
+      let teste = { ...domainRole }
+      teste.role = ROLE_OPTIONS[0].value;
+      setDomainRole(teste);
     }
   }, [])
 
   const validationSchema = yup.object().shape({
     domain: yup.string().min(4, "Deve informar no mínimo 4 caracteres").required("Domínio é obrigatório"),
+    role: yup.string().required("Permissão é obrigatório"),
   });
 
   const onSubmit = (values: DomainRole) => {
-    console.log('onSubmit');
     const data: DomainRole = {
       ...values,
       id: domainRole.id,
@@ -80,7 +84,7 @@ export function DomainRoleForm() {
           onSubmit={onSubmit}
           enableReinitialize={true}
         >
-          {({ errors, touched, setFieldValue }) => (
+          {({ errors, touched, setFieldValue, values }) => (
             <Form className={styles.form}>
               <Field
                 as={TextField}
@@ -94,11 +98,21 @@ export function DomainRoleForm() {
                 variant="outlined"
               />
 
-              <div className={styles.field_box}>
-                <p>Permissão</p>
-                <Dropdown value={domainRole?.role || ''} onChange={(value) => setFieldValue('role', value)} />
+              <div style={{ paddingTop: '15px', textAlign: 'left' }}>
+                <FormControl variant="outlined" fullWidth>
+                  <InputLabel id="dropdown-label">Permissão</InputLabel>
+                  <Select
+                    labelId="dropdown-label"
+                    label="Permissão"
+                    onChange={(value) => setFieldValue('role', value.target.value)}
+                    value={values?.role}
+                  >
+                    {ROLE_OPTIONS.map(option => {
+                      return <MenuItem value={option.value}>{option.label}</MenuItem>
+                    })}
+                  </Select>
+                </FormControl>
               </div>
-
               <div className={styles.button_box}>
                 <Button variant="contained" color="primary" type="submit">
                   Salvar

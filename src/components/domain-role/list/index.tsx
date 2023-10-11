@@ -20,6 +20,7 @@ import TablePaginationActions from "@material-ui/core/TablePagination/TablePagin
 import { FilterDrawer } from "@/components/filter-drawer";
 import { DomainRole } from "../model/domain-role";
 import DomainRoleService from "@/services/api/domain-role/service";
+import { ROLE_OPTIONS } from '../../../commons/roles';
 
 export function DomainRoleList() {
   const [data, setData] = useState([]);
