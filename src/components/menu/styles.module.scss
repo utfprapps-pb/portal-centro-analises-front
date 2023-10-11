@@ -1,11 +1,21 @@
-@import "../../styles/variables.scss";
+@import '../../styles/variables.scss';
 
 @keyframes changeWeight {
-  0% { font-weight: 200; }
-  25% { font-weight: 300; } 
-  50% { font-weight: 400; }
-  75% { font-weight: 500; }
-  100% { font-weight: 700; }
+  0% {
+    font-weight: 200;
+  }
+  25% {
+    font-weight: 300;
+  }
+  50% {
+    font-weight: 400;
+  }
+  75% {
+    font-weight: 500;
+  }
+  100% {
+    font-weight: 700;
+  }
 }
 
 .container {
@@ -21,6 +31,7 @@
   gap: 1rem;
   background-color: #fff;
   border-radius: 5px;
+  min-height: 100vh;
 }
 
 .tabs {
@@ -120,7 +131,7 @@
     font-size: 2rem;
     font-weight: 1000;
     letter-spacing: 0.2rem;
-    
+
     cursor: pointer;
   }
   .tab h2 {

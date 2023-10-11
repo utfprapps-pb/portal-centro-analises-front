@@ -73,12 +73,13 @@ export const useProfile = () => {
         if (response.data) {
           setProfessorSelected(response.data);
         }
+
+        toast.success("Sucesso ao solicitar vínculo ao professor");
       } catch (error) {
         toast.error("Falha ao solicitar vínculo ao professor");
         console.log(error);
       }
 
-      toast.success("Sucesso ao solicitar vínculo ao professor");
       loadStudentProfessorLink
 
     } else {

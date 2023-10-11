@@ -1,23 +1,30 @@
-import { Route, Routes } from "react-router-dom";
-import { Layout } from "./pages/layout";
-import { LoginPage } from "./pages/login";
-import { HomePage } from "./pages/home";
-import { HistoricoPage } from "./pages/historico";
-import { SolicitarPage } from "./pages/solicitar";
-import { RequireAuth } from "./components/required-auth";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "./contexts";
-import { EmailConfirmationPage, SignUpPage, ProfilePage, AdminPage, PartnerListPage, PartnerPage, AprovacoesPage } from "./pages";
-import { NotFound } from "./pages/notFound";
-import { Project } from "./pages/project";
-import { ProjectPageForm } from "./pages/project/ProjectPageForm";
-import { EquipmentsPage } from "./pages/equipment/EquipmentPage";
-import { EquipmentPageForm } from "./pages/equipment/EquipamentPageForm";
-import { AprovacoesView } from "./pages/aprovacoes/AprovacoesView";
-import { ROLES } from "./commons/roles";
-import { RecoverPasswordPage } from "@/pages/recover-password";
-import { ConfigEmailPage } from "@/pages/config/email";
-import { DomainRoleListPage } from "@/pages/domain-role/list";
+import { Route, Routes } from 'react-router-dom'
+import { Layout } from './pages/layout'
+import { LoginPage } from './pages/login'
+import { HomePage } from './pages/home'
+import { HistoricoPage } from './pages/historico'
+import { SolicitarPage } from './pages/solicitar'
+import { RequireAuth } from './components/required-auth'
+import { useContext, useEffect } from 'react'
+import { AuthContext } from './contexts'
+import {
+  EmailConfirmationPage,
+  SignUpPage,
+  ProfilePage,
+  AdminPage,
+  PartnerListPage,
+  PartnerPage,
+  AprovacoesPage
+} from './pages'
+import { NotFound } from './pages/notFound'
+import { Project } from './pages/project'
+import { ProjectPageForm } from './pages/project/ProjectPageForm'
+import { EquipmentsPage } from './pages/equipment/EquipmentPage'
+import { EquipmentPageForm } from './pages/equipment/EquipamentPageForm'
+import { AprovacoesView } from './pages/aprovacoes/AprovacoesView'
+import { ROLES } from './commons/roles'
+import { RecoverPasswordPage } from '@/pages/recover-password'
+import { ConfigEmailPage } from '@/pages/config/email'
 import { DomainRolePage } from "@/pages/domain-role/form";
 
 export function App() {
@@ -40,7 +47,7 @@ export function App() {
                 ROLES.Student,
                 ROLES.External,
                 ROLES.Professor,
-                ROLES.Admin,
+                ROLES.Admin
               ]}
             />
           }
@@ -53,24 +60,12 @@ export function App() {
         </Route>
 
         <Route
-          element={
-            <RequireAuth
-              allowedRoles={[
-                ROLES.External,
-              ]}
-            />
-          }
-        >
-        </Route>
+          element={<RequireAuth allowedRoles={[ROLES.External]} />}
+        ></Route>
 
         <Route
           element={
-            <RequireAuth
-              allowedRoles={[
-                ROLES.Professor,
-                ROLES.Admin,
-              ]}
-            />
+            <RequireAuth allowedRoles={[ROLES.Professor, ROLES.Admin]} />
           }
         >
           <Route path="/projeto" element={<Project />} />
@@ -80,15 +75,7 @@ export function App() {
           <Route path="/aprovacoes/view/:id" element={<AprovacoesView />} />
         </Route>
 
-        <Route
-          element={
-            <RequireAuth
-              allowedRoles={[
-                ROLES.Admin,
-              ]}
-            />
-          }
-        >
+        <Route element={<RequireAuth allowedRoles={[ROLES.Admin]} />}>
           <Route path="/admin" element={<AdminPage />} />
           <Route path="/equipamento" element={<EquipmentsPage />} />
           <Route path="/equipamento/form" element={<EquipmentPageForm />} />
@@ -104,5 +91,5 @@ export function App() {
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
-  );
+  )
 }

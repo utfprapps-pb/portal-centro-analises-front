@@ -1,70 +1,73 @@
 /* eslint-disable react/jsx-no-bind */
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState } from 'react'
 
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from 'formik'
+import { useNavigate } from 'react-router-dom'
+import * as yup from 'yup'
 
-import styles from "./styles.module.scss";
-import { CustomButton, CustomErrorMessage } from "@/components";
-import AuthService from "@/services/AuthService";
-import { CircularProgress } from "@material-ui/core";
-import { toast } from "react-hot-toast";
-
+import styles from './styles.module.scss'
+import { CustomButton, CustomErrorMessage } from '@/components'
+import AuthService from '@/services/AuthService'
+import { CircularProgress } from '@material-ui/core'
+import { toast } from 'react-hot-toast'
 
 export const SignUpPage: React.FC = () => {
-  const [apiError, setApiError] = useState("");
-  const [pendingApiCall, setPendingApiCall] = useState(false);
+  const [apiError, setApiError] = useState('')
+  const [pendingApiCall, setPendingApiCall] = useState(false)
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   function goToLogin() {
-    navigate("/login");
+    navigate('/login')
   }
 
   const handleSubmit = useCallback(
     async (values: {
-      email: string;
-      password: string;
-      name: string;
-      username: string;
+      email: string
+      password: string
+      name: string
+      username: string
     }) => {
-      setPendingApiCall(true);
+      setPendingApiCall(true)
       AuthService.signUp(values)
         .then((response) => {
-          setPendingApiCall(false);
+          setPendingApiCall(false)
           //TODO adicionar toast de sucesso
-          navigate("/login");
+          navigate('/login')
           toast.success('Cadastrado com sucesso!')
         })
         .catch((apiError) => {
-          toast.error('Erro ao realizar cadastro :(')
-          setApiError("Erro ao realizar cadastro!");
-          setPendingApiCall(false);
-        });
+          const { validationErrors } = apiError.response.data
+
+          Object.values(validationErrors).forEach((error: any) => {
+            toast.error(error)
+            setApiError(error)
+          })
+          setPendingApiCall(false)
+        })
     },
     []
-  );
+  )
 
   const validationForm = yup.object().shape({
     email: yup
       .string()
-      .email("Informe um email válido")
-      .required("Informe seu email"),
+      .email('Informe um email válido')
+      .required('Informe seu email'),
     password: yup
       .string()
-      .min(6, "Mínimo de 6 carácteres")
-      .required("Informe sua senha"),
+      .min(6, 'Mínimo de 6 carácteres')
+      .required('Informe sua senha'),
     confirmPassword: yup
       .string()
-      .min(6, "Mínimo de 6 carácteres")
-      .required("Informe sua senha")
-      .oneOf([yup.ref("password")], "Suas senhas não conferem"),
+      .min(6, 'Mínimo de 6 carácteres')
+      .required('Informe sua senha')
+      .oneOf([yup.ref('password')], 'Suas senhas não conferem'),
     name: yup
       .string()
-      .min(6, "Mínimo de 6 carácteres")
-      .required("Informe sua senha"),
-  });
+      .min(6, 'Mínimo de 6 carácteres')
+      .required('Informe sua senha')
+  })
 
   return (
     <div>
@@ -75,11 +78,11 @@ export const SignUpPage: React.FC = () => {
           </div>
           <Formik
             initialValues={{
-              name: "",
-              email: "",
-              password: "",
-              confirmPassword: "",
-              username: "",
+              name: '',
+              email: '',
+              password: '',
+              confirmPassword: '',
+              username: ''
             }}
             onSubmit={handleSubmit}
             validationSchema={validationForm}
@@ -202,5 +205,5 @@ export const SignUpPage: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
