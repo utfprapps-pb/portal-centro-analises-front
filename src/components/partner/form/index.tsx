@@ -8,6 +8,7 @@ import PartnerService from '../../../services/api/partner/service'
 import { Partner } from '../model/partner'
 import { Field, Form, Formik } from 'formik'
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material'
+import toast from 'react-hot-toast'
 
 export function PartnerForm() {
   const { id } = useParams()
@@ -59,10 +60,12 @@ export function PartnerForm() {
     setPendingApiCall(true)
     PartnerService.save(data)
       .then((response) => {
+        toast.success("Sucesso ao salvar a instituição parceira.");
         setPendingApiCall(false)
         navigate('/partner')
       })
       .catch((error) => {
+        toast.error('Falha ao salvar a instituição parceira.');
         if (error.response.data && error.response.data.validationErrors) {
           setErrors(error.response.data.validationErrors)
         } else {
