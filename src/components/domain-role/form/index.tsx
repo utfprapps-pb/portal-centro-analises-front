@@ -11,15 +11,15 @@ import DomainRoleService from '@/services/api/domain-role/service'
 import Dropdown from '@/components/dropdown'
 
 export function DomainRoleForm() {
-  const { id } = useParams()
+  const { id } = useParams();
   const [domainRole, setDomainRole] = useState<DomainRole>({
     domain: '',
     role: '',
-  })
-  const [errors, setErrors] = useState({ id: null, name: '' })
-  const [pendingApiCall, setPendingApiCall] = useState(false)
-  const [apiError, setApiError] = useState('')
-  const navigate = useNavigate()
+  });
+  const [errors, setErrors] = useState({ id: null, name: '' });
+  const [pendingApiCall, setPendingApiCall] = useState(false);
+  const [apiError, setApiError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -70,13 +70,6 @@ export function DomainRoleForm() {
       })
   }
 
-  const handleRoleChange = (selectedValue: string) => {
-    verificar erro de quando trocar valor limpar domínio
-    let updatedDomainRole = { ...domainRole }
-    updatedDomainRole.role = selectedValue
-    setDomainRole(updatedDomainRole)
-  }
-
   return (
     <>
       <div className={styles.container}>
@@ -87,7 +80,7 @@ export function DomainRoleForm() {
           onSubmit={onSubmit}
           enableReinitialize={true}
         >
-          {({ errors, touched }) => (
+          {({ errors, touched, setFieldValue }) => (
             <Form className={styles.form}>
               <Field
                 as={TextField}
@@ -103,7 +96,7 @@ export function DomainRoleForm() {
 
               <div className={styles.field_box}>
                 <p>Permissão</p>
-                <Dropdown value={domainRole?.role || ''} onChange={handleRoleChange} />
+                <Dropdown value={domainRole?.role || ''} onChange={(value) => setFieldValue('role', value)} />
               </div>
 
               <div className={styles.button_box}>
