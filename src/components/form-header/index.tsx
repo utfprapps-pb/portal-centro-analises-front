@@ -16,6 +16,8 @@ export function FormHeader() {
 	const [professorFields, setProfessorFields] = useState(false);
 	const { authenticatedUser } = useContext(AuthContext);
 	const [utfprFields, setUtfprFields] = useState(false);
+	const [outraNatureza, setOutraNatureza] = useState(false);
+	const [projectNature, setProjectNature] = useState('');
 
 	var t: any = localStorage.getItem("user");
 	var infoArray = JSON.parse(t);
@@ -57,6 +59,17 @@ export function FormHeader() {
 		}
 		getProject();
 	}, []);
+
+	const handleOtherNature = (event: React.ChangeEvent<HTMLSelectElement>) => {
+		const naturezaSelec = event.target.value;
+		setProjectNature(naturezaSelec);
+
+		if (naturezaSelec === 'OTHER') {
+			setOutraNatureza(true);
+		} else {
+			setOutraNatureza(false);
+		}
+	};
 
 	return (
 		<>
@@ -144,7 +157,7 @@ export function FormHeader() {
 							</div>
 						</div>
 					</div> : <div></div>}
-					{utfprFields ? <div className={styles.row_box}>
+					<div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Natureza</p>
 							<div className={styles.input_box}>
@@ -154,6 +167,8 @@ export function FormHeader() {
 									name="natureza"
 									multiple={false}
 									className={styles.select_box}
+									onChange={handleOtherNature}
+									value={projectNature}
 								>
 									<option key='0' value='0'>
 										Selecione a natureza do projeto
@@ -164,7 +179,26 @@ export function FormHeader() {
 								</Field>
 							</div>
 						</div>
+					</div>
+
+					{outraNatureza ? <div className={styles.row_box}>
+						<div className={styles.field_box}>
+							<p>Outra Natureza</p>
+							<div className={styles.input_box}>
+							<ErrorMessage
+								component={CustomErrorMessage}
+								name="otherProjectNature"
+								className={styles.form_error}
+							/>
+							<Field
+								name="otherProjectNature"
+								placeholder='Informe a natureza'
+								className={styles.input_form}
+							/>
+							</div>
+						</div>
 					</div> : <div></div>}
+
 					<div className={styles.row_box}>
 						<div className={styles.field_box}>
 							<p>Descrição</p>
@@ -188,4 +222,5 @@ export function FormHeader() {
 			)}
 		</>
 	)
+	/**/
 }

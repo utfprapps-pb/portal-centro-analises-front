@@ -90,6 +90,7 @@ export interface SolicitationAudit {
     projectNature: {
       content: string
     }
+    otherProjectNature?: string
   }
 }
 

@@ -32,6 +32,7 @@ export const FormAtividadeAgua: React.FC = () => {
     projeto: number;
     descricao: string;
     natureza: string;
+    otherProjectNature?: string;
   }) {
     try {
       startButtonLoad();
@@ -41,9 +42,13 @@ export const FormAtividadeAgua: React.FC = () => {
         project: {"id": values.projeto},
         description : values.descricao,
         projectNature : values.natureza,
+        otherProjectNature : values.otherProjectNature,
         status : 0,
         fields: ""
       }
+
+      console.log('NATUREZA VINDA: ', values.natureza);
+      console.log('PROJETO VINDA: ', values.projeto);
   
       await api.post("/solicitation", payload);
       toast.success('Solicitação efetuada com sucesso!');
@@ -65,7 +70,8 @@ export const FormAtividadeAgua: React.FC = () => {
             nomeOrientador: "NOME",
             projeto: 1,
             descricao: "",
-            natureza: ""
+            natureza: "",
+            otherProjectNature: "",
           }}
           onSubmit={handleClickForm}
           validationSchema={validationForm}
