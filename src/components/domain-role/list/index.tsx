@@ -143,7 +143,11 @@ export function DomainRoleList() {
                   {row.id}
                 </TableCell>
                 <TableCell>{row.domain}</TableCell>
-                <TableCell>{row.role}</TableCell>
+                <TableCell>{
+                  ROLE_OPTIONS.map((role) => {
+                    if (role.value == row.role)
+                      return role.label;
+                  })}</TableCell>
                 <TableCell align="right">
                   <IconButton
                     color="primary"
