@@ -36,8 +36,8 @@ export const EquipmentPageForm = () => {
     valueSamplePartner: undefined,
     valueSamplePfPj: undefined,
     shortName: undefined,
-    status: 0,
-  });
+    status: 1
+  })
 
   useEffect(() => {
     const loadData = async () => {
@@ -48,7 +48,7 @@ export const EquipmentPageForm = () => {
           setEquipment({
             id: response.data.id,
             name: response.data.name ?? '',
-            status: response.data.status ?? 0,
+            status: response.data.status ?? 1,
             valueHourPartner: response.data.valueHourPartner ?? '',
             valueHourPfPj: response.data.valueHourPfPj ?? '',
             valueHourUtfpr: response.data.valueHourUtfpr ?? '',
