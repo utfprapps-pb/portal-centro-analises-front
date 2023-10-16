@@ -40,6 +40,12 @@ export function PartnerList() {
   const listHeader = [
     { label: "Código", value: "id" },
     { label: "Nome", value: "name" },
+    { label: "Situação", value: "status"}
+  ];
+
+  const status = [
+    { value: 'INACTIVE', label: 'Inativo' },
+    { value: 'ACTIVE', label: 'Ativo' },
   ];
 
   const handleSearchChange = (value: string) => {
@@ -104,6 +110,10 @@ export function PartnerList() {
     setAsc(!asc);
   }
 
+  const formataStatus = (valor:string) => {
+    return status.find(item => item.value === valor)?.label;
+  }
+
   return (
     <>
       <Grid container justifyContent="space-between">
@@ -144,6 +154,7 @@ export function PartnerList() {
                   {row.id}
                 </TableCell>
                 <TableCell>{row.name}</TableCell>
+                <TableCell>{formataStatus(row.status)}</TableCell>
                 <TableCell align="right">
                   <IconButton
                     color="primary"
