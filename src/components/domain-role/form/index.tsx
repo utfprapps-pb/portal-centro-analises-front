@@ -9,6 +9,7 @@ import { DomainRole } from '../model/domain-role'
 import { Field, Form, Formik } from 'formik'
 import DomainRoleService from '@/services/api/domain-role/service'
 import { ROLE_OPTIONS } from '@/commons/roles'
+import toast from 'react-hot-toast'
 
 export function DomainRoleForm() {
   const { id } = useParams();
@@ -70,8 +71,16 @@ export function DomainRoleForm() {
         } else {
           setApiError('Falha ao salvar domínio.')
         }
-        setPendingApiCall(false)
+        showMessageError(error);
+        setPendingApiCall(false);
       })
+  }
+
+  const showMessageError = (error) => {
+    let messageError =
+      error?.response?.data?.message ??
+      'Falha ao salvar domínio.'
+    toast.error(messageError)
   }
 
   return (
