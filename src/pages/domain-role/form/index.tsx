@@ -1,15 +1,18 @@
-import { Header, Menu, Historico } from '@/components'
+import React from 'react'
 
 import styles from './styles.module.scss'
+import { Header, Menu } from '@/components'
+import { DomainRoleForm } from '@/components/domain-role/form'
 import Breadcrumb from '@/components/breadcrumb'
 
-export const HistoricoPage: React.FC = () => (
+export const DomainRolePage: React.FC = () => (
   <div className={styles.container}>
     <Menu />
     <div className={styles.middle}>
       <Header />
+
       <Breadcrumb />
-      <Historico />
+      <DomainRoleForm />
     </div>
   </div>
 )

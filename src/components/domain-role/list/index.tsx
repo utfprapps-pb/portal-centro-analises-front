@@ -3,10 +3,6 @@ import { useEffect, useState } from "react";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-import { Link } from "react-router-dom";
-
-import PartnerService from "../../../services/api/partner/service";
-
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
@@ -22,9 +18,11 @@ import styles from "./styles.module.scss";
 import { Button, Grid, TableFooter, TablePagination, TableSortLabel } from "@material-ui/core";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 import { FilterDrawer } from "@/components/filter-drawer";
-import { Partner } from "../model/partner";
+import { DomainRole } from "../model/domain-role";
+import DomainRoleService from "@/services/api/domain-role/service";
+import { ROLE_OPTIONS } from '../../../commons/roles';
 
-export function PartnerList() {
+export function DomainRoleList() {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(0);
   const [apiError, setApiError] = useState("");
@@ -39,13 +37,8 @@ export function PartnerList() {
 
   const listHeader = [
     { label: "Código", value: "id" },
-    { label: "Nome", value: "name" },
-    { label: "Situação", value: "status"}
-  ];
-
-  const status = [
-    { value: 'INACTIVE', label: 'Inativo' },
-    { value: 'ACTIVE', label: 'Ativo' },
+    { label: "Domínio", value: "domain" },
+    { label: "Permissão", value: "role" },
   ];
 
   const handleSearchChange = (value: string) => {
@@ -58,7 +51,7 @@ export function PartnerList() {
 
   const loadData = (page: number) => {
     if (search && search.length) {
-      PartnerService.search(page, rowsPerPage, orderBy, asc, search)
+      DomainRoleService.search(page, rowsPerPage, orderBy, asc, search)
         .then((response) => {
           setTotal(response.data.totalElements);
           setPages(response.data.totalPages);
@@ -66,10 +59,10 @@ export function PartnerList() {
           setApiError("");
         })
         .catch((error) => {
-          setApiError("Falha ao carregar a lista de instituições parceiras");
+          setApiError("Falha ao carregar a lista de domínios.");
         });
     } else {
-      PartnerService.page(page, rowsPerPage, orderBy, asc)
+      DomainRoleService.page(page, rowsPerPage, orderBy, asc)
         .then((response) => {
           setTotal(response.data.totalElements);
           setPages(response.data.totalPages);
@@ -77,7 +70,7 @@ export function PartnerList() {
           setApiError("");
         })
         .catch((error) => {
-          setApiError("Falha ao carregar a lista de instituições parceiras");
+          setApiError("Falha ao carregar a lista de domínios.");
         });
     }
   };
@@ -87,13 +80,13 @@ export function PartnerList() {
   };
 
   const onRemove = (id: number) => {
-    PartnerService.remove(id)
+    DomainRoleService.remove(id)
       .then((response) => {
         loadData(0);
         setApiError("");
       })
       .catch((erro) => {
-        setApiError("Falha ao remover a instituição parceira");
+        setApiError("Falha ao remover domínio.");
       });
   };
 
@@ -110,10 +103,6 @@ export function PartnerList() {
     setAsc(!asc);
   }
 
-  const formataStatus = (valor:string) => {
-    return status.find(item => item.value === valor)?.label;
-  }
-
   return (
     <>
       <Grid container justifyContent="space-between">
@@ -122,7 +111,7 @@ export function PartnerList() {
           variant="outlined"
           className={styles.buttoncolor}
           onClick={() => {
-            onEdit("/partner/new");
+            onEdit("/domain-role/new");
           }}
         >
           Inserir
@@ -145,22 +134,26 @@ export function PartnerList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row: Partner) => (
+            {data.map((row: DomainRole) => (
               <TableRow
-                key={row.name}
+                key={row.domain}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
                   {row.id}
                 </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{formataStatus(row.status)}</TableCell>
+                <TableCell>{row.domain}</TableCell>
+                <TableCell>{
+                  ROLE_OPTIONS.map((role) => {
+                    if (role.value == row.role)
+                      return role.label;
+                  })}</TableCell>
                 <TableCell align="right">
                   <IconButton
                     color="primary"
                     aria-label="edit"
                     onClick={() => {
-                      onEdit(`/partner/${row.id}`);
+                      onEdit(`/domain-role/${row.id}`);
                     }}
                   >
                     <EditIcon />

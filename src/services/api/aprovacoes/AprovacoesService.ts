@@ -14,7 +14,7 @@ const reject = (id: number, status: string) => api.post(`/solicitation/${id}/sta
 const findById = (id: number) => api.post(`/solicitation/${id}`)
 
 const pageSolicitationPending = (page: number, size: number, order: string, asc: boolean) => {
-  return api.get(`/solicitation/pendingpage/?page=${page}&size=${size}&order=${order}&asc=${asc}`)
+  return api.get(`/solicitation/pendingpage?page=${page}&size=${size}&order=${order}&asc=${asc}`)
 }
 
 const AprovacoesService = {

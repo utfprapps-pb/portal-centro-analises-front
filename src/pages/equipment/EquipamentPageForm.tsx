@@ -1,14 +1,15 @@
-import styles from "./styles.module.scss";
-import React, { useContext, useEffect, useState } from "react";
-import { TextField, Button, Paper, Box, Grid } from "@material-ui/core";
-import { Formik, Form, Field } from "formik";
-import * as Yup from "yup";
-import { toast } from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "@/contexts";
-import { Header, Menu } from "@/components";
-import { EquipmentParams } from "@/services/api/equipment/equipment.type";
-import EquipmentService from "@/services/api/equipment/EquipmentService";
+import styles from './styles.module.scss'
+import React, { useContext, useEffect, useState } from 'react'
+import { TextField, Button, Paper, Box, Grid } from '@material-ui/core'
+import { Formik, Form, Field } from 'formik'
+import * as Yup from 'yup'
+import { toast } from 'react-hot-toast'
+import { useNavigate, useParams } from 'react-router-dom'
+import { AuthContext } from '@/contexts'
+import { Header, Menu } from '@/components'
+import { EquipmentParams } from '@/services/api/equipment/equipment.type'
+import EquipmentService from '@/services/api/equipment/EquipmentService'
+import Breadcrumb from '@/components/breadcrumb'
 
 const validationSchema = Yup.object().shape({
   valueHourUtfpr: Yup.number(),
@@ -16,18 +17,18 @@ const validationSchema = Yup.object().shape({
   valueHourPfPj: Yup.number(),
   valueSampleUtfpr: Yup.number(),
   valueSamplePartner: Yup.number(),
-  valueSamplePfPj: Yup.number(),
-});
+  valueSamplePfPj: Yup.number()
+})
 
 export const EquipmentPageForm = () => {
-  const navigate = useNavigate();
-  const { id } = useParams();
-  const { authenticatedUser } = useContext(AuthContext);
+  const navigate = useNavigate()
+  const { id } = useParams()
+  const { authenticatedUser } = useContext(AuthContext)
 
   const [nameDisable, setNameDisable] = useState<boolean>(false)
   const [equipment, setEquipment] = useState<EquipmentParams>({
     id: 0,
-    name: "",
+    name: '',
     valueHourUtfpr: undefined,
     valueHourPartner: undefined,
     valueHourPfPj: undefined,
@@ -35,72 +36,76 @@ export const EquipmentPageForm = () => {
     valueSamplePartner: undefined,
     valueSamplePfPj: undefined,
     shortName: undefined,
+    status: 0,
   });
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await EquipmentService.findById(Number(id));
+        const response = await EquipmentService.findById(Number(id))
 
         if (response.data) {
           setEquipment({
             id: response.data.id,
             name: response.data.name ?? '',
-            status: response.data.status ?? '',
+            status: response.data.status ?? 0,
             valueHourPartner: response.data.valueHourPartner ?? '',
             valueHourPfPj: response.data.valueHourPfPj ?? '',
             valueHourUtfpr: response.data.valueHourUtfpr ?? '',
             valueSamplePartner: response.data.valueSamplePartner ?? '',
             valueSamplePfPj: response.data.valueSamplePfPj ?? '',
             valueSampleUtfpr: response.data.valueSampleUtfpr ?? '',
-            shortName: response.data.shortName ?? '',
-          });
+            shortName: response.data.shortName ?? ''
+          })
         }
       } catch (error) {
-        toast.error("Fala ao carregar equipamento");
-        console.log(error);
+        toast.error('Fala ao carregar equipamento')
+        console.log(error)
       }
-    };
+    }
 
     if (id) {
-      loadData();
-      setNameDisable(true);
+      loadData()
+      setNameDisable(true)
     }
-  }, []);
+  }, [])
 
   const handleSubmit = (values: EquipmentParams) => {
     const data: EquipmentParams = {
       ...values,
       id: equipment?.id!,
-      name: values.name,
-    };
-
-    if (data.id != 0){
-      EquipmentService.update(data.id, data)
-      .then((response) => {
-        toast.success("Sucesso ao atualizar o equipamento.");
-        navigate("/equipamento");
-      })
-      .catch((error) => {
-        toast.error("Falha ao atualizar o equipamento.");
-      });
-    }else {
-      EquipmentService.save(data)
-      .then((response) => {
-        toast.success("Sucesso ao salvar o equipamento.");
-        navigate("/equipamento");
-      })
-      .catch((error) => {
-        toast.error("Falha ao salvar o equipamento.");
-      });
+      name: values.name
     }
-  };
+
+    if (data.id != 0) {
+      EquipmentService.update(data.id, data)
+        .then((response) => {
+          toast.success('Sucesso ao atualizar o equipamento.')
+          navigate('/equipamento')
+        })
+        .catch((error) => {
+          toast.error('Falha ao atualizar o equipamento.')
+        })
+    } else {
+      EquipmentService.save(data)
+        .then((response) => {
+          toast.success('Sucesso ao salvar o equipamento.')
+          navigate('/equipamento')
+        })
+        .catch((error) => {
+          toast.error('Falha ao salvar o equipamento.')
+        })
+    }
+  }
 
   return (
     <div className={styles.container}>
       <Menu />
       <div className={styles.middle}>
         <Header />
+
+        <Breadcrumb />
+
         <Paper
           className={styles.containerForm}
           elevation={3}
@@ -138,7 +143,7 @@ export const EquipmentPageForm = () => {
                       required
                       variant="outlined"
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                     />
                   </Grid>
@@ -151,9 +156,12 @@ export const EquipmentPageForm = () => {
                       fullWidth
                       type="number"
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
-                      InputProps={{ inputProps: { min: 0, step: "0.01" }, shrink: true }}
+                      InputProps={{
+                        inputProps: { min: 0, step: '0.01' },
+                        shrink: true
+                      }}
                       variant="outlined"
                     />
                   </Grid>
@@ -165,9 +173,9 @@ export const EquipmentPageForm = () => {
                       name="valueHourPartner"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
+                      InputProps={{ inputProps: { min: 0, step: '0.01' } }}
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                       variant="outlined"
                     />
@@ -180,9 +188,9 @@ export const EquipmentPageForm = () => {
                       name="valueHourPfPj"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
+                      InputProps={{ inputProps: { min: 0, step: '0.01' } }}
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                       variant="outlined"
                     />
@@ -195,9 +203,9 @@ export const EquipmentPageForm = () => {
                       name="valueSampleUtfpr"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
+                      InputProps={{ inputProps: { min: 0, step: '0.01' } }}
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                       variant="outlined"
                     />
@@ -210,9 +218,9 @@ export const EquipmentPageForm = () => {
                       name="valueSamplePartner"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
+                      InputProps={{ inputProps: { min: 0, step: '0.01' } }}
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                       variant="outlined"
                     />
@@ -225,9 +233,9 @@ export const EquipmentPageForm = () => {
                       name="valueSamplePfPj"
                       fullWidth
                       type="number"
-                      InputProps={{ inputProps: { min: 0, step: "0.01" } }}
+                      InputProps={{ inputProps: { min: 0, step: '0.01' } }}
                       InputLabelProps={{
-                        shrink: true,
+                        shrink: true
                       }}
                       variant="outlined"
                     />
@@ -250,5 +258,5 @@ export const EquipmentPageForm = () => {
         </Paper>
       </div>
     </div>
-  );
-};
+  )
+}

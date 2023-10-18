@@ -1,12 +1,13 @@
-import React from "react";
-import styles from "./styles.module.scss";
-import { Header, Menu } from "@/components";
-import { Field, Form, Formik } from "formik";
-import { useProfile } from "./useProfile";
-import { Box, Paper, TextField, Button, Divider } from "@mui/material";
-import { ProfessorParams } from "@/services/api/professor/professor.type";
+import React from 'react'
+import styles from './styles.module.scss'
+import { Header, Menu } from '@/components'
+import { Field, Form, Formik } from 'formik'
+import { useProfile } from './useProfile'
+import { Box, Paper, TextField, Button, Divider } from '@mui/material'
+import { ProfessorParams } from '@/services/api/professor/professor.type'
 
-import Select from "react-select";
+import Select from 'react-select'
+import Breadcrumb from '@/components/breadcrumb'
 
 export const ProfilePage: React.FC = () => {
   const {
@@ -17,14 +18,16 @@ export const ProfilePage: React.FC = () => {
     professorSelected,
     setProfessorSelected,
     handleOnSubmitProfessorLink,
-    excludeProfessorLink,
-  } = useProfile();
+    excludeProfessorLink
+  } = useProfile()
 
   return (
     <div className={styles.container}>
       <Menu />
       <div className={styles.content}>
         <Header />
+
+        <Breadcrumb />
 
         <Paper elevation={3} className={styles.paper}>
           <h1 className={styles.title}>Perfil</h1>
@@ -36,7 +39,7 @@ export const ProfilePage: React.FC = () => {
             enableReinitialize
           >
             {({ touched, errors }) => {
-              const hasErrors = Object.keys(errors).length > 0;
+              const hasErrors = Object.keys(errors).length > 0
               return (
                 <Form className={styles.form}>
                   <Field
@@ -105,7 +108,7 @@ export const ProfilePage: React.FC = () => {
                     </Button>
                   </Box>
                 </Form>
-              );
+              )
             }}
           </Formik>
           <Divider />
@@ -117,9 +120,9 @@ export const ProfilePage: React.FC = () => {
                   className={styles.buttonContainer}
                   onChange={(optionsSelected: any) => {
                     if (optionsSelected == null) {
-                      excludeProfessorLink();
+                      excludeProfessorLink()
                     } else {
-                      setProfessorSelected(optionsSelected);
+                      setProfessorSelected(optionsSelected)
                     }
                   }}
                   aria-label="Professores"
@@ -128,7 +131,7 @@ export const ProfilePage: React.FC = () => {
                   value={professorSelected}
                   getOptionValue={(p: ProfessorParams) => p.id.toString()}
                   getOptionLabel={(p: ProfessorParams) =>
-                    p.siape != null ? p.name + " " + p.siape : p.name
+                    p.siape != null ? p.name + ' ' + p.siape : p.name
                   }
                   isClearable={true}
                   isSearchable={true}
@@ -152,5 +155,5 @@ export const ProfilePage: React.FC = () => {
         </Paper>
       </div>
     </div>
-  );
-};
+  )
+}
