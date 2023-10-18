@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Field, ErrorMessage } from 'formik';
+import { Field, ErrorMessage, useFormikContext } from 'formik';
 import { CustomErrorMessage } from '@/components'
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
@@ -18,6 +18,7 @@ export function FormHeader() {
 	const [utfprFields, setUtfprFields] = useState(false);
 	const [outraNatureza, setOutraNatureza] = useState(false);
 	const [projectNature, setProjectNature] = useState('');
+	const { setFieldValue } = useFormikContext();
 
 	var t: any = localStorage.getItem("user");
 	var infoArray = JSON.parse(t);
@@ -60,9 +61,10 @@ export function FormHeader() {
 		getProject();
 	}, []);
 
-	const handleOtherNature = (event: React.ChangeEvent<HTMLSelectElement>) => {
+	const handlerOtherNature = (event: React.ChangeEvent<HTMLSelectElement>) => {
 		const naturezaSelec = event.target.value;
 		setProjectNature(naturezaSelec);
+		setFieldValue(event.target.name, naturezaSelec);
 
 		if (naturezaSelec === 'OTHER') {
 			setOutraNatureza(true);
@@ -167,7 +169,7 @@ export function FormHeader() {
 									name="natureza"
 									multiple={false}
 									className={styles.select_box}
-									onChange={handleOtherNature}
+									onChange={handlerOtherNature}
 									value={projectNature}
 								>
 									<option key='0' value='0'>
@@ -222,5 +224,4 @@ export function FormHeader() {
 			)}
 		</>
 	)
-	/**/
 }

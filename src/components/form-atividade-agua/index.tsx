@@ -46,9 +46,6 @@ export const FormAtividadeAgua: React.FC = () => {
         status : 0,
         fields: ""
       }
-
-      console.log('NATUREZA VINDA: ', values.natureza);
-      console.log('PROJETO VINDA: ', values.projeto);
   
       await api.post("/solicitation", payload);
       toast.success('Solicitação efetuada com sucesso!');
