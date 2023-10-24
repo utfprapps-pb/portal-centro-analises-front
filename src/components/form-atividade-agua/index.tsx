@@ -32,6 +32,7 @@ export const FormAtividadeAgua: React.FC = () => {
     projeto: number;
     descricao: string;
     natureza: string;
+    otherProjectNature?: string;
   }) {
     try {
       startButtonLoad();
@@ -41,6 +42,7 @@ export const FormAtividadeAgua: React.FC = () => {
         project: {"id": values.projeto},
         description : values.descricao,
         projectNature : values.natureza,
+        otherProjectNature : values.otherProjectNature,
         status : 0,
         fields: ""
       }
@@ -65,7 +67,8 @@ export const FormAtividadeAgua: React.FC = () => {
             nomeOrientador: "NOME",
             projeto: 1,
             descricao: "",
-            natureza: ""
+            natureza: "",
+            otherProjectNature: "",
           }}
           onSubmit={handleClickForm}
           validationSchema={validationForm}

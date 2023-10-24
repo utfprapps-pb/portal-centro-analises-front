@@ -36,6 +36,7 @@ export const FormCr: React.FC = () => {
     projeto: number;
     descricao: string;
     natureza: string;
+    otherProjectNature?: string;
     //
     amostra: string;
     numeroMedicao: string;
@@ -53,6 +54,7 @@ export const FormCr: React.FC = () => {
         project: {"id": values.projeto},
         description : values.descricao,
         projectNature : values.natureza,
+        otherProjectNature : values.otherProjectNature,
         status : 0,
         fields: fieldsStr
       }
@@ -79,6 +81,7 @@ export const FormCr: React.FC = () => {
             projeto: 1,
             descricao: "",
             natureza: "",
+            otherProjectNature: "",
             amostra: "",
             numeroMedicao: "",
             localizacao: "",
