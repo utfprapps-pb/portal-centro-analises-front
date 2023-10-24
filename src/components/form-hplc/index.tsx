@@ -43,6 +43,7 @@ export const FormHplc: React.FC = () => {
     projeto: number;
     descricao: string;
     natureza: string;
+    otherProjectNature?: string;
     //
     coluna: string;
     fluxo: string;
@@ -67,6 +68,7 @@ export const FormHplc: React.FC = () => {
         project: {"id": values.projeto},
         description : values.descricao,
         projectNature : values.natureza,
+        otherProjectNature : values.otherProjectNature,
         status : 0,
         fields: fieldsStr
       }
@@ -93,6 +95,7 @@ export const FormHplc: React.FC = () => {
             projeto: 0,
             descricao: "",
             natureza: "",
+            otherProjectNature: "",
             coluna: "",
             fluxo: "",
             tempoAnalise: "",

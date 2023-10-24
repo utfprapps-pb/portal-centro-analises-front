@@ -35,6 +35,7 @@ export const FormFotometroChama: React.FC = () => {
     projeto: number;
     descricao: string;
     natureza: string;
+    otherProjectNature?: string;
     //
     limites: string;
     elementosAnalisados: string;
@@ -51,6 +52,7 @@ export const FormFotometroChama: React.FC = () => {
         project: {"id": values.projeto},
         description : values.descricao,
         projectNature : values.natureza,
+        otherProjectNature : values.otherProjectNature,
         status : 0,
         fields: fieldsStr
       }
@@ -76,6 +78,7 @@ export const FormFotometroChama: React.FC = () => {
             projeto: 0,
             descricao: "",
             natureza: "",
+            otherProjectNature: "",
             limites: "",
             elementosAnalisados: "",
             concentracoes: ""
