@@ -18,9 +18,15 @@ import styles from "./styles.module.scss";
 import { Button, Grid, TableFooter, TablePagination, TableSortLabel } from "@material-ui/core";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 import { FilterDrawer } from "@/components/filter-drawer";
-import { DomainRole } from "../model/domain-role";
+import { DomainRole } from '../model/domain-role';
 import DomainRoleService from "@/services/api/domain-role/service";
 import { ROLE_OPTIONS } from '../../../commons/roles';
+
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 export function DomainRoleList() {
   const [data, setData] = useState([]);
@@ -34,6 +40,22 @@ export function DomainRoleList() {
 
   const [orderBy, setOrderBy] = useState("id");
   const [asc, setAsc] = useState(true);
+
+  // Métodos teste do dialog sim e não
+  const [rowBeingDeleted, setRowBeingDeleted] = useState<DomainRole>();
+  const [openNoYesDialog, setOpenNoYesDialog] = useState(false);
+  const handleNoYesDialogClose = () => {
+    setOpenNoYesDialog(false);
+  };
+  const onNoClick = () => {
+    handleNoYesDialogClose();
+  };
+  const onYesClick = () => {
+    if (rowBeingDeleted) {
+      onRemove(rowBeingDeleted.id ? rowBeingDeleted.id : 0);
+      handleNoYesDialogClose();
+    }
+  };
 
   const listHeader = [
     { label: "Código", value: "id" },
@@ -50,7 +72,7 @@ export function DomainRoleList() {
   }, [search, orderBy, asc]);
 
   const loadData = (page: number) => {
-    if (search && search.length) {
+    if (search?.length) {
       DomainRoleService.search(page, rowsPerPage, orderBy, asc, search)
         .then((response) => {
           setTotal(response.data.totalElements);
@@ -162,7 +184,9 @@ export function DomainRoleList() {
                     color="error"
                     aria-label="delete"
                     onClick={() => {
-                      onRemove(row.id ? row.id : 0);
+                      setRowBeingDeleted(row);
+                      setOpenNoYesDialog(true);
+                      // onRemove(row.id ? row.id : 0);
                     }}
                   >
                     <DeleteIcon />
@@ -193,6 +217,27 @@ export function DomainRoleList() {
           </TableFooter>
         </Table>
       </TableContainer>
+
+      {/* Dialog com as opções Não e Sim (https://mui.com/material-ui/react-dialog) */}
+      <Dialog
+        open={openNoYesDialog}
+        onClose={handleNoYesDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Deseja mesmo excluir o registro?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Essa ação não poderá ser revertida.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={onNoClick} autoFocus>Não</Button>
+          <Button onClick={onYesClick}>Sim</Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
