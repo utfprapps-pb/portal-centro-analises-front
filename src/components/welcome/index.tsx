@@ -126,7 +126,7 @@ export function Welcome() {
         <Grid item xs={12} md={12} lg={5}>
           <div className={styles.containergrafico}>
             {graficoUsuarioTipo.dados.length > 0 ?
-              <><p className={styles.titulografico}>{graficoSolicitacao.titulo}</p>
+              <><p className={styles.titulografico}>{graficoUsuarioTipo.titulo}</p>
                 <PieChart
                   series={[
                     {
@@ -150,7 +150,7 @@ export function Welcome() {
         <Grid item xs={12} md={12} lg={5}>
           <div className={styles.containergrafico}>
             {graficoEquipamentoSituacao.dados.length > 0 ?
-              <><p className={styles.titulografico}>{graficoSolicitacao.titulo}</p>
+              <><p className={styles.titulografico}>{graficoEquipamentoSituacao.titulo}</p>
                 <PieChart
                   series={[
                     {
@@ -174,7 +174,7 @@ export function Welcome() {
         <Grid item xs={12} md={12} lg={5}>
           <div className={styles.containergrafico}>
             {graficoUsuarioSituacao.dados.length > 0 ?
-              <><p className={styles.titulografico}>{graficoSolicitacao.titulo}</p>
+              <><p className={styles.titulografico}>{graficoUsuarioSituacao.titulo}</p>
                 <PieChart
                   series={[
                     {
@@ -198,7 +198,7 @@ export function Welcome() {
         <Grid item xs={12} md={12} lg={5}>
           <div className={styles.containergrafico}>
             {graficoSolicitacaoEquipamento.dados.length > 0 ?
-              <><p className={styles.titulografico}>{graficoSolicitacao.titulo}</p>
+              <><p className={styles.titulografico}>{graficoSolicitacaoEquipamento.titulo}</p>
                 <PieChart
                   series={[
                     {
