@@ -98,3 +98,14 @@ export type LabelValue = {
   label: string
   value: string
 }
+
+export type GraficoDadoDTO = {
+  id:number;
+  label:string;
+  value:number;
+}
+
+export type GraficoDTO = {
+  titulo:string;
+  dados:GraficoDadoDTO[];
+}
