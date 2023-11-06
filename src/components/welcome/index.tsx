@@ -6,6 +6,7 @@ import DashboardService from '@/services/api/dashboard/DashboardService';
 import { GraficoDTO, } from '@/commons/type';
 import { PieChartSlotComponentProps } from '@mui/x-charts/PieChart/PieChart';
 import { cheerfulFiestaPalette } from '@mui/x-charts/colorPalettes';
+import { toast } from 'react-hot-toast';
 
 const marginProps = { top: 10, bottom: 10, left: 20, right: 20 };
 const slotProp: PieChartSlotComponentProps = {
@@ -43,7 +44,7 @@ export function Welcome() {
           setGraficoSolicitacao(response.data || []);
         }
       }).catch((error) => {
-        console.log(error)
+        toast.error('Não foi possível buscar dados do gráfico.');
       });
   }
 
@@ -54,7 +55,7 @@ export function Welcome() {
           setGraficoSolicitacaoEquipamento(response.data || []);
         }
       }).catch((error) => {
-        console.log(error)
+        toast.error('Não foi possível buscar dados do gráfico.');
       });
   }
 
@@ -65,7 +66,7 @@ export function Welcome() {
           setGraficoUsuarioTipo(response.data || []);
         }
       }).catch((error) => {
-        console.log(error)
+        toast.error('Não foi possível buscar dados do gráfico.');
       });
   }
 
@@ -76,7 +77,7 @@ export function Welcome() {
           setGraficoUsuarioSituacao(response.data || []);
         }
       }).catch((error) => {
-        console.log(error)
+        toast.error('Não foi possível buscar dados do gráfico.');
       });
   }
 
@@ -87,7 +88,7 @@ export function Welcome() {
           setGraficoEquipamentoSituacao(response.data || []);
         }
       }).catch((error) => {
-        console.log(error)
+        toast.error('Não foi possível buscar dados do gráfico.');
       });
   }
 
@@ -120,9 +121,9 @@ export function Welcome() {
                   margin={marginProps}
                   slotProps={slotProp} /></>
               : <div className={styles.containervazio}>
-                  <p className={styles.titulovazio}>{graficoSolicitacao.titulo}</p>
-                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
-                </div>
+                <p className={styles.titulovazio}>{graficoSolicitacao.titulo}</p>
+                <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+              </div>
             }
           </div>
         </Grid>
@@ -147,9 +148,9 @@ export function Welcome() {
                   slotProps={slotProp}
                 /></>
               : <div className={styles.containervazio}>
-                  <p className={styles.titulovazio}>{graficoUsuarioTipo.titulo}</p>
-                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
-                </div>
+                <p className={styles.titulovazio}>{graficoUsuarioTipo.titulo}</p>
+                <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+              </div>
             }
           </div>
         </Grid>
@@ -174,9 +175,9 @@ export function Welcome() {
                   slotProps={slotProp}
                 /></>
               : <div className={styles.containervazio}>
-                  <p className={styles.titulovazio}>{graficoEquipamentoSituacao.titulo}</p>
-                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
-                </div>
+                <p className={styles.titulovazio}>{graficoEquipamentoSituacao.titulo}</p>
+                <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+              </div>
             }
           </div>
         </Grid>
@@ -201,9 +202,9 @@ export function Welcome() {
                   slotProps={slotProp}
                 /></>
               : <div className={styles.containervazio}>
-                  <p className={styles.titulovazio}>{graficoUsuarioSituacao.titulo}</p>
-                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
-                </div>
+                <p className={styles.titulovazio}>{graficoUsuarioSituacao.titulo}</p>
+                <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+              </div>
             }
           </div>
         </Grid>
@@ -228,9 +229,9 @@ export function Welcome() {
                   slotProps={slotProp}
                 /></>
               : <div className={styles.containervazio}>
-                  <p className={styles.titulovazio}>{graficoSolicitacaoEquipamento.titulo}</p>
-                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
-                </div>
+                <p className={styles.titulovazio}>{graficoSolicitacaoEquipamento.titulo}</p>
+                <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+              </div>
             }
           </div>
         </Grid>
