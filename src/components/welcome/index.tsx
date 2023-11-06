@@ -119,7 +119,10 @@ export function Welcome() {
                   ]}
                   margin={marginProps}
                   slotProps={slotProp} /></>
-              : <span>Não há informações a serem exibidas.</span>
+              : <div className={styles.containervazio}>
+                  <p className={styles.titulovazio}>{graficoSolicitacao.titulo}</p>
+                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+                </div>
             }
           </div>
         </Grid>
@@ -143,7 +146,10 @@ export function Welcome() {
                   margin={marginProps}
                   slotProps={slotProp}
                 /></>
-              : <span>Não há informações a serem exibidas.</span>
+              : <div className={styles.containervazio}>
+                  <p className={styles.titulovazio}>{graficoUsuarioTipo.titulo}</p>
+                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+                </div>
             }
           </div>
         </Grid>
@@ -167,7 +173,10 @@ export function Welcome() {
                   margin={marginProps}
                   slotProps={slotProp}
                 /></>
-              : <span>Não há informações a serem exibidas.</span>
+              : <div className={styles.containervazio}>
+                  <p className={styles.titulovazio}>{graficoEquipamentoSituacao.titulo}</p>
+                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+                </div>
             }
           </div>
         </Grid>
@@ -191,7 +200,10 @@ export function Welcome() {
                   margin={marginProps}
                   slotProps={slotProp}
                 /></>
-              : <span>Não há informações a serem exibidas.</span>
+              : <div className={styles.containervazio}>
+                  <p className={styles.titulovazio}>{graficoUsuarioSituacao.titulo}</p>
+                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+                </div>
             }
           </div>
         </Grid>
@@ -215,7 +227,10 @@ export function Welcome() {
                   margin={marginProps}
                   slotProps={slotProp}
                 /></>
-              : <span>Não há informações a serem exibidas.</span>
+              : <div className={styles.containervazio}>
+                  <p className={styles.titulovazio}>{graficoSolicitacaoEquipamento.titulo}</p>
+                  <span style={{ height: 200 }}>Não há informações a serem exibidas.</span>
+                </div>
             }
           </div>
         </Grid>
