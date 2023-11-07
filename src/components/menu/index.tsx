@@ -21,7 +21,7 @@ export const Menu: React.FC = () => {
           <History style={{ color: '#3f51b5' }} />
           <h2>Histórico</h2>
         </Link>
-        { authenticatedUser && (authenticatedUser.role == 'PROFESSOR' || authenticatedUser.role == 'ADMIN') &&
+        { authenticatedUser && (authenticatedUser.role == 'ROLE_PROFESSOR' || authenticatedUser.role == 'ROLE_ADMIN') &&
           <>
             <Link className={styles.tab} to="/aprovacoes">
               <Check style={{ color: '#3f51b5' }} />
@@ -33,7 +33,7 @@ export const Menu: React.FC = () => {
             </Link>
           </>
         }
-        { authenticatedUser && authenticatedUser.role == 'ADMIN' &&
+        { authenticatedUser && authenticatedUser.role == 'ROLE_ADMIN' &&
           <>
             <Link className={styles.tab} to="/equipamento">
               <Build style={{ color: "#3f51b5" }} />

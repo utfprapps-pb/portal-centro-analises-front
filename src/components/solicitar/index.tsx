@@ -56,10 +56,10 @@ export function Solicitar() {
       const selfUser = await api.get("/users/findSelfUser");
       const { role } = selfUser.data;
       if (
-        role == 'PROFESSOR' ||
-        role == 'EXTERNAL' ||
-        role == 'PARTNER' ||
-        role == 'ADMIN'
+        role == 'ROLE_PROFESSOR' ||
+        role == 'ROLE_EXTERNAL' ||
+        role == 'ROLE_PARTNER' ||
+        role == 'ROLE_ADMIN'
       ) {
         setPermitSolicitation(true)
         setIsLoading(false);

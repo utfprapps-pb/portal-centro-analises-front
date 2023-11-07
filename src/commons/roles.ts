@@ -1,15 +1,15 @@
 export const ROLES = {
-  Admin: "ADMIN",
-  Professor: "PROFESSOR",
-  Student: "STUDENT",
-  External: "EXTERNAL",
-  Partner: "PARTNER",
+  Admin: "ROLE_ADMIN",
+  Professor: "ROLE_PROFESSOR",
+  Student: "ROLE_STUDENT",
+  External: "ROLE_EXTERNAL",
+  Partner: "ROLE_PARTNER",
 };
 
 export const ROLE_OPTIONS = [
-  { value: 'PROFESSOR', label: 'Professor' },
-  { value: 'STUDENT', label: 'Estudante' },
-  { value: 'EXTERNAL', label: 'Externo' },
-  { value: 'ADMIN', label: 'Admin' },
-  { value: 'PARTNER', label: 'Parceiro' },
+  { value: 'ROLE_PROFESSOR', label: 'Professor' },
+  { value: 'ROLE_STUDENT', label: 'Estudante' },
+  { value: 'ROLE_EXTERNAL', label: 'Externo' },
+  { value: 'ROLE_ADMIN', label: 'Admin' },
+  { value: 'ROLE_PARTNER', label: 'Parceiro' },
 ];
