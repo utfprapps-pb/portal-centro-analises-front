@@ -143,7 +143,6 @@ export function AdminPanel() {
   }
 
   const handleRoleChange = (selectedValue: string) => {
-    debugger
     let updatedUser = { ...user }
     updatedUser.role = selectedValue
     setUser(updatedUser)
