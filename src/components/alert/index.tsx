@@ -6,46 +6,69 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 
+interface AlertNoYesDialogProps {
+  onClose?: () => void;
+  title?: string;
+  content?: string;
+  onNoClick?: () => void;
+  onYesClick?: () => void;
+}
+
+interface ContextValue { open, close };
+
+const DialogContext: React.Context<ContextValue> = React.createContext({
+  open: (props: AlertNoYesDialogProps) => { },
+  close: () => { },
+});
+
+export const useDialog = () => {
+  return React.useContext(DialogContext);
+};
+
 // https://mui.com/material-ui/react-dialog
-export default function AlertDialog() {
-  const [open, setOpen] = React.useState(false);
+export const DialogProvider = ({ children }) => {
+  const [opened, setOpened] = React.useState(false);
+  const [props, setProps] = React.useState<AlertNoYesDialogProps>({});
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const open = (props: AlertNoYesDialogProps): void => {
+    setProps(props);
+    setOpened(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const close = (): void => {
+    setOpened(false);
   };
 
-  // TODO: Componentizar essa dialog
+  const handleCloseDialog = () => {
+    if (props.onClose)
+      props.onClose();
+
+    close();
+  }
+
+  const value = React.useMemo(() => ({ open, close }), []);
   return (
-    <React.Fragment>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Open alert dialog
-      </Button>
+    <DialogContext.Provider value={value}>
       <Dialog
-        open={open}
-        onClose={handleClose}
+        open={opened}
+        onClose={handleCloseDialog}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+          {props.title}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            Let Google help apps determine location. This means sending anonymous
-            location data to Google, even when no apps are running.
+            {props.content}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Disagree</Button>
-          <Button onClick={handleClose} autoFocus>
-            Agree
-          </Button>
+          <Button onClick={props.onNoClick} autoFocus>Não</Button>
+          <Button onClick={props.onYesClick}>Sim</Button>
         </DialogActions>
       </Dialog>
-    </React.Fragment>
+      {children}
+    </DialogContext.Provider>
   );
 }
