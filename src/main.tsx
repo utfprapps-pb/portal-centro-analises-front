@@ -5,7 +5,7 @@ import { Toaster } from 'react-hot-toast'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { AuthProvider } from './contexts'
 import { App } from "./App";
-import { DialogProvider } from '@/components/alert';
+import { DialogProvider } from '@/components/dialog/dialog-provider';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

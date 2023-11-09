@@ -5,32 +5,21 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
+import { DialogContext } from '@/components/dialog/dialog-context';
 
-interface AlertNoYesDialogProps {
-  onClose?: () => void;
+export interface DialogProps {
   title?: string;
   content?: string;
-  onNoClick?: () => void;
-  onYesClick?: () => void;
+  actions?: React.JSX.Element;
+  onClose?: () => void;
 }
-
-interface ContextValue { open, close };
-
-const DialogContext: React.Context<ContextValue> = React.createContext({
-  open: (props: AlertNoYesDialogProps) => { },
-  close: () => { },
-});
-
-export const useDialog = () => {
-  return React.useContext(DialogContext);
-};
 
 // https://mui.com/material-ui/react-dialog
 export const DialogProvider = ({ children }) => {
   const [opened, setOpened] = React.useState(false);
-  const [props, setProps] = React.useState<AlertNoYesDialogProps>({});
+  const [props, setProps] = React.useState<DialogProps>({});
 
-  const open = (props: AlertNoYesDialogProps): void => {
+  const open = (props: DialogProps): void => {
     setProps(props);
     setOpened(true);
   };
@@ -63,10 +52,11 @@ export const DialogProvider = ({ children }) => {
             {props.content}
           </DialogContentText>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={props.onNoClick} autoFocus>Não</Button>
-          <Button onClick={props.onYesClick}>Sim</Button>
-        </DialogActions>
+        {props.actions ??
+          <DialogActions>
+            <Button onClick={close} autoFocus>Fechar</Button>
+          </DialogActions>
+        }
       </Dialog>
       {children}
     </DialogContext.Provider>

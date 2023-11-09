@@ -21,7 +21,8 @@ import { FilterDrawer } from "@/components/filter-drawer";
 import { DomainRole } from '../model/domain-role';
 import DomainRoleService from "@/services/api/domain-role/service";
 import { ROLE_OPTIONS } from '../../../commons/roles';
-import { useDialog } from "@/components/alert";
+import { useDialog } from "@/components/dialog/dialog-context";
+import { NoYesDialogActions } from "@/components/dialog/actions/no-yes-dialog-actions";
 
 export function DomainRoleList() {
   const [data, setData] = useState([]);
@@ -169,13 +170,15 @@ export function DomainRoleList() {
                       openDialog({
                         title: "Deseja mesmo excluir o registro?",
                         content: "Essa ação não poderá ser revertida.",
-                        onNoClick: () => closeDialog(),
-                        onYesClick: () => {
-                          if (row) {
-                            onRemove(row.id ? row.id : 0);
+                        actions: NoYesDialogActions({
+                          onNoClick: () => closeDialog(),
+                          onYesClick: () => {
+                            if (row) {
+                              onRemove(row.id ? row.id : 0);
+                            }
+                            closeDialog();
                           }
-                          closeDialog();
-                        }
+                        }),
                       });
                     }}
                   >
