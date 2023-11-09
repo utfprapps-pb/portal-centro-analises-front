@@ -23,6 +23,7 @@ import DomainRoleService from "@/services/api/domain-role/service";
 import { ROLE_OPTIONS } from '../../../commons/roles';
 import { useDialog } from "@/components/dialog/dialog-context";
 import { NoYesDialogActions } from "@/components/dialog/actions/no-yes-dialog-actions";
+import { RemoveQuestionDefaultProps } from '../../dialog/default-dialog-props/default-dialog-props';
 
 export function DomainRoleList() {
   const [data, setData] = useState([]);
@@ -33,11 +34,9 @@ export function DomainRoleList() {
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
   const [search, setSearch] = useState<string>("");
-
   const [orderBy, setOrderBy] = useState("id");
   const [asc, setAsc] = useState(true);
 
-  // Métodos teste do dialog sim e não
   const { open: openDialog, close: closeDialog } = useDialog();
 
   const listHeader = [
@@ -168,8 +167,7 @@ export function DomainRoleList() {
                     aria-label="delete"
                     onClick={() => {
                       openDialog({
-                        title: "Deseja mesmo excluir o registro?",
-                        content: "Essa ação não poderá ser revertida.",
+                        ...RemoveQuestionDefaultProps,
                         actions: NoYesDialogActions({
                           onNoClick: () => closeDialog(),
                           onYesClick: () => {

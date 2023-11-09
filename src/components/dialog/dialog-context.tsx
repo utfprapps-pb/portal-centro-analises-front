@@ -1,4 +1,4 @@
-import { DialogProps } from '@mui/material';
+import { DialogProps } from '@/components/dialog/dialog-provider';
 import * as React from 'react';
 
 interface ContextValue {
