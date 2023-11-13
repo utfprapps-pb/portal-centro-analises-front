@@ -1,7 +1,7 @@
 pipeline {
 	agent any
 	environment {
-		VITE_API_BASE_URL="https://ca-api-dev.app.pb.utfpr.edu.br"
+		VITE_API_BASE_URL="https://ca-api-dev.app.pb.utfpr.edu.br/api"
 		VITE_USE_MOCKS=false
 	}
 	stages {
