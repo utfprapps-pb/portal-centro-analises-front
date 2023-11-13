@@ -40,6 +40,8 @@ export function Historico() {
         .then((res) => {
           setHistoryItens(res.data);
         });
+    }else{
+      setHistoryItens([]);
     }
   }
 
