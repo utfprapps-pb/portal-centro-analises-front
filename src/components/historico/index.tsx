@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
 import { CustomStatus, DownloadFile } from '@/components'
 import { SolicitationAudit } from "@/commons/type";
-import { ArrowUpward, ArrowDownward } from '@material-ui/icons'
+import { ArrowUpward, ArrowDownward, Check } from '@material-ui/icons'
 import { Collapse, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel } from '@mui/material'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions';
 import HistoryService from '../../services/api/history/HistoryService';
@@ -83,6 +83,10 @@ export function Historico() {
     }
   }
 
+  const handleChangeStatus = (solicitation: any) => {
+    console.log(solicitation)
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -140,9 +144,8 @@ export function Historico() {
                       onClick={getFile} />}</TableCell>
 
                   <TableCell scope="row">
-                    <button key={h.id} onClick={() => toggleDropdown(h.id, h.solicitation.id, h.newStatus)}>
-                      {(mostrarDropdown && (selectedSolicitation === h.id)) ? <IconButton aria-label="approve" color="info"><ArrowUpward /></IconButton> : <IconButton aria-label="approve" color="info"><ArrowDownward /></IconButton>}
-                    </button>
+                    <IconButton onClick={() => toggleDropdown(h.id, h.solicitation.id, h.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward/>}</IconButton>
+                    <IconButton onClick={() => handleChangeStatus(h)} aria-label="Próximo status" color="success"><Check></Check></IconButton>
                   </TableCell>
                 </TableRow>
                   <TableRow style={{ paddingBottom: 0, paddingTop: 0 }}>
