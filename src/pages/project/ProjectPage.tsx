@@ -17,6 +17,9 @@ import ProjectService from '@/services/api/project/ProjectService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
+import { RemoveQuestionDefaultProps } from '../../components/dialog/default-dialog-props/default-dialog-props';
+import { NoYesDialogActions } from '@/components/dialog/actions/no-yes-dialog-actions'
+import { useDialog } from '@/components/dialog/dialog-context'
 
 export const ProjectPage = () => {
   const navigate = useNavigate()
@@ -30,6 +33,8 @@ export const ProjectPage = () => {
 
   const [orderBy, setOrderBy] = useState("id");
   const [asc, setAsc] = useState(true);
+
+  const { open: openDialog, close: closeDialog } = useDialog();
 
   const listHeader = [
     { label: "#", value: "id" },
@@ -78,12 +83,12 @@ export const ProjectPage = () => {
     loadData(newPage)
   };
 
-  
+
   const handleSort = (id: any) => {
     setOrderBy(id);
     setAsc(!asc);
   }
-  
+
   return (
     <>
       <Grid container justifyContent="flex-end">
@@ -125,11 +130,23 @@ export const ProjectPage = () => {
                   {p.students.length}
                 </StyledTableCell>
                 <StyledTableCell align="right">
-                  <IconButton aria-label="delete" color="error">
-                    <DeleteRounded onClick={() => removeProject(p.id!)} />
-                  </IconButton>
                   <IconButton aria-label="delete" color="info">
                     <EditRounded onClick={() => navigate(`/projeto/form/${p.id!}`)} />
+                  </IconButton>
+                  <IconButton aria-label="delete" color="error">
+                    <DeleteRounded
+                      onClick={() => {
+                        openDialog({
+                          ...RemoveQuestionDefaultProps,
+                          actions: NoYesDialogActions({
+                            onNoClick: () => closeDialog(),
+                            onYesClick: () => {
+                              removeProject(p.id!);
+                              closeDialog();
+                            }
+                          }),
+                        });
+                      }} />
                   </IconButton>
                 </StyledTableCell>
               </StyledTableRow>
