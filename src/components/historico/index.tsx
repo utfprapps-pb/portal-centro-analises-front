@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
+import { AuthContext } from "@/contexts";
 import styles from './styles.module.scss'
 import { CustomStatus, DownloadFile } from '@/components'
 import { SolicitationAudit } from "@/commons/type";
 import { ArrowUpward, ArrowDownward, Check } from '@material-ui/icons'
-import { Collapse, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel } from '@mui/material'
+import { Collapse, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel, Tooltip } from '@mui/material'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions';
 import HistoryService from '../../services/api/history/HistoryService';
+import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService';
+import toast from 'react-hot-toast';
 
 export function Historico() {
+  const { authenticatedUser } = useContext(AuthContext);
+
   const [mostrarDropdown, setMostrarDropdown] = useState(false);
   const [selectedSolicitation, setSelectedSolicitation] = useState();
 
@@ -22,6 +27,15 @@ export function Historico() {
   const [asc, setAsc] = useState(false);
 
   const [historyItens, setHistoryItens] = useState([]);
+  const statusSolicitation = {
+    PENDING_ADVISOR: "PENDING_ADVISOR",
+    PENDING_LAB: "PENDING_LAB",
+    PENDING_SAMPLE: "PENDING_SAMPLE",
+    APPROVED: "APPROVED",
+    PENDING_PAYMENT: "PENDING_PAYMENT",
+    REFUSED: "REFUSED",
+    FINISHED: "FINISHED"
+  };
 
   const listHeader = [
     { label: "Situação", value: "newStatus" },
@@ -83,8 +97,25 @@ export function Historico() {
     }
   }
 
-  const handleChangeStatus = (solicitation: any) => {
-    console.log(solicitation)
+  const handleChangeStatus = (id:number, status: string) => {
+    let newStatus;
+    if(status === statusSolicitation.PENDING_SAMPLE){
+      newStatus = statusSolicitation.APPROVED;
+    } else if(status === statusSolicitation.APPROVED){
+      newStatus = statusSolicitation.PENDING_PAYMENT;
+    } else if (status === statusSolicitation.PENDING_PAYMENT){
+      newStatus = statusSolicitation.FINISHED;
+    }
+    AprovacoesService.approve(id, newStatus)
+      .then((response) => {
+        toast.success("Status atualizado com sucesso!")
+        setApiError('')
+        handleChangePage(null, 0);
+      })
+      .catch((responseError) => {
+        setApiError('Falha ao atualizar o status.')
+        toast.error(apiError)
+      })
   }
 
   return (
@@ -144,8 +175,19 @@ export function Historico() {
                       onClick={getFile} />}</TableCell>
 
                   <TableCell scope="row">
-                    <IconButton onClick={() => toggleDropdown(h.id, h.solicitation.id, h.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward/>}</IconButton>
-                    <IconButton onClick={() => handleChangeStatus(h)} aria-label="Próximo status" color="success"><Check></Check></IconButton>
+                    <IconButton onClick={() => toggleDropdown(h.id, h.solicitation.id, h.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward />}</IconButton>
+                    {authenticatedUser && 
+                     authenticatedUser.role === 'ADMIN' &&
+                     (
+                      h.newStatus === 'PENDING_SAMPLE' ||
+                      h.newStatus === 'APPROVED' ||
+                      h.newStatus === 'PENDING_PAYMENT' ||
+                      h.newStatus === 'REFUSED'
+                     ) &&
+                      <Tooltip title="Próximo status" placement="left">
+                        <IconButton onClick={() => handleChangeStatus(h.solicitation.id, h.newStatus)} aria-label="Próximo status" color="success"><Check></Check></IconButton>
+                      </Tooltip>
+                    }
                   </TableCell>
                 </TableRow>
                   <TableRow style={{ paddingBottom: 0, paddingTop: 0 }}>
@@ -158,13 +200,12 @@ export function Historico() {
                                 <TableCell scope="row">
                                   <CustomStatus
                                     text={i.newStatus == 'PENDING_ADVISOR' ? 'Aguardando Confirmação' :
-                                              i.newStatus == 'PENDING_LAB' ? 'Aguardando Laboratório' :
-                                              i.newStatus == 'PENDING_SAMPLE' ? 'Aguardando Amostra' :
-                                              i.newStatus == 'APPROVED' ? 'Aguardando Análise' :
-                                              i.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
-                                              i.newStatus == 'REFUSED' ? 'Recusado' :
-                                                i.newStatus == 'FINISHED' ? 'Concluído' :
-                                                  '#000000'}
+                                          i.newStatus == 'PENDING_LAB' ? 'Aguardando Laboratório' :
+                                          i.newStatus == 'PENDING_SAMPLE' ? 'Aguardando Amostra' :
+                                          i.newStatus == 'APPROVED' ? 'Aguardando Análise' :
+                                          i.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
+                                          i.newStatus == 'REFUSED' ? 'Recusado' :
+                                          i.newStatus == 'FINISHED' ? 'Concluído' : '#000000'}
                                     padding="0.5rem"
                                     textColor="white"
                                     backgroundColor={i.newStatus == 'FINISHED' ? '#00d400' :
