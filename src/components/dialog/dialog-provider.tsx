@@ -10,7 +10,7 @@ import { DialogContext } from '@/components/dialog/dialog-context';
 export interface DialogProps {
   title?: string;
   content?: string;
-  actions?: React.JSX.Element;
+  actions?: any;
   onClose?: () => void;
 }
 
