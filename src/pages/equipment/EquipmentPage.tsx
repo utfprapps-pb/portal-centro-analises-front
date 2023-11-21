@@ -28,6 +28,9 @@ import EquipmentService from '@/services/api/equipment/EquipmentService'
 import { Header, Menu } from '@/components'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
 import Breadcrumb from '@/components/breadcrumb'
+import { InactivateQuestionDefaultProps } from '../../components/dialog/default-dialog-props/default-dialog-props';
+import { NoYesDialogActions } from '@/components/dialog/actions/no-yes-dialog-actions'
+import { useDialog } from '@/components/dialog/dialog-context'
 
 export const EquipmentsPage = () => {
   const navigate = useNavigate()
@@ -42,6 +45,8 @@ export const EquipmentsPage = () => {
 
   const [orderBy, setOrderBy] = useState('id')
   const [asc, setAsc] = useState(true)
+
+  const { open: openDialog, close: closeDialog } = useDialog();
 
   const listHeader = [
     { label: 'Código', value: 'id' },
@@ -240,7 +245,18 @@ export const EquipmentsPage = () => {
 
                       <IconButton aria-label="deixar inativo" color="error">
                         <RemoveCircleOutlineRounded
-                          onClick={() => removeEquipment(e.id!)}
+                          onClick={() => {
+                            openDialog({
+                              ...InactivateQuestionDefaultProps,
+                              actions: NoYesDialogActions({
+                                onNoClick: () => closeDialog(),
+                                onYesClick: () => {
+                                  removeEquipment(e.id!);
+                                  closeDialog();
+                                }
+                              }),
+                            });
+                          }}
                         />
                       </IconButton>
                     </StyledTableCell>
