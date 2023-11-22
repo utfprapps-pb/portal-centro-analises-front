@@ -6,7 +6,7 @@ import * as yup from 'yup'
 
 import styles from './styles.module.scss'
 import { DomainRole } from '../model/domain-role'
-import { Field, Form, Formik } from 'formik'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import DomainRoleService from '@/services/api/domain-role/service'
 import { ROLE_OPTIONS } from '@/commons/roles'
 import toast from 'react-hot-toast'
@@ -52,7 +52,7 @@ export function DomainRoleForm() {
     role: yup.string().required("Permissão é obrigatório"),
   });
 
-  const onSubmit = (values: DomainRole) => {
+  const onSubmit = (values: DomainRole/*, { setSubmitting }: FormikHelpers<DomainRole>*/) => {
     const data: DomainRole = {
       ...values,
       id: domainRole.id,
@@ -74,6 +74,9 @@ export function DomainRoleForm() {
         showMessageError(error);
         setPendingApiCall(false);
       })
+      /*.finally(() => {
+        setSubmitting(false);
+      });*/
   }
 
   const showMessageError = (error) => {
@@ -93,7 +96,7 @@ export function DomainRoleForm() {
           onSubmit={onSubmit}
           enableReinitialize={true}
         >
-          {({ errors, touched, setFieldValue, values }) => (
+          {({ errors, touched, setFieldValue, values, isSubmitting/*, setSubmitting*/ }/*: FormikProps<DomainRole>*/) => (
             <Form className={styles.form}>
               <Field
                 as={TextField}
@@ -123,7 +126,7 @@ export function DomainRoleForm() {
                 </FormControl>
               </div>
               <div className={styles.button_box}>
-                <Button variant="contained" color="primary" type="submit">
+                <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
                   Salvar
                 </Button>
               </div>

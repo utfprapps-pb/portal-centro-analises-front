@@ -38,7 +38,7 @@ export const ProfilePage: React.FC = () => {
             validationSchema={validations}
             enableReinitialize
           >
-            {({ touched, errors }) => {
+            {({ touched, errors, isSubmitting }) => {
               const hasErrors = Object.keys(errors).length > 0
               return (
                 <Form className={styles.form}>
@@ -102,9 +102,9 @@ export const ProfilePage: React.FC = () => {
                       color="primary"
                       variant="contained"
                       type="submit"
-                      disabled={hasErrors}
+                      disabled={hasErrors || isSubmitting}
                     >
-                      Alterar dados
+                      {isSubmitting ? 'Enviando...' : 'Alterar dados'}
                     </Button>
                   </Box>
                 </Form>
@@ -115,41 +115,43 @@ export const ProfilePage: React.FC = () => {
 
           {professors.length > 0 && (
             <Formik onSubmit={handleOnSubmitProfessorLink} initialValues={{}}>
-              <Form className={styles.form}>
-                <Select
-                  className={styles.buttonContainer}
-                  onChange={(optionsSelected: any) => {
-                    if (optionsSelected == null) {
-                      excludeProfessorLink()
-                    } else {
-                      setProfessorSelected(optionsSelected)
+              {({ isSubmitting }) => (
+                <Form className={styles.form}>
+                  <Select
+                    className={styles.buttonContainer}
+                    onChange={(optionsSelected: any) => {
+                      if (optionsSelected == null) {
+                        excludeProfessorLink()
+                      } else {
+                        setProfessorSelected(optionsSelected)
+                      }
+                    }}
+                    aria-label="Professores"
+                    placeholder="Professores"
+                    defaultValue={professorSelected}
+                    value={professorSelected}
+                    getOptionValue={(p: ProfessorParams) => p.id.toString()}
+                    getOptionLabel={(p: ProfessorParams) =>
+                      p.siape != null ? p.name + ' ' + p.siape : p.name
                     }
-                  }}
-                  aria-label="Professores"
-                  placeholder="Professores"
-                  defaultValue={professorSelected}
-                  value={professorSelected}
-                  getOptionValue={(p: ProfessorParams) => p.id.toString()}
-                  getOptionLabel={(p: ProfessorParams) =>
-                    p.siape != null ? p.name + ' ' + p.siape : p.name
-                  }
-                  isClearable={true}
-                  isSearchable={true}
-                  options={professors}
-                  name="professors"
-                />
-                <Box className={styles.buttonContainer}>
-                  <Button
-                    className={styles.button}
-                    color="primary"
-                    variant="contained"
-                    type="submit"
-                    disabled={professorSelected == null}
-                  >
-                    Solicitar vinculo
-                  </Button>
-                </Box>
-              </Form>
+                    isClearable={true}
+                    isSearchable={true}
+                    options={professors}
+                    name="professors"
+                  />
+                  <Box className={styles.buttonContainer}>
+                    <Button
+                      className={styles.button}
+                      color="primary"
+                      variant="contained"
+                      type="submit"
+                      disabled={professorSelected == null || isSubmitting}
+                    >
+                      {isSubmitting ? 'Enviando...' : 'Solicitar vínculo'}
+                    </Button>
+                  </Box>
+                </Form>
+              )}
             </Formik>
           )}
         </Paper>

@@ -1,7 +1,7 @@
 import styles from './styles.module.scss'
 import React, { useContext, useEffect, useState } from 'react'
 import { TextField, Button, Paper, Box } from '@material-ui/core'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, FormikHelpers, FormikProps } from 'formik'
 import * as Yup from 'yup'
 import { ProjectParams } from '@/services/api/project/project.type'
 import ProjectService from '@/services/api/project/ProjectService'
@@ -83,7 +83,7 @@ export const ProjectPageForm = () => {
     }
   }, [])
 
-  const handleSubmit = (values: ProjectParams) => {
+  const handleSubmit = (values: ProjectParams/*, { setSubmitting }: FormikHelpers<ProjectParams>*/) => {
     const data: ProjectParams = {
       ...values,
       id: project.id,
@@ -100,6 +100,9 @@ export const ProjectPageForm = () => {
         toast.error('Falha ao salvar o projeto.')
         setApiError('Falha ao salvar o projeto.')
       })
+      /*.finally(() => {
+        setSubmitting(false);
+      });*/
   }
 
   return (
@@ -120,7 +123,7 @@ export const ProjectPageForm = () => {
             onSubmit={handleSubmit}
             enableReinitialize={true}
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, isSubmitting/*, setSubmitting */}/*: FormikProps<ProjectParams>*/) => (
               <Form className={styles.form}>
                 <Field
                   as={TextField}
@@ -168,8 +171,9 @@ export const ProjectPageForm = () => {
                     type="submit"
                     variant="contained"
                     color="primary"
+                    disabled={isSubmitting}
                   >
-                    Enviar
+                    {isSubmitting ? 'Enviando...' : 'Enviar'}
                   </Button>
                 </Box>
               </Form>
