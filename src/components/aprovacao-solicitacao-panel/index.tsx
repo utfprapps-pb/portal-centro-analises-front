@@ -13,7 +13,7 @@ import styles from './styles.module.scss'
 import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
-import { AprovacoesParams } from '@/services/api/aprovacoes/aprovacoes.type'
+import { AprovacoesParams, SolicitationResponse } from '@/services/api/aprovacoes/aprovacoes.type'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
 
 export const AprovacaoSolicitacaoPanel = () => {
@@ -59,7 +59,13 @@ export const AprovacaoSolicitacaoPanel = () => {
     }, [orderBy, asc])
 
     const approveSolicitation = (id: number, status: string) => {
-        AprovacoesService.approve(id, status)
+        let response: SolicitationResponse = {
+            id: id,
+            status: status,
+            reason: ""
+          };
+        
+        AprovacoesService.response(response)
             .then((response) => {
                 toast.success("Aprovado com sucesso!")
                 setApiError('')
@@ -72,18 +78,24 @@ export const AprovacaoSolicitacaoPanel = () => {
             })
     }
 
-    const rejectSolicitation = (id: number) => {
-        AprovacoesService.reject(id, 'REFUSED')
-            .then((response) => {
-                toast.success("Rejeitado!")
-                setApiError('')
-                handleChangePage(null, 0);
-            })
-            .catch((responseError) => {
-                setApiError('Falha ao rejeitar.')
-                toast.error(apiError)
-                console.log(responseError)
-            })
+    const rejectSolicitation = (id: number, reason: string) => {
+        let response: SolicitationResponse = {
+            id: id,
+            status: 'REFUSED',
+            reason: reason
+          };
+
+        AprovacoesService.response(response)
+        .then((response) => {
+            toast.success("Rejeitado!")
+            setApiError('')
+            handleChangePage(null, 0);
+        })
+        .catch((responseError) => {
+            setApiError('Falha ao rejeitar.')
+            toast.error(apiError)
+            console.log(responseError)
+        })
     }
 
     const handleChangePage = (
@@ -146,7 +158,7 @@ export const AprovacaoSolicitacaoPanel = () => {
                                             <ThumbUp onClick={() => approveSolicitation(p.id!, p.status == 'PENDING_ADVISOR' ? 'PENDING_LAB' : 'PENDING_SAMPLE')} />
                                         </IconButton>
                                         <IconButton aria-label="reject" color="error">
-                                            <ThumbDown onClick={() => rejectSolicitation(p.id!)} />
+                                            <ThumbDown onClick={() => rejectSolicitation(p.id!, '')} />
                                         </IconButton>
                                     </StyledTableCell>
                                 </StyledTableRow>
