@@ -1,4 +1,4 @@
-import { AprovacoesParams } from './aprovacoes.type'
+import { AprovacoesParams, SolicitationResponse } from './aprovacoes.type'
 import { api } from '@/libs'
 
 const save = (project: AprovacoesParams) => api.post('/project', project)
@@ -11,6 +11,8 @@ const approve = (id: number, status: string) => api.post(`/solicitation/${id}/st
 
 const reject = (id: number, status: string) => api.post(`/solicitation/${id}/status`, status, {headers: {'Content-Type': 'text/plain'}})
 
+const response = (response: SolicitationResponse) => api.post(`/solicitation/status`, response)
+
 const findById = (id: number) => api.post(`/solicitation/${id}`)
 
 const pageSolicitationPending = (page: number, size: number, order: string, asc: boolean) => {
@@ -22,6 +24,7 @@ const AprovacoesService = {
   findAll,
   approve,
   reject,
+  response,
   findById,
   getSolicitationPending,
   pageSolicitationPending,
