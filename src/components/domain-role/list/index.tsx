@@ -18,9 +18,12 @@ import styles from "./styles.module.scss";
 import { Button, Grid, TableFooter, TablePagination, TableSortLabel } from "@material-ui/core";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 import { FilterDrawer } from "@/components/filter-drawer";
-import { DomainRole } from "../model/domain-role";
+import { DomainRole } from '../model/domain-role';
 import DomainRoleService from "@/services/api/domain-role/service";
 import { ROLE_OPTIONS } from '../../../commons/roles';
+import { useDialog } from "@/components/dialog/dialog-context";
+import { NoYesDialogActions } from "@/components/dialog/actions/no-yes-dialog-actions";
+import { RemoveQuestionDefaultProps } from '../../dialog/default-dialog-props/default-dialog-props';
 
 export function DomainRoleList() {
   const [data, setData] = useState([]);
@@ -31,9 +34,10 @@ export function DomainRoleList() {
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
   const [search, setSearch] = useState<string>("");
-
   const [orderBy, setOrderBy] = useState("id");
   const [asc, setAsc] = useState(true);
+
+  const { open: openDialog, close: closeDialog } = useDialog();
 
   const listHeader = [
     { label: "Código", value: "id" },
@@ -50,7 +54,7 @@ export function DomainRoleList() {
   }, [search, orderBy, asc]);
 
   const loadData = (page: number) => {
-    if (search && search.length) {
+    if (search?.length) {
       DomainRoleService.search(page, rowsPerPage, orderBy, asc, search)
         .then((response) => {
           setTotal(response.data.totalElements);
@@ -162,7 +166,18 @@ export function DomainRoleList() {
                     color="error"
                     aria-label="delete"
                     onClick={() => {
-                      onRemove(row.id ? row.id : 0);
+                      openDialog({
+                        ...RemoveQuestionDefaultProps,
+                        actions: NoYesDialogActions({
+                          onNoClick: () => closeDialog(),
+                          onYesClick: () => {
+                            if (row) {
+                              onRemove(row.id ? row.id : 0);
+                            }
+                            closeDialog();
+                          }
+                        }),
+                      });
                     }}
                   >
                     <DeleteIcon />

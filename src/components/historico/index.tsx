@@ -127,10 +127,10 @@ export function Historico() {
                     fontSize="12px"
                     fontWeight="300" /></TableCell>
                   <TableCell scope="row">{(new Date(h.changeDate)).toLocaleString('en-GB', { timeZone: 'UTC' })}</TableCell>
-                  <TableCell scope="row">{h.solicitation.equipment.name}</TableCell>
+                  <TableCell scope="row">{h.solicitation.equipment?.name}</TableCell>
                   <TableCell scope="row">{h.solicitation.value}</TableCell>
-                  <TableCell scope="row">{h.solicitation.createdBy.name}</TableCell>
-                  <TableCell scope="row">{h.solicitation.project.description}</TableCell>
+                  <TableCell scope="row">{h.solicitation.createdBy?.name}</TableCell>
+                  <TableCell scope="row">{h.solicitation.project?.description}</TableCell>
                   <TableCell scope="row"> {h.newStatus == 'FINISHED' &&
                     <DownloadFile
                       url={h.solicitation.fileUrl}
