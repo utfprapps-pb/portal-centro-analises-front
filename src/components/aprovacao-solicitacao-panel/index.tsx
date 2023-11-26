@@ -15,6 +15,7 @@ import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
 import { AprovacoesParams, SolicitationResponse } from '@/services/api/aprovacoes/aprovacoes.type'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
+import RejectionModal from '../rejection-reason'
 
 export const AprovacaoSolicitacaoPanel = () => {
     const navigate = useNavigate()
@@ -34,6 +35,9 @@ export const AprovacaoSolicitacaoPanel = () => {
         { label: "Descrição", value: "description" },
         { label: "Solicitante", value: "createdBy.name" }
     ];
+
+    const [isRejectModalOpen, setRejectModalOpen] = useState(false);
+    const [solicitationId, setSolicitationId] = useState(0);
 
     var t: any = localStorage.getItem("user");
     var infoArray = JSON.parse(t);
@@ -78,24 +82,13 @@ export const AprovacaoSolicitacaoPanel = () => {
             })
     }
 
-    const rejectSolicitation = (id: number, reason: string) => {
-        let response: SolicitationResponse = {
-            id: id,
-            status: 'REFUSED',
-            reason: reason
-          };
+    const handleCloseRejectModal = () => {
+        setRejectModalOpen(false);
+    };
 
-        AprovacoesService.response(response)
-        .then((response) => {
-            toast.success("Rejeitado!")
-            setApiError('')
-            handleChangePage(null, 0);
-        })
-        .catch((responseError) => {
-            setApiError('Falha ao rejeitar.')
-            toast.error(apiError)
-            console.log(responseError)
-        })
+    const rejectSolicitation = (id: number) => {
+        setSolicitationId(id);
+        setRejectModalOpen(true);
     }
 
     const handleChangePage = (
@@ -158,7 +151,7 @@ export const AprovacaoSolicitacaoPanel = () => {
                                             <ThumbUp onClick={() => approveSolicitation(p.id!, p.status == 'PENDING_ADVISOR' ? 'PENDING_LAB' : 'PENDING_SAMPLE')} />
                                         </IconButton>
                                         <IconButton aria-label="reject" color="error">
-                                            <ThumbDown onClick={() => rejectSolicitation(p.id!, '')} />
+                                            <ThumbDown onClick={() => rejectSolicitation(p.id!)} />
                                         </IconButton>
                                     </StyledTableCell>
                                 </StyledTableRow>
@@ -185,6 +178,13 @@ export const AprovacaoSolicitacaoPanel = () => {
                         </TableFooter>
                     </Table>
                 </TableContainer>
+
+                <RejectionModal
+                    isOpen={isRejectModalOpen}
+                    onRequestClose={handleCloseRejectModal}
+                    handleChangePage={handleChangePage}
+                    solicitationId={solicitationId}
+                />
             </div>
         </>
     )
