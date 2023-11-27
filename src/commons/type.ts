@@ -62,11 +62,11 @@ export type SignUpParams = {
 }
 
 export interface SolicitationAudit {
-  id: number
+  id?: number
   changeDate: string
-  newStatus: string
-  dropdown: boolean
-  solicitation: {
+  newStatus?: string
+  dropdown?: boolean
+  solicitation?: {
     changeDate: string
     solicitation: any
     id: number

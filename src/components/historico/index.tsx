@@ -4,11 +4,18 @@ import styles from './styles.module.scss'
 import { CustomStatus, DownloadFile } from '@/components'
 import { SolicitationAudit } from "@/commons/type";
 import { ArrowUpward, ArrowDownward, Check } from '@material-ui/icons'
-import { Collapse, IconButton, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel, Tooltip } from '@mui/material'
+import { Button, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, SelectChangeEvent, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, TableSortLabel, TextField, Tooltip } from '@mui/material';
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions';
 import HistoryService from '../../services/api/history/HistoryService';
-import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService';
+import SolicitacaoService from '@/services/api/solicitacao/SolicitacaoService';
 import toast from 'react-hot-toast';
+import { SOLICITATION_STATUS, SOLICITATION_STATUS_OPTIONS } from '@/commons/solicitationStatus';
+import { Field, Form, Formik } from 'formik';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import dayjs from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 
 export function Historico() {
   const { authenticatedUser } = useContext(AuthContext);
@@ -26,16 +33,23 @@ export function Historico() {
   const [orderBy, setOrderBy] = useState("id");
   const [asc, setAsc] = useState(false);
 
+  const [dataAgendamento, setDataAgendamento] = useState(dayjs(new Date().toString()));
+  const [valor, setValor] = useState(0);
+
+  const selectOptions = SOLICITATION_STATUS_OPTIONS;
+  const statusSolicitation = SOLICITATION_STATUS;
+
+  const [open, setOpen] = React.useState(false);
+
+  const [status, setStatus] = useState(statusSolicitation.PENDING_ADVISOR);
+  const [auditId, setAuditId] = useState<number>(0);
+
+
+  const formataStatus = (valor: string) => {
+    return selectOptions.find(item => item.value === valor)?.label;
+  }
+
   const [historyItens, setHistoryItens] = useState([]);
-  const statusSolicitation = {
-    PENDING_ADVISOR: "PENDING_ADVISOR",
-    PENDING_LAB: "PENDING_LAB",
-    PENDING_SAMPLE: "PENDING_SAMPLE",
-    APPROVED: "APPROVED",
-    PENDING_PAYMENT: "PENDING_PAYMENT",
-    REFUSED: "REFUSED",
-    FINISHED: "FINISHED"
-  };
 
   const listHeader = [
     { label: "Situação", value: "newStatus" },
@@ -54,7 +68,7 @@ export function Historico() {
         .then((res) => {
           setHistoryItens(res.data);
         });
-    }else{
+    } else {
       setHistoryItens([]);
     }
   }
@@ -89,33 +103,52 @@ export function Historico() {
   };
 
   const handleSort = (id: any) => {
-    if(id !== "id" && id === orderBy && asc === false){
+    if (id !== "id" && id === orderBy && asc === false) {
       setOrderBy("id");
-    }else{
+    } else {
       setOrderBy(id);
       setAsc(!asc);
     }
   }
 
-  const handleChangeStatus = (id:number, status: string) => {
-    let newStatus;
-    if(status === statusSolicitation.PENDING_SAMPLE){
-      newStatus = statusSolicitation.APPROVED;
-    } else if(status === statusSolicitation.APPROVED){
-      newStatus = statusSolicitation.PENDING_PAYMENT;
-    } else if (status === statusSolicitation.PENDING_PAYMENT){
-      newStatus = statusSolicitation.FINISHED;
-    }
-    AprovacoesService.approve(id, newStatus)
-      .then((response) => {
-        toast.success("Status atualizado com sucesso!")
-        setApiError('')
-        handleChangePage(null, 0);
+  const handleClickOpen = (h: SolicitationAudit) => {
+    setAuditId(h?.solicitation?.id ? h?.solicitation?.id : 0);
+    setStatus(h?.newStatus ? h?.newStatus : SOLICITATION_STATUS.PENDING_ADVISOR);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setStatus(SOLICITATION_STATUS.PENDING_ADVISOR);
+    setAuditId(0);
+    setValor(0);
+  };
+
+  const handleChangeDataAgendameto = (event:any) => {
+    setDataAgendamento(event)
+  }
+
+  const handleSelectChangeStatus = (event: SelectChangeEvent) => {
+    setStatus(event?.target?.value);
+  }
+
+  const handleChangeStatus = () => {
+      let id = auditId;
+      SolicitacaoService.atualizarStatus(
+      { 
+        id,
+        status: status,
+        data: dataAgendamento.toDate()
       })
-      .catch((responseError) => {
-        setApiError('Falha ao atualizar o status.')
-        toast.error(apiError)
-      })
+       .then((response) => {
+         toast.success("Status atualizado com sucesso!")
+         handleChangePage(null, 0);
+         handleClose();
+       })
+       .catch((responseError) => {
+         toast.error("Falha ao atualizar!")
+         handleClose();
+       })
   }
 
   return (
@@ -149,7 +182,7 @@ export function Historico() {
                           h.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
                           h.newStatus == 'REFUSED' ? 'Recusado' :
                           h.newStatus == 'FINISHED' ? 'Concluído' :
-                                  '#000000'}
+                          h.newStatus == 'PENDING_CORRECTION' ? 'Aguardando Correção' : '#000000'}
                     padding="0.5rem"
                     textColor="white"
                     backgroundColor={h.newStatus == 'FINISHED' ? '#00d400' :
@@ -158,34 +191,37 @@ export function Historico() {
                                     h.newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
                                     h.newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
                                     h.newStatus == 'APPROVED' ? '#d49f00' :
-                                '#000000'}
+                                    h.newStatus == 'PENDING_CORRECTION' ? '#e93946' :
+                                    '#000000'}
                     width="160px"
                     letterSpacing="0px"
                     fontSize="12px"
                     fontWeight="300" /></TableCell>
                   <TableCell scope="row">{(new Date(h.changeDate)).toLocaleString('en-GB', { timeZone: 'UTC' })}</TableCell>
-                  <TableCell scope="row">{h.solicitation.equipment?.name}</TableCell>
-                  <TableCell scope="row">{h.solicitation.value}</TableCell>
-                  <TableCell scope="row">{h.solicitation.createdBy?.name}</TableCell>
-                  <TableCell scope="row">{h.solicitation.project?.description}</TableCell>
-                  <TableCell scope="row"> {h.newStatus == 'FINISHED' &&
-                    <DownloadFile
-                      url={h.solicitation.fileUrl}
-                      type="submit"
-                      onClick={getFile} />}</TableCell>
-
+                  <TableCell scope="row">{h?.solicitation?.equipment?.name}</TableCell>
+                  <TableCell scope="row">{h?.solicitation?.value}</TableCell>
+                  <TableCell scope="row">{h?.solicitation?.createdBy?.name}</TableCell>
+                  <TableCell scope="row">{h?.solicitation?.project?.description}</TableCell>
                   <TableCell scope="row">
-                    <IconButton onClick={() => toggleDropdown(h.id, h.solicitation.id, h.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward />}</IconButton>
-                    {authenticatedUser && 
-                     authenticatedUser.role === 'ADMIN' &&
-                     (
-                      h.newStatus === 'PENDING_SAMPLE' ||
-                      h.newStatus === 'APPROVED' ||
-                      h.newStatus === 'PENDING_PAYMENT' ||
-                      h.newStatus === 'REFUSED'
-                     ) &&
+                    {h.newStatus === 'FINISHED' && //h?.solicitation?.fileUrl &&
+                    <DownloadFile
+                      //url={h?.solicitation?.fileUrl}
+                      url={'teste'}
+                      type="submit"
+                      onClick={getFile} />}
+                    <IconButton onClick={() => toggleDropdown(h?.id, h?.solicitation?.id, h?.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward />}</IconButton>
+                    {authenticatedUser &&
+                      authenticatedUser.role === 'ADMIN' &&
+                      (
+                        h.newStatus === 'PENDING_SAMPLE' ||
+                        h.newStatus === 'APPROVED' ||
+                        h.newStatus === 'PENDING_PAYMENT' ||
+                        h.newStatus === 'REFUSED' ||
+                        h.newStatus === 'PENDING_CORRECTION'
+                      ) &&
                       <Tooltip title="Próximo status" placement="left">
-                        <IconButton onClick={() => handleChangeStatus(h.solicitation.id, h.newStatus)} aria-label="Próximo status" color="success"><Check></Check></IconButton>
+                        <IconButton onClick={() => handleClickOpen(h)
+                        } aria-label="Próximo status" color="success"><Check></Check></IconButton>
                       </Tooltip>
                     }
                   </TableCell>
@@ -205,16 +241,18 @@ export function Historico() {
                                           i.newStatus == 'APPROVED' ? 'Aguardando Análise' :
                                           i.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
                                           i.newStatus == 'REFUSED' ? 'Recusado' :
-                                          i.newStatus == 'FINISHED' ? 'Concluído' : '#000000'}
+                                          i.newStatus == 'FINISHED' ? 'Concluído' :
+                                          i.newStatus == 'PENDING_CORRECTION' ? 'Aguardando Correção' : '#000000'}
                                     padding="0.5rem"
                                     textColor="white"
                                     backgroundColor={i.newStatus == 'FINISHED' ? '#00d400' :
-                                                    i.newStatus == 'PENDING_LAB' ? '#ff5e00' :
-                                                    i.newStatus == 'PENDING_ADVISOR' ? '#d49f00' :
-                                                    i.newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
-                                                    i.newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
-                                                    i.newStatus == 'APPROVED' ? '#d49f00' :
-                                                '#000000'}
+                                                     i.newStatus == 'PENDING_LAB' ? '#ff5e00' :
+                                                     i.newStatus == 'PENDING_ADVISOR' ? '#d49f00' :
+                                                     i.newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
+                                                     i.newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
+                                                     i.newStatus == 'APPROVED' ? '#d49f00' :
+                                                     i.newStatus == 'PENDING_CORRECTION' ? '#e93946' :
+                                                    '#000000'}
                                     width="160px"
                                     letterSpacing="0px"
                                     fontSize="12px"
@@ -251,6 +289,64 @@ export function Historico() {
             </TableFooter>
           </Table>
         </TableContainer>
+        <Dialog open={open} onClose={handleClose} style={{ overflowY: 'visible' }}
+          PaperProps={{
+            sx: {
+              width: "50%",
+              minHeight: 400
+            }
+          }}
+        >
+          <DialogTitle>Deseja mesmo alterar o status do registro?</DialogTitle>
+          <DialogContent style={{ overflowY: 'visible' }}>
+            <Formik
+              initialValues={{situacao:status, valor:valor}}
+              onSubmit={() => { }}
+              enableReinitialize={true}
+            >
+              {({ errors, touched }) => (
+                <Form className={styles.form}>
+                  <div className={styles.inputs}>
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                      <InputLabel id="situacao">Situação</InputLabel>
+                      <Select
+                        autoFocus
+                        value={status}
+                        onChange={handleSelectChangeStatus}
+                        label="Situação"
+                        labelId="situacao"
+                        required={true}
+                      >
+                        {selectOptions.map((option, index) => (
+                          <MenuItem key={index} value={option.value}>
+                            {option.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    { status && status === statusSolicitation.APPROVED &&
+                    <FormControl sx={{ m: 1, minWidth: 120 }}>
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DemoContainer components={['DateTimePicker']}>
+                        <DateTimePicker
+                        label="Data e Hora do Agendamento"
+                        value={dataAgendamento}
+                        onChange={() => handleChangeDataAgendameto}
+                        />
+                        </DemoContainer>
+                      </LocalizationProvider>
+                    </FormControl>
+                    }                    
+                  </div>
+                </Form>
+              )}
+            </Formik>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Cancelar</Button>
+            <Button onClick={handleChangeStatus}>Confirmar Alteração</Button>
+          </DialogActions>
+        </Dialog>
       </div>
     </>
   )
