@@ -13,8 +13,9 @@ import styles from './styles.module.scss'
 import AprovacoesService from '@/services/api/aprovacoes/AprovacoesService'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
-import { AprovacoesParams } from '@/services/api/aprovacoes/aprovacoes.type'
+import { AprovacoesParams, SolicitationResponse } from '@/services/api/aprovacoes/aprovacoes.type'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
+import RejectionModal from '../rejection-reason'
 
 export const AprovacaoSolicitacaoPanel = () => {
     const navigate = useNavigate()
@@ -34,6 +35,9 @@ export const AprovacaoSolicitacaoPanel = () => {
         { label: "Descrição", value: "description" },
         { label: "Solicitante", value: "createdBy.name" }
     ];
+
+    const [isRejectModalOpen, setRejectModalOpen] = useState(false);
+    const [solicitationId, setSolicitationId] = useState(0);
 
     var t: any = localStorage.getItem("user");
     var infoArray = JSON.parse(t);
@@ -59,7 +63,13 @@ export const AprovacaoSolicitacaoPanel = () => {
     }, [orderBy, asc])
 
     const approveSolicitation = (id: number, status: string) => {
-        AprovacoesService.approve(id, status)
+        let response: SolicitationResponse = {
+            id: id,
+            status: status,
+            reason: ""
+          };
+        
+        AprovacoesService.response(response)
             .then((response) => {
                 toast.success("Aprovado com sucesso!")
                 setApiError('')
@@ -72,18 +82,13 @@ export const AprovacaoSolicitacaoPanel = () => {
             })
     }
 
+    const handleCloseRejectModal = () => {
+        setRejectModalOpen(false);
+    };
+
     const rejectSolicitation = (id: number) => {
-        AprovacoesService.reject(id, 'REFUSED')
-            .then((response) => {
-                toast.success("Rejeitado!")
-                setApiError('')
-                handleChangePage(null, 0);
-            })
-            .catch((responseError) => {
-                setApiError('Falha ao rejeitar.')
-                toast.error(apiError)
-                console.log(responseError)
-            })
+        setSolicitationId(id);
+        setRejectModalOpen(true);
     }
 
     const handleChangePage = (
@@ -173,6 +178,13 @@ export const AprovacaoSolicitacaoPanel = () => {
                         </TableFooter>
                     </Table>
                 </TableContainer>
+
+                <RejectionModal
+                    isOpen={isRejectModalOpen}
+                    onRequestClose={handleCloseRejectModal}
+                    handleChangePage={handleChangePage}
+                    solicitationId={solicitationId}
+                />
             </div>
         </>
     )
