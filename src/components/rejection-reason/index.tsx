@@ -51,7 +51,8 @@ const RejectionModal = ({ isOpen, onRequestClose, handleChangePage, solicitation
           backgroundColor: '#fff',
           borderRadius: 1,
           padding: 2,  
-          width: '25%'
+          width: '80%', // Utilize uma porcentagem que se adeque ao design responsivo
+          maxWidth: '400px',
         }}
       >
         <Typography variant="h5" id="modal-title" gutterBottom>
