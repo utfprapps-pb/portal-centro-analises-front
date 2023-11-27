@@ -65,6 +65,7 @@ const RejectionModal = ({ isOpen, onRequestClose, handleChangePage, solicitation
           value={rejectReason}
           onChange={(e) => setRejectReason(e.target.value)}
           style={{width: '100%'}}
+          inputProps={{ maxLength: 500 }}
         />
         
         <Box
