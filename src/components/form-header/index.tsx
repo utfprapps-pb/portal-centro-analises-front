@@ -29,7 +29,7 @@ export function FormHeader() {
 		if (userRole == 'STUDENT') {
 			setStudentFields(true);
 			setUtfprFields(true);
-		} else if (userRole == 'PROFESSOR') {
+		} else if (userRole == 'ROLE_PROFESSOR') {
 			setProfessorFields(true);
 			setStudentFields(false);
 			setUtfprFields(true);

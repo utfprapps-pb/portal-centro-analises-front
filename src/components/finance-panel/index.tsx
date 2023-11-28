@@ -50,7 +50,7 @@ export const FinancePanel: React.FC = () => {
   }, [orderBy, asc]);
 
   const loadData = (page: number) => {
-    UserService.pageRole(page, rowsPerPage, orderBy, asc, 'PROFESSOR')
+    UserService.pageRole(page, rowsPerPage, orderBy, asc, 'ROLE_PROFESSOR')
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);

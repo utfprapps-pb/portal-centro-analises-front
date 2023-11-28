@@ -21,6 +21,7 @@ import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
 import UserService from '@/services/api/user/UserService';
+import { TRANSLATED_ROLES } from '@/commons/roles'
 
 export function AdminPanel() {
   const [open, setOpen] = React.useState(false);
@@ -356,12 +357,14 @@ export function AdminPanel() {
               </TableHead>
               <TableBody>
                 {data.map((user: any) => (
+
+                  // todo: precisa ajustar a listagem da role para retornar professor e não ROLE_PROFESSOR
                   <StyledTableRow key={user.id}>
                     <StyledTableCell scope="row">
                       {user.id}
                     </StyledTableCell>
                     <StyledTableCell align="center">{user.name}</StyledTableCell>
-                    <StyledTableCell align="center">{user.role}</StyledTableCell>
+                    <StyledTableCell align="center">{TRANSLATED_ROLES[user.role]}</StyledTableCell>
                     <StyledTableCell align="center">{user.email}</StyledTableCell>
                     <StyledTableCell align="center">
                       <CustomButton
