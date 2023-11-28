@@ -51,7 +51,7 @@ export function PartnerForm() {
     name: yup.string().min(4, "Deve informar no mínimo 4 caracteres").required("Nome é obrigatório"),
   });
 
-  const onSubmit = (values: Partner/*, { setSubmitting }: FormikHelpers<Partner>*/) => {
+  const onSubmit = (values: Partner) => {
     const data: Partner = {
       ...values,
       id: partner.id,
@@ -72,9 +72,7 @@ export function PartnerForm() {
           setApiError('Falha ao salvar a instituição parceira.')
         }
         setPendingApiCall(false)
-      })/*.finally(() => {
-        setSubmitting(false);
-      });*/
+      })
   }
 
   const handleStatusChange = (event: SelectChangeEvent)  => {
@@ -100,7 +98,7 @@ export function PartnerForm() {
           onSubmit={onSubmit}
           enableReinitialize={true}
         >
-          {({ errors, touched, isSubmitting/*, setSubmitting*/ }/*: FormikProps<Partner>*/) => (
+          {({ errors, touched, isSubmitting}) => (
             <Form className={styles.form}>
               <div className={styles.inputs}>
                 <FormControl sx={{ m: 1, minWidth: 120 }} fullWidth={true}>

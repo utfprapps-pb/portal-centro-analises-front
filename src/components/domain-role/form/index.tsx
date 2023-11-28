@@ -52,7 +52,7 @@ export function DomainRoleForm() {
     role: yup.string().required("Permissão é obrigatório"),
   });
 
-  const onSubmit = (values: DomainRole/*, { setSubmitting }: FormikHelpers<DomainRole>*/) => {
+  const onSubmit = (values: DomainRole) => {
     const data: DomainRole = {
       ...values,
       id: domainRole.id,
@@ -74,9 +74,6 @@ export function DomainRoleForm() {
         showMessageError(error);
         setPendingApiCall(false);
       })
-      /*.finally(() => {
-        setSubmitting(false);
-      });*/
   }
 
   const showMessageError = (error) => {
@@ -96,7 +93,7 @@ export function DomainRoleForm() {
           onSubmit={onSubmit}
           enableReinitialize={true}
         >
-          {({ errors, touched, setFieldValue, values, isSubmitting/*, setSubmitting*/ }/*: FormikProps<DomainRole>*/) => (
+          {({ errors, touched, setFieldValue, values, isSubmitting }) => (
             <Form className={styles.form}>
               <Field
                 as={TextField}

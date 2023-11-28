@@ -83,7 +83,7 @@ export const ProjectPageForm = () => {
     }
   }, [])
 
-  const handleSubmit = (values: ProjectParams/*, { setSubmitting }: FormikHelpers<ProjectParams>*/) => {
+  const handleSubmit = (values: ProjectParams) => {
     const data: ProjectParams = {
       ...values,
       id: project.id,
@@ -100,9 +100,6 @@ export const ProjectPageForm = () => {
         toast.error('Falha ao salvar o projeto.')
         setApiError('Falha ao salvar o projeto.')
       })
-      /*.finally(() => {
-        setSubmitting(false);
-      });*/
   }
 
   return (
@@ -123,7 +120,7 @@ export const ProjectPageForm = () => {
             onSubmit={handleSubmit}
             enableReinitialize={true}
           >
-            {({ errors, touched, isSubmitting/*, setSubmitting */}/*: FormikProps<ProjectParams>*/) => (
+            {({ errors, touched, isSubmitting}) => (
               <Form className={styles.form}>
                 <Field
                   as={TextField}
