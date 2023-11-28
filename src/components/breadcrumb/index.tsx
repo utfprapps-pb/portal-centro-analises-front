@@ -1,19 +1,21 @@
 import React from 'react'
 
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { Breadcrumbs, Link, Typography } from '@mui/material'
 
 import styles from './styles.module.scss'
 
 const Breadcrumb = () => {
+  const navigate = useNavigate()
   const location = useLocation()
   const pathnames = location.pathname.split('/').filter((x) => x)
 
   return (
     <div className={styles.container}>
       <Breadcrumbs aria-label="breadcrumb">
-        <Link underline="hover" color="inherit" href="/">
+        <Link underline="hover" color="inherit"
+          onClick={() => navigate('/')}>
           Home
         </Link>
 
@@ -22,7 +24,7 @@ const Breadcrumb = () => {
           const isLast = index === pathnames.length - 1
 
           if (isLast) {
-            return <Typography color="text.primary">{path}</Typography>
+            return <Typography key={path} color="text.primary">{path}</Typography>
           }
 
           return (
@@ -30,7 +32,7 @@ const Breadcrumb = () => {
               key={routeTo}
               underline="hover"
               color="inherit"
-              href="/material-ui/getting-started/installation/"
+              onClick={() => navigate(routeTo)}
             >
               {path}
             </Link>

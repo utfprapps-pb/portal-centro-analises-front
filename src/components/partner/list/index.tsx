@@ -23,6 +23,9 @@ import { Button, Grid, TableFooter, TablePagination, TableSortLabel } from "@mat
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 import { FilterDrawer } from "@/components/filter-drawer";
 import { Partner } from "../model/partner";
+import { useDialog } from "@/components/dialog/dialog-context";
+import { RemoveQuestionDefaultProps } from '../../dialog/default-dialog-props/default-dialog-props';
+import { NoYesDialogActions } from "@/components/dialog/actions/no-yes-dialog-actions";
 
 export function PartnerList() {
   const [data, setData] = useState([]);
@@ -36,6 +39,8 @@ export function PartnerList() {
 
   const [orderBy, setOrderBy] = useState("id");
   const [asc, setAsc] = useState(true);
+
+  const { open: openDialog, close: closeDialog } = useDialog();
 
   const listHeader = [
     { label: "Código", value: "id" },
@@ -169,7 +174,18 @@ export function PartnerList() {
                     color="error"
                     aria-label="delete"
                     onClick={() => {
-                      onRemove(row.id ? row.id : 0);
+                      openDialog({
+                        ...RemoveQuestionDefaultProps,
+                        actions: NoYesDialogActions({
+                          onNoClick: () => closeDialog(),
+                          onYesClick: () => {
+                            if (row) {
+                              onRemove(row.id ? row.id : 0);
+                            }
+                            closeDialog();
+                          }
+                        }),
+                      });
                     }}
                   >
                     <DeleteIcon />

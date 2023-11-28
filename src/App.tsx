@@ -46,7 +46,8 @@ export function App() {
                 ROLES.Student,
                 ROLES.External,
                 ROLES.Professor,
-                ROLES.Admin
+                ROLES.Admin,
+                ROLES.Partner,
               ]}
             />
           }
@@ -60,6 +61,10 @@ export function App() {
 
         <Route
           element={<RequireAuth allowedRoles={[ROLES.External]} />}
+        ></Route>
+
+        <Route
+          element={<RequireAuth allowedRoles={[ROLES.Partner]} />}
         ></Route>
 
         <Route
