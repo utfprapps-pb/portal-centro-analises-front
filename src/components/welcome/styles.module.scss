@@ -27,7 +27,7 @@
 
 .containergrafico {
     width: 400px;
-    height: 400px;
+    height: 450px;
     display: flex;
     position: relative;
     -webkit-box-flex: 1;
@@ -42,7 +42,7 @@
 
 .containervazio {
     width: 400px;
-    height: 400px;
+    height: 450px;
     display: flex;
     position: relative;
     flex-grow: 1;
@@ -61,6 +61,7 @@
     letter-spacing: 0.00938em;
     color: inherit;
     fill: rgba(0, 0, 0, 0.87);
+    padding-top: 10px
 }
 
 .titulografico {
@@ -71,4 +72,5 @@
     letter-spacing: 0.00938em;
     color: inherit;
     fill: rgba(0, 0, 0, 0.87);
+    padding-bottom: 10px;
 }
