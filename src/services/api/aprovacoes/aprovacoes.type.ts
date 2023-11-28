@@ -1,3 +1,5 @@
+import { type } from "os"
+
 export type AprovacoesParams = {
   id?: number
   createdBy: CreatedBy
@@ -47,5 +49,11 @@ export type StudentsParams = {
   name: string
   email: string
   ra: string
+}
+
+export type SolicitationResponse = {
+  id: number
+  status: string
+  reason?: string
 }
 

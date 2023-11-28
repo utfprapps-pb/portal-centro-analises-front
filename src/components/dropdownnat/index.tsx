@@ -7,7 +7,7 @@ interface DropdownProps {
 }
 
 const DropdownNat: React.FC<DropdownProps> = ({ value, onChange }) => {
-  const [selectedOption, setSelectedOption] = useState( { value: 'PROFESSOR', label: 'Professor' },);
+  const [selectedOption, setSelectedOption] = useState( { value: 'ROLE_PROFESSOR', label: 'Professor' },);
 
   const options = [
     { value: 'MASTERS_THESIS', label: 'Trabalho de Mestrado' },

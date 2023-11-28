@@ -59,7 +59,7 @@ export function Header() {
           }}
         >
           <MenuItem onClick={goToProfile}>Meu Perfil</MenuItem>
-          {authenticatedUser && authenticatedUser.role == 'ADMIN' &&
+          {authenticatedUser && authenticatedUser.role == 'ROLE_ADMIN' &&
             <>
               <MenuItem onClick={goToConfigEmail}>Config. Email </MenuItem>
             </>

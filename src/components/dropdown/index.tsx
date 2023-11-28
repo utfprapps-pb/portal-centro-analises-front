@@ -8,7 +8,7 @@ interface DropdownProps {
 }
 
 const Dropdown: React.FC<DropdownProps> = ({ value, onChange }) => {
-  const [selectedOption, setSelectedOption] = useState( { value: 'PROFESSOR', label: 'Professor' },);
+  const [selectedOption, setSelectedOption] = useState( { value: 'ROLE_PROFESSOR', label: 'Professor' },);
 
   const customStyles = {
     control: (provided: any) => ({
