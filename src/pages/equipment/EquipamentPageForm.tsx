@@ -1,7 +1,7 @@
 import styles from './styles.module.scss'
 import React, { useContext, useEffect, useState } from 'react'
 import { TextField, Button, Paper, Box, Grid } from '@material-ui/core'
-import { Formik, Form, Field } from 'formik'
+import { Formik, Form, Field, FormikHelpers } from 'formik'
 import * as Yup from 'yup'
 import { toast } from 'react-hot-toast'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -117,7 +117,7 @@ export const EquipmentPageForm = () => {
             onSubmit={handleSubmit}
             enableReinitialize={true}
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, isSubmitting }) => (
               <Form className={styles.form}>
                 <Grid container spacing={2}>
                   <Grid item xs={12} sm={12} md={8}>
@@ -247,8 +247,9 @@ export const EquipmentPageForm = () => {
                       type="submit"
                       variant="contained"
                       color="primary"
+                      disabled={isSubmitting}
                     >
-                      Enviar
+                      {isSubmitting ? 'Enviando...' : 'Enviar'}
                     </Button>
                   </Box>
                 </Grid>
