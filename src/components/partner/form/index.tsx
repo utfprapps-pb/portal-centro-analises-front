@@ -6,7 +6,7 @@ import * as yup from 'yup'
 import styles from './styles.module.scss'
 import PartnerService from '../../../services/api/partner/service'
 import { Partner } from '../model/partner'
-import { Field, Form, Formik } from 'formik'
+import { Field, Form, Formik, FormikHelpers, FormikProps } from 'formik'
 import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material'
 import toast from 'react-hot-toast'
 
@@ -98,7 +98,7 @@ export function PartnerForm() {
           onSubmit={onSubmit}
           enableReinitialize={true}
         >
-          {({ errors, touched }) => (
+          {({ errors, touched, isSubmitting}) => (
             <Form className={styles.form}>
               <div className={styles.inputs}>
                 <FormControl sx={{ m: 1, minWidth: 120 }} fullWidth={true}>
@@ -132,7 +132,7 @@ export function PartnerForm() {
                   </FormControl>
                 </div>
               <div className={styles.button_box}>
-                <Button variant="contained" color="primary" type="submit">
+                <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
                   Salvar
                 </Button>
               </div>

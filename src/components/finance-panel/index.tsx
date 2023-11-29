@@ -50,7 +50,7 @@ export const FinancePanel: React.FC = () => {
   }, [orderBy, asc]);
 
   const loadData = (page: number) => {
-    UserService.pageRole(page, rowsPerPage, orderBy, asc, 'PROFESSOR')
+    UserService.pageRole(page, rowsPerPage, orderBy, asc, 'ROLE_PROFESSOR')
       .then((response) => {
         setData(response.data.content);
         setTotal(response.data.totalElements);
@@ -176,22 +176,6 @@ export const FinancePanel: React.FC = () => {
                     <Form className={styles.inputs_container}>
                       <div className={styles.inputs_box}>
                         <div className={styles.row_box}>
-                          <div className={styles.field_box}>
-                            <p>Nome</p>
-                            <div className={styles.input_box}>
-                              <ErrorMessage
-                                component={CustomErrorMessage}
-                                name="nome"
-                                className={styles.form_error} />
-                              <Field
-                                name="nome"
-                                disabled
-                                value={user?.displayName ?? ''}
-                                placeholder=''
-                                className={styles.input_form} />
-                            </div>
-                          </div>
-
                           <div className={styles.field_box}>
                             <div className={styles.field_box}>
                               <p>Movimentação</p>
