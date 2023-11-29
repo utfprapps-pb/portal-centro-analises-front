@@ -16,6 +16,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { ROLES } from '@/commons/roles';
 
 export function Historico() {
   const { authenticatedUser } = useContext(AuthContext);
@@ -211,7 +212,7 @@ export function Historico() {
                       onClick={getFile} />}
                     <IconButton onClick={() => toggleDropdown(h?.id, h?.solicitation?.id, h?.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward />}</IconButton>
                     {authenticatedUser &&
-                      authenticatedUser.role === 'ADMIN' &&
+                      authenticatedUser.role === ROLES.Admin &&
                       (
                         h.newStatus === 'PENDING_SAMPLE' ||
                         h.newStatus === 'APPROVED' ||
@@ -336,7 +337,12 @@ export function Historico() {
                         </DemoContainer>
                       </LocalizationProvider>
                     </FormControl>
-                    }                    
+                    }
+                    { status && status === statusSolicitation.PENDING_PAYMENT &&
+                      <div className={styles.box}>
+                        <span>É necessário vincular o resultado da análise a solicitação.</span>
+                      </div>
+                    }               
                   </div>
                 </Form>
               )}
