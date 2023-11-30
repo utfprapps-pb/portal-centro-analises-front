@@ -100,12 +100,12 @@ export type LabelValue = {
 }
 
 export type GraficoDadoDTO = {
-  id:number;
-  label:string;
-  value:number;
+  backgroundColor: string[];
+  data: number[];
 }
 
 export type GraficoDTO = {
-  titulo:string;
-  dados:GraficoDadoDTO[];
+  titulo: string;
+  labels: string[];
+  datasets: GraficoDadoDTO[];
 }
