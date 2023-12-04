@@ -22,8 +22,17 @@ export const AprovacoesView = () => {
     description: '',
     status: '',
     fields: {},
-    project: {},
-    equipment: {},
+    project: {
+      id: 0,
+      description: '',
+      subject: ''
+    },
+    equipment: {
+      id: 0,
+      form: '',
+      name: '',
+      valueHourPartner: 0
+    },
     projectNature: ''
   })
 
@@ -48,7 +57,6 @@ export const AprovacoesView = () => {
       } catch (error) {
         setApiError('Falha ao carregar solicitação.')
         toast.error(apiError)
-        console.log(error)
       }
     }
 
@@ -89,9 +97,7 @@ export const AprovacoesView = () => {
           <Formik
             initialValues={form}
             onSubmit={(data) => {
-              console.log(data)
               handleSubitForm(data)
-              // navigate('/aprovacoes')
             }}
             enableReinitialize={true}
           >
@@ -137,6 +143,9 @@ export const AprovacoesView = () => {
                   <div className={styles.formButton}>
                     <Button
                       className={styles.w100}
+                      onClick={() => {
+                        navigate('/aprovacoes')
+                      }}
                       type="button"
                       variant="contained"
                       color="secondary"

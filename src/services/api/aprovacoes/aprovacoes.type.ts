@@ -1,3 +1,4 @@
+import { Project } from '@/commons/type'
 import { type } from 'os'
 
 export type AprovacoesParams = {
@@ -37,8 +38,8 @@ export type FormParams = {
   description: string
   status: string
   fields: object
-  project: object
-  equipment: object
+  project: Project
+  equipment: Equipment
   projectNature: string
 }
 
