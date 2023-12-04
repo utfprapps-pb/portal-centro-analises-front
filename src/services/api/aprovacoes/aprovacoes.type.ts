@@ -1,4 +1,4 @@
-import { type } from "os"
+import { type } from 'os'
 
 export type AprovacoesParams = {
   id?: number
@@ -37,6 +37,9 @@ export type FormParams = {
   description: string
   status: string
   fields: object
+  project: object
+  equipment: object
+  projectNature: string
 }
 
 export type ProjectResponseProps = {
@@ -56,4 +59,3 @@ export type SolicitationResponse = {
   status: string
   reason?: string
 }
-
