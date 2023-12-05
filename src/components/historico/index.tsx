@@ -204,10 +204,9 @@ export function Historico() {
                   <TableCell scope="row">{h?.solicitation?.createdBy?.name}</TableCell>
                   <TableCell scope="row">{h?.solicitation?.project?.description}</TableCell>
                   <TableCell scope="row">
-                    {h.newStatus === 'FINISHED' && //h?.solicitation?.fileUrl &&
+                    {h.newStatus === 'FINISHED' && h?.solicitation?.fileUrl &&
                     <DownloadFile
-                      //url={h?.solicitation?.fileUrl}
-                      url={'teste'}
+                      url={h?.solicitation?.fileUrl}
                       type="submit"
                       onClick={getFile} />}
                     <IconButton onClick={() => toggleDropdown(h?.id, h?.solicitation?.id, h?.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward />}</IconButton>
