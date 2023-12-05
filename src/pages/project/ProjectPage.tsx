@@ -115,6 +115,7 @@ export const ProjectPage = () => {
               </StyledTableCell>
               ))}
               <StyledTableCell align="right">Estudantes</StyledTableCell>
+              <StyledTableCell align="right">Criado por</StyledTableCell>
               <StyledTableCell align="right">Ações</StyledTableCell>
             </TableRow>
           </TableHead>
@@ -128,6 +129,9 @@ export const ProjectPage = () => {
                 <StyledTableCell align="center">{p.description}</StyledTableCell>
                 <StyledTableCell align="right">
                   {p.students.length}
+                </StyledTableCell>
+                <StyledTableCell align="right">
+                  {p.teacher?.name ?? ''}
                 </StyledTableCell>
                 <StyledTableCell align="right">
                   <IconButton aria-label="delete" color="info">
