@@ -25,6 +25,8 @@ import { RecoverPasswordPage } from '@/pages/recover-password'
 import { ConfigEmailPage } from '@/pages/config/email'
 import { DomainRolePage } from "@/pages/domain-role/form";
 import { DomainRoleListPage } from '@/pages/domain-role/list'
+import { TechnicalReportPage } from './pages/resultado/form'
+import { TechnicalReportListPage } from './pages/resultado/list'
 
 export function App() {
   return (
@@ -91,6 +93,9 @@ export function App() {
           <Route path="/domain-role" element={<DomainRoleListPage />} />
           <Route path="/domain-role/new" element={<DomainRolePage />} />
           <Route path="/domain-role/:id" element={<DomainRolePage />} />
+          <Route path="/resultado" element={<TechnicalReportListPage />} />
+          <Route path="/resultado/new" element={<TechnicalReportPage />} />
+          <Route path="/resultado/:id" element={<TechnicalReportPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
