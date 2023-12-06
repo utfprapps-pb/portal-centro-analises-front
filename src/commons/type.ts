@@ -100,12 +100,38 @@ export type LabelValue = {
 }
 
 export type GraficoDadoDTO = {
-  backgroundColor: string[];
-  data: number[];
+  backgroundColor: string[]
+  data: number[]
 }
 
 export type GraficoDTO = {
-  titulo: string;
-  labels: string[];
-  datasets: GraficoDadoDTO[];
+  titulo: string
+  labels: string[]
+  datasets: GraficoDadoDTO[]
+}
+
+export type TransactionDTO = {
+  createdAt: string
+  createdBy: {
+    id: number
+    role: string
+    name: string
+    email: string
+    status: string
+    createdAt: string | null
+  }
+  currentBalance: number
+  description: string
+  id: number
+  oldBalance: number
+  solicitation: any | null
+  type: string
+  user: {
+    id: number
+    role: string
+    name: string
+    email: string
+    status: string
+  }
+  value: number
 }

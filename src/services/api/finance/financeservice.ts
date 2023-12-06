@@ -1,15 +1,22 @@
 import { api } from '@/libs'
 
-const save = (finance: any) => api.post('/transaction', finance)
+const save = async (finance: any) => await api.post('/transaction', finance)
 
-const findAll = () => api.get('/transaction')
+const findAll = async () => await api.get('/transaction')
 
-const remove = (id: number) => api.delete(`/transaction/${id}`)
+const remove = async (id: number) => await api.delete(`/transaction/${id}`)
 
-const findById = (id: number) => api.post(`/transaction/${id}`)
+const findById = async (id: number) => await api.post(`/transaction/${id}`)
 
-const page = (page: number, size: number, order: string, asc: boolean) => {
-  return api.get(`/transaction/page?page=${page}&size=${size}&order=${order}&asc=${asc}`)
+const page = async (
+  page: number,
+  size: number,
+  order: string,
+  asc: boolean
+) => {
+  return await api.get(
+    `/transaction/page?page=${page}&size=${size}&order=${order}&asc=${asc}`
+  )
 }
 
 const FinanceService = {

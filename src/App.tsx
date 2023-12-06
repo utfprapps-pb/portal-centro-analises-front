@@ -23,8 +23,9 @@ import { AprovacoesView } from './pages/aprovacoes/AprovacoesView'
 import { ROLES } from './commons/roles'
 import { RecoverPasswordPage } from '@/pages/recover-password'
 import { ConfigEmailPage } from '@/pages/config/email'
-import { DomainRolePage } from "@/pages/domain-role/form";
+import { DomainRolePage } from '@/pages/domain-role/form'
 import { DomainRoleListPage } from '@/pages/domain-role/list'
+import { TeacherFinancesPage } from './pages/teacher-finances'
 
 export function App() {
   return (
@@ -47,7 +48,7 @@ export function App() {
                 ROLES.External,
                 ROLES.Professor,
                 ROLES.Admin,
-                ROLES.Partner,
+                ROLES.Partner
               ]}
             />
           }
@@ -57,15 +58,14 @@ export function App() {
           <Route path="/historico" element={<HistoricoPage />} />
           <Route path="/solicitar" element={<SolicitarPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/financeiro" element={<TeacherFinancesPage />} />
         </Route>
 
         <Route
           element={<RequireAuth allowedRoles={[ROLES.External]} />}
         ></Route>
 
-        <Route
-          element={<RequireAuth allowedRoles={[ROLES.Partner]} />}
-        ></Route>
+        <Route element={<RequireAuth allowedRoles={[ROLES.Partner]} />}></Route>
 
         <Route
           element={
