@@ -43,7 +43,10 @@ export const TeacherFinances: React.FC = () => {
     }
   }
 
-  const handleChangePage = (newPage: number) => {
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
     setPage(newPage)
     loadData(newPage)
   }
