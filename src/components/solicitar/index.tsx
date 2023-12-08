@@ -5,6 +5,8 @@ import { FormAbsorcaoAtomica, FormAnaliseTermica, FormAtividadeAgua, FormCr, For
 import styles from "./styles.module.scss";
 import { api } from "../../libs/axiosBase";
 import { useHistory } from "@/hooks";
+import { useParams } from 'react-router-dom';
+import SolicitacaoService from '@/services/api/solicitacao/SolicitacaoService';
 
 export function Solicitar() {
   const [haveTeacher, setHaveTeacher] = useState(false);
@@ -12,6 +14,9 @@ export function Solicitar() {
   const [isLoading, setIsLoading] = useState(true);
   const [activeForm, setActiveForm] = useState('');
   const { navigate } = useHistory();
+  const { id } = useParams();
+  const [solicitationById, setSolicitationById] = useState<any>({});
+  const [form, setForm] = useState<any>({ selected: '' });
 
   function goToProfile() {
     navigate("/profile");
@@ -40,7 +45,7 @@ export function Solicitar() {
   ];
 
   function handleClickForm(event: any) {
-    setActiveForm(event.target.value);
+    setForm({ selected: event.target.value });
   }
 
   useEffect(() => {
@@ -68,7 +73,55 @@ export function Solicitar() {
 
     getTeacher();
     getSelfUser();
+
+
+    if (id) {
+      SolicitacaoService.findOneById(Number.parseInt(id)).then(response => {
+        console.log('response', response)
+        setSolicitationById(response.data);
+
+        switch (response.data.equipment?.id) {
+          case 10:
+            setActiveForm('AA');
+            setForm({ selected: 'AA' });
+            break;
+        }
+        console.log('formById', solicitationById);
+      })
+    }
   }, []);
+
+  const renderForm = () => {
+    switch (form.selected) {
+      case 'AA': return <FormAbsorcaoAtomica solicitation={solicitationById} />;
+      case 'GCMS': return <FormGcMs />;
+      case 'DRX': return <FormDrx />;
+      case 'FTIR': return <FormFtir />;
+      case 'HPLC': return <FormHplc />;
+      case 'MEV': return <FormMev />;
+      case 'NIR': return <FormNir />;
+      case 'AT': return <FormAnaliseTermica />;
+      case 'UVVIS': return <FormUvVis />;
+      case 'AAG': return <FormAtividadeAgua />;
+      case 'FC': return <FormFotometroChama />;
+      case 'CR': return <FormCr />;
+      default: return <>
+        <h2 className={styles.sub_title}>IMPORTANTE</h2>
+        <div className={styles.importante}>
+          <p>a)	Solicita-se que o nome CENTRAL DE ANÁLISES – UTFPR Campus Pato Branco seja mencionado nos agradecimentos em todos os tipos de publicações que resultarem da utilização de suas instalações. </p>
+          <p>b)	Solicita-se que os arquivos com as referências de todos os tipos de trabalhos (comunicações em congressos, trabalhos completos, monografias, etc.) sejam enviados para o e-mail da Central de Análises. </p>
+        </div>
+        <h2 className={styles.sub_title}>OS USUÁRIOS SE COMPROMETEM EM</h2>
+        <div className={styles.comprometem}>
+          <p>1)	Providenciar a preparação das amostras (verificar os métodos de preparação para a amostra de interesse, etc.) antecipadamente na Central de Análises ou em outro local; </p>
+          <p>2)	Interpretar os resultados fornecidos; </p>
+          <p>3)	Chegar no horário estipulado (em caso de atraso, a reserva será transferida para outro usuário após 15 minutos); </p>
+          <p>4)	Avisar ao responsável pelo equipamento, com no mínimo 24 horas de antecedência, quando não puder comparecer no horário estipulado;</p>
+          <p>5)	Respeitar os horários estipulados, de modo a não interferir nos horários de outros usuários. </p>
+        </div>
+      </>
+    }
+  };
 
   return (
     <>
@@ -77,27 +130,26 @@ export function Solicitar() {
       ) : (
         <>
           {!haveTeacher && !permitSolicitation ? (
-            <>
               <div className={styles.container}>
                 <h1 className={styles.title}>VOCÊ NÃO TEM UM ORIENTADOR OU NÃO ESTÁ VINCULADO A UM PROJETO</h1>
                 <h2 className={styles.sub_title}>Para fazer uma solicitação como aluno você deve estar vinculado a um orientador e a um projeto</h2>
                 <h2 className={styles.sub_title}>Para realizar o vínculo com o orientador acesse seu perfil <a className={styles.link} onClick={goToProfile}>aqui</a></h2>
                 <h2 className={styles.sub_title}>Para fazer parte de um projeto, solicite ao seu orientador</h2>
               </div>
-            </>
           ) : (
             <div className={styles.container}>
               <h1 className={styles.title}>SOLICITAÇÃO</h1>
               <Formik
-                initialValues={{ selectedOption: "" }}
+                initialValues={form}
                 onSubmit={handleClickForm}
                 validationSchema={validationForm}
+                enableReinitialize={true}
               >
                 <Form className={styles.inputs_container}>
                   <div className={styles.input_box}>
                     <Field
                       as="select"
-                      name="form"
+                      name="selected"
                       multiple={false}
                       className={styles.input_form_select}
                       onChange={handleClickForm}
@@ -111,37 +163,8 @@ export function Solicitar() {
                   </div>
                 </Form>
               </Formik>
-              {activeForm == '' &&
-                <>
-                  <h2 className={styles.sub_title}>IMPORTANTE</h2>
-                  <div className={styles.importante}>
-                    <p>a)	Solicita-se que o nome CENTRAL DE ANÁLISES – UTFPR Campus Pato Branco seja mencionado nos agradecimentos em todos os tipos de publicações que resultarem da utilização de suas instalações. </p>
-                    <p>b)	Solicita-se que os arquivos com as referências de todos os tipos de trabalhos (comunicações em congressos, trabalhos completos, monografias, etc.) sejam enviados para o e-mail da Central de Análises. </p>
-                  </div>
-                  <h2 className={styles.sub_title}>OS USUÁRIOS SE COMPROMETEM EM</h2>
-                  <div className={styles.comprometem}>
-                    <p>1)	Providenciar a preparação das amostras (verificar os métodos de preparação para a amostra de interesse, etc.) antecipadamente na Central de Análises ou em outro local; </p>
-                    <p>2)	Interpretar os resultados fornecidos; </p>
-                    <p>3)	Chegar no horário estipulado (em caso de atraso, a reserva será transferida para outro usuário após 15 minutos); </p>
-                    <p>4)	Avisar ao responsável pelo equipamento, com no mínimo 24 horas de antecedência, quando não puder comparecer no horário estipulado;</p>
-                    <p>5)	Respeitar os horários estipulados, de modo a não interferir nos horários de outros usuários. </p>
-                  </div>
-                </>
-              }
-              {activeForm == 'AA' && <FormAbsorcaoAtomica />}
-              {activeForm == 'GCMS' && <FormGcMs />}
-              {activeForm == 'DRX' && <FormDrx />}
-              {activeForm == 'FTIR' && <FormFtir />}
-              {activeForm == 'HPLC' && <FormHplc />}
-              {activeForm == 'MEV' && <FormMev />}
-              {activeForm == 'NIR' && <FormNir />}
-              {activeForm == 'AT' && <FormAnaliseTermica />}
-              {activeForm == 'UVVIS' && <FormUvVis />}
-              {activeForm == 'AAG' && <FormAtividadeAgua />}
-              {activeForm == 'FC' && <FormFotometroChama />}
-              {activeForm == 'CR' && <FormCr />}
+              {renderForm()}
             </div>
-
           )}
         </>
       )}

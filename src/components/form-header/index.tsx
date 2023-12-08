@@ -18,7 +18,7 @@ export function FormHeader() {
 	const [utfprFields, setUtfprFields] = useState(false);
 	const [outraNatureza, setOutraNatureza] = useState(false);
 	const [projectNature, setProjectNature] = useState('');
-	const { setFieldValue } = useFormikContext();
+	const { setFieldValue, values } = useFormikContext<any>();
 
 	var t: any = localStorage.getItem("user");
 	var infoArray = JSON.parse(t);
@@ -89,8 +89,8 @@ export function FormHeader() {
 								/>
 								<Field
 									name="nomeAluno"
-									value={studentName ?? ''}
-									placeholder={studentName ?? ''}
+									value={(values.nomeAluno && values.nomeAluno !== '') ? values.nomeAluno : studentName}
+									// placeholder={values.nomeAluno ?? studentName}
 									disabled
 									className={styles.input_form_disable}
 								/>
@@ -108,8 +108,8 @@ export function FormHeader() {
 								/>
 								<Field
 									name="nomeOrientador"
-									value={teacher?.name ?? ''}
-									placeholder={teacher?.name ?? ''}
+                  value={(values.nomeOrientador && values.nomeOrientador !== '') ? values.nomeOrientador : teacher?.name}
+									// placeholder={teacher?.name ?? ''}
 									disabled
 									className={styles.input_form_disable}
 								/>

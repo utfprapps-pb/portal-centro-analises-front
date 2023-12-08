@@ -56,6 +56,7 @@ export function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/historico" element={<HistoricoPage />} />
           <Route path="/solicitar" element={<SolicitarPage />} />
+          <Route path="/solicitar/:id" element={<SolicitarPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
 

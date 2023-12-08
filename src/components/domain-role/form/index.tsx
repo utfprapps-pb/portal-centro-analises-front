@@ -41,9 +41,9 @@ export function DomainRoleForm() {
           setApiError('Falha ao carregar domínio.')
         })
     } else {
-      let teste = { ...domainRole }
-      teste.role = ROLE_OPTIONS[0].value;
-      setDomainRole(teste);
+      let domainRoleEmpty = { ...domainRole }
+      domainRoleEmpty.role = ROLE_OPTIONS[0].value;
+      setDomainRole(domainRoleEmpty);
     }
   }, [])
 
