@@ -7,7 +7,7 @@ import { useHistory } from "@/hooks";
 import { useParams } from 'react-router-dom';
 import { ABSORCAO_ATOMICA_EMPTY, AbsorcaoAtomica } from '@/components/forms/form-absorcao-atomica/AbsorcaoAtomica';
 import { FormProps } from '@/components/forms/FormProps';
-import { convertJsonFieldsToObject, loadFormBySolicitation, sendSolicitationForm } from '../FormUtils';
+import { loadFormBySolicitation, sendSolicitationForm } from '../FormUtils';
 
 export const FormAbsorcaoAtomica: React.FC<FormProps> = (props: Readonly<FormProps>) => {
   const { navigate } = useHistory();
