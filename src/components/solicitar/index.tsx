@@ -74,27 +74,65 @@ export function Solicitar() {
     getTeacher();
     getSelfUser();
 
-
     if (id) {
       SolicitacaoService.findOneById(Number.parseInt(id)).then(response => {
-        console.log('response', response)
-        setSolicitationById(response.data);
+        const solicitation = response.data;
 
-        switch (response.data.equipment?.id) {
+        setSolicitationById(solicitation);
+        switch (solicitation.equipment?.id) {
+          case 1:
+            setFormAndActive('HPLC');
+            break;
+
+          case 2:
+            setFormAndActive('GCMS');
+            break;
+
+          case 3:
+            setFormAndActive('AT');
+            break;
+
+          case 4:
+            setFormAndActive('CR');
+            break;
+
+          case 5:
+            setFormAndActive('MEV');
+            break;
+
+          case 6:
+            setFormAndActive('DRX');
+            break;
+
+          case 7:
+            setFormAndActive('NIR');
+            break;
+
+          case 8:
+            setFormAndActive('FTIR');
+            break;
+
+          case 9:
+            setFormAndActive('UVVIS');
+            break;
+
           case 10:
-            setActiveForm('AA');
-            setForm({ selected: 'AA' });
+            setFormAndActive('AA');
             break;
         }
-        console.log('formById', solicitationById);
       })
     }
   }, []);
 
+  const setFormAndActive = (form: string) => {
+    setForm({ selected: form });
+    setActiveForm(form);
+  }
+
   const renderForm = () => {
     switch (form.selected) {
       case 'AA': return <FormAbsorcaoAtomica solicitation={solicitationById} />;
-      case 'GCMS': return <FormGcMs />;
+      case 'GCMS': return <FormGcMs solicitation={solicitationById} />;
       case 'DRX': return <FormDrx />;
       case 'FTIR': return <FormFtir />;
       case 'HPLC': return <FormHplc />;
@@ -102,8 +140,8 @@ export function Solicitar() {
       case 'NIR': return <FormNir />;
       case 'AT': return <FormAnaliseTermica />;
       case 'UVVIS': return <FormUvVis />;
-      case 'AAG': return <FormAtividadeAgua />;
-      case 'FC': return <FormFotometroChama />;
+      // case 'AAG': return <FormAtividadeAgua />; TODO: verificar porque usa o equipamento 1 que já é do HPLC
+      // case 'FC': return <FormFotometroChama />; TODO: verificar porque usa o equipamento 1 que já é do HPLC
       case 'CR': return <FormCr />;
       default: return <>
         <h2 className={styles.sub_title}>IMPORTANTE</h2>
@@ -130,12 +168,12 @@ export function Solicitar() {
       ) : (
         <>
           {!haveTeacher && !permitSolicitation ? (
-              <div className={styles.container}>
-                <h1 className={styles.title}>VOCÊ NÃO TEM UM ORIENTADOR OU NÃO ESTÁ VINCULADO A UM PROJETO</h1>
-                <h2 className={styles.sub_title}>Para fazer uma solicitação como aluno você deve estar vinculado a um orientador e a um projeto</h2>
-                <h2 className={styles.sub_title}>Para realizar o vínculo com o orientador acesse seu perfil <a className={styles.link} onClick={goToProfile}>aqui</a></h2>
-                <h2 className={styles.sub_title}>Para fazer parte de um projeto, solicite ao seu orientador</h2>
-              </div>
+            <div className={styles.container}>
+              <h1 className={styles.title}>VOCÊ NÃO TEM UM ORIENTADOR OU NÃO ESTÁ VINCULADO A UM PROJETO</h1>
+              <h2 className={styles.sub_title}>Para fazer uma solicitação como aluno você deve estar vinculado a um orientador e a um projeto</h2>
+              <h2 className={styles.sub_title}>Para realizar o vínculo com o orientador acesse seu perfil <a className={styles.link} onClick={goToProfile}>aqui</a></h2>
+              <h2 className={styles.sub_title}>Para fazer parte de um projeto, solicite ao seu orientador</h2>
+            </div>
           ) : (
             <div className={styles.container}>
               <h1 className={styles.title}>SOLICITAÇÃO</h1>

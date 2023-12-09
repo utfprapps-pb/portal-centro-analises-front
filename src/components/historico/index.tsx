@@ -17,6 +17,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { ROLES } from '@/commons/roles';
+import EditIcon from '@material-ui/icons/Edit';
+import { useNavigate } from 'react-router-dom';
 
 export function Historico() {
   const { authenticatedUser } = useContext(AuthContext);
@@ -44,6 +46,8 @@ export function Historico() {
 
   const [status, setStatus] = useState(statusSolicitation.PENDING_ADVISOR);
   const [auditId, setAuditId] = useState<number>(0);
+
+  const navigate = useNavigate();
 
 
   const formataStatus = (valor: string) => {
@@ -125,7 +129,7 @@ export function Historico() {
     setValor(0);
   };
 
-  const handleChangeDataAgendameto = (event:any) => {
+  const handleChangeDataAgendameto = (event: any) => {
     setDataAgendamento(event)
   }
 
@@ -134,22 +138,22 @@ export function Historico() {
   }
 
   const handleChangeStatus = () => {
-      let id = auditId;
-      SolicitacaoService.atualizarStatus(
-      { 
+    let id = auditId;
+    SolicitacaoService.atualizarStatus(
+      {
         id,
         status: status,
         data: dataAgendamento.toDate()
       })
-       .then((response) => {
-         toast.success("Status atualizado com sucesso!")
-         handleChangePage(null, 0);
-         handleClose();
-       })
-       .catch((responseError) => {
-         toast.error("Falha ao atualizar!")
-         handleClose();
-       })
+      .then((response) => {
+        toast.success("Status atualizado com sucesso!")
+        handleChangePage(null, 0);
+        handleClose();
+      })
+      .catch((responseError) => {
+        toast.error("Falha ao atualizar!")
+        handleClose();
+      })
   }
 
   return (
@@ -177,23 +181,23 @@ export function Historico() {
                 <><TableRow key={h.id}>
                   <TableCell scope="row"><CustomStatus
                     text={h.newStatus == 'PENDING_ADVISOR' ? 'Aguardando Confirmação' :
-                          h.newStatus == 'PENDING_LAB' ? 'Aguardando Laboratório' :
-                          h.newStatus == 'PENDING_SAMPLE' ? 'Aguardando Amostra' :
+                      h.newStatus == 'PENDING_LAB' ? 'Aguardando Laboratório' :
+                        h.newStatus == 'PENDING_SAMPLE' ? 'Aguardando Amostra' :
                           h.newStatus == 'APPROVED' ? 'Aguardando Análise' :
-                          h.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
-                          h.newStatus == 'REFUSED' ? 'Recusado' :
-                          h.newStatus == 'FINISHED' ? 'Concluído' :
-                          h.newStatus == 'PENDING_CORRECTION' ? 'Aguardando Correção' : '#000000'}
+                            h.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
+                              h.newStatus == 'REFUSED' ? 'Recusado' :
+                                h.newStatus == 'FINISHED' ? 'Concluído' :
+                                  h.newStatus == 'PENDING_CORRECTION' ? 'Aguardando Correção' : '#000000'}
                     padding="0.5rem"
                     textColor="white"
                     backgroundColor={h.newStatus == 'FINISHED' ? '#00d400' :
-                                    h.newStatus == 'PENDING_LAB' ? '#ff5e00' :
-                                    h.newStatus == 'PENDING_ADVISOR' ? '#d49f00' :
-                                    h.newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
-                                    h.newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
-                                    h.newStatus == 'APPROVED' ? '#d49f00' :
-                                    h.newStatus == 'PENDING_CORRECTION' ? '#e93946' :
-                                    '#000000'}
+                      h.newStatus == 'PENDING_LAB' ? '#ff5e00' :
+                        h.newStatus == 'PENDING_ADVISOR' ? '#d49f00' :
+                          h.newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
+                            h.newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
+                              h.newStatus == 'APPROVED' ? '#d49f00' :
+                                h.newStatus == 'PENDING_CORRECTION' ? '#e93946' :
+                                  '#000000'}
                     width="160px"
                     letterSpacing="0px"
                     fontSize="12px"
@@ -205,10 +209,10 @@ export function Historico() {
                   <TableCell scope="row">{h?.solicitation?.project?.description}</TableCell>
                   <TableCell scope="row">
                     {h.newStatus === 'FINISHED' && h?.solicitation?.fileUrl &&
-                    <DownloadFile
-                      url={h?.solicitation?.fileUrl}
-                      type="submit"
-                      onClick={getFile} />}
+                      <DownloadFile
+                        url={h?.solicitation?.fileUrl}
+                        type="submit"
+                        onClick={getFile} />}
                     <IconButton onClick={() => toggleDropdown(h?.id, h?.solicitation?.id, h?.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward />}</IconButton>
                     {authenticatedUser &&
                       authenticatedUser.role === ROLES.Admin &&
@@ -224,6 +228,21 @@ export function Historico() {
                         } aria-label="Próximo status" color="success"><Check></Check></IconButton>
                       </Tooltip>
                     }
+
+                    {(authenticatedUser &&
+                      (authenticatedUser.id === h.solicitation?.createdBy?.id) &&
+                      (h.newStatus === 'REFUSED') &&
+                      h.solicitation) &&
+                      <IconButton
+                        color="primary"
+                        aria-label="edit"
+                        onClick={() => {
+                          navigate(`/solicitar/${h.solicitation?.id}`);
+                        }}
+                      >
+                        <EditIcon />
+                      </IconButton>}
+
                   </TableCell>
                 </TableRow>
                   <TableRow style={{ paddingBottom: 0, paddingTop: 0 }}>
@@ -236,23 +255,23 @@ export function Historico() {
                                 <TableCell scope="row">
                                   <CustomStatus
                                     text={i.newStatus == 'PENDING_ADVISOR' ? 'Aguardando Confirmação' :
-                                          i.newStatus == 'PENDING_LAB' ? 'Aguardando Laboratório' :
-                                          i.newStatus == 'PENDING_SAMPLE' ? 'Aguardando Amostra' :
+                                      i.newStatus == 'PENDING_LAB' ? 'Aguardando Laboratório' :
+                                        i.newStatus == 'PENDING_SAMPLE' ? 'Aguardando Amostra' :
                                           i.newStatus == 'APPROVED' ? 'Aguardando Análise' :
-                                          i.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
-                                          i.newStatus == 'REFUSED' ? 'Recusado' :
-                                          i.newStatus == 'FINISHED' ? 'Concluído' :
-                                          i.newStatus == 'PENDING_CORRECTION' ? 'Aguardando Correção' : '#000000'}
+                                            i.newStatus == 'PENDING_PAYMENT' ? 'Aguardando Pagamento' :
+                                              i.newStatus == 'REFUSED' ? 'Recusado' :
+                                                i.newStatus == 'FINISHED' ? 'Concluído' :
+                                                  i.newStatus == 'PENDING_CORRECTION' ? 'Aguardando Correção' : '#000000'}
                                     padding="0.5rem"
                                     textColor="white"
                                     backgroundColor={i.newStatus == 'FINISHED' ? '#00d400' :
-                                                     i.newStatus == 'PENDING_LAB' ? '#ff5e00' :
-                                                     i.newStatus == 'PENDING_ADVISOR' ? '#d49f00' :
-                                                     i.newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
-                                                     i.newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
-                                                     i.newStatus == 'APPROVED' ? '#d49f00' :
-                                                     i.newStatus == 'PENDING_CORRECTION' ? '#e93946' :
-                                                    '#000000'}
+                                      i.newStatus == 'PENDING_LAB' ? '#ff5e00' :
+                                        i.newStatus == 'PENDING_ADVISOR' ? '#d49f00' :
+                                          i.newStatus == 'PENDING_SAMPLE' ? '#d49f00' :
+                                            i.newStatus == 'PENDING_PAYMENT' ? '#d49f00' :
+                                              i.newStatus == 'APPROVED' ? '#d49f00' :
+                                                i.newStatus == 'PENDING_CORRECTION' ? '#e93946' :
+                                                  '#000000'}
                                     width="160px"
                                     letterSpacing="0px"
                                     fontSize="12px"
@@ -300,7 +319,7 @@ export function Historico() {
           <DialogTitle>Deseja mesmo alterar o status do registro?</DialogTitle>
           <DialogContent style={{ overflowY: 'visible' }}>
             <Formik
-              initialValues={{situacao:status, valor:valor}}
+              initialValues={{ situacao: status, valor: valor }}
               onSubmit={() => { }}
               enableReinitialize={true}
             >
@@ -324,24 +343,24 @@ export function Historico() {
                         ))}
                       </Select>
                     </FormControl>
-                    { status && status === statusSolicitation.APPROVED &&
-                    <FormControl sx={{ m: 1, minWidth: 120 }}>
-                      <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={['DateTimePicker']}>
-                        <DateTimePicker
-                        label="Data e Hora do Agendamento"
-                        value={dataAgendamento}
-                        onChange={() => handleChangeDataAgendameto}
-                        />
-                        </DemoContainer>
-                      </LocalizationProvider>
-                    </FormControl>
+                    {status && status === statusSolicitation.APPROVED &&
+                      <FormControl sx={{ m: 1, minWidth: 120 }}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                          <DemoContainer components={['DateTimePicker']}>
+                            <DateTimePicker
+                              label="Data e Hora do Agendamento"
+                              value={dataAgendamento}
+                              onChange={() => handleChangeDataAgendameto}
+                            />
+                          </DemoContainer>
+                        </LocalizationProvider>
+                      </FormControl>
                     }
-                    { status && status === statusSolicitation.PENDING_PAYMENT &&
+                    {status && status === statusSolicitation.PENDING_PAYMENT &&
                       <div className={styles.box}>
                         <span>É necessário vincular o resultado da análise a solicitação.</span>
                       </div>
-                    }               
+                    }
                   </div>
                 </Form>
               )}
