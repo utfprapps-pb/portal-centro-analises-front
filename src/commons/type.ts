@@ -72,6 +72,7 @@ export interface SolicitationAudit {
     id: number
     newStatus: string
     createdBy: {
+      id: number
       name: string
     }
     equipment: {
