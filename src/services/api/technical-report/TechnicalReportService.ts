@@ -1,7 +1,9 @@
 import { api } from '@/libs'
 
 const save = (report: any) => api.post('/report', report)
-const saveUpload = (data: FormData) => api.post('/report/upload', data)
+const saveUpload = (data: FormData) => {
+  return api.post('/report/upload', data)
+}
 
 const findById = (id: number) => api.post(`/report/${id}`)
 

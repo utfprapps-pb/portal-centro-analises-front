@@ -177,6 +177,7 @@ export function TechnicalReportForm() {
                     variant="outlined"
                     error={errors.price}
                     onChange={onChange}
+                    type='number'
                   />
                 </FormControl>
 
@@ -191,6 +192,7 @@ export function TechnicalReportForm() {
                     variant="outlined"
                     error={errors.amountHours}
                     onChange={onChange}
+                    type='number'
                   />
                 </FormControl>
 
@@ -205,6 +207,7 @@ export function TechnicalReportForm() {
                     variant="outlined"
                     error={errors.amountSamples}
                     onChange={onChange}
+                    type='number'
                   />
                 </FormControl>
               </div>
