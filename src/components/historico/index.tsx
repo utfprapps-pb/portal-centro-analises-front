@@ -155,8 +155,7 @@ export function Historico() {
   }
 
   const handleVincularResultado = () => {
-    console.log(auditId)
-    navigate(`/resultado/new`);
+    navigate(`/resultado/new/${auditId}`);
   } 
 
   return (

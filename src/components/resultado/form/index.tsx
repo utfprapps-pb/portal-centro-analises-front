@@ -1,18 +1,17 @@
-import { useEffect, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { useNavigate, useParams } from 'react-router-dom'
 import * as yup from 'yup'
 
 import styles from './styles.module.scss'
-import { Field, Form, Formik } from 'formik'
-import { Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, TextField } from '@mui/material'
+import { Button, FormControl, Input, InputLabel, TextField } from '@mui/material'
 import toast from 'react-hot-toast'
 import { TechnicalReport } from '../model/technical-report'
 import TechnicalReportService from '@/services/api/technical-report/TechnicalReportService'
-import { log } from 'console'
+import SolicitacaoService from '@/services/api/solicitacao/SolicitacaoService'
 
 export function TechnicalReportForm() {
-  const { id } = useParams()
+  const { id, auditId } = useParams()
   const [technicalReport, setTechnicalReport] = useState<TechnicalReport>({
     id: undefined,
     description: '',
@@ -23,29 +22,23 @@ export function TechnicalReportForm() {
     amountSamples: 0,
     multiPartFileLists: undefined
   })
-  const [errors, setErrors] = useState({ id: null, name: '' })
+  const [errors, setErrors] = useState({
+    id: undefined,
+    description: undefined,
+    solicitation: undefined,
+    price: undefined,
+    amountHours: undefined,
+    amountSamples: undefined
+  })
   const [pendingApiCall, setPendingApiCall] = useState(false)
   const [apiError, setApiError] = useState('')
   const navigate = useNavigate()
-  const [solicitationOptions, setSolicitationOptions] = useState([]);
+  const [arquivo, setArquivo] = useState<any|null>(undefined);
 
   useEffect(() => {
-    TechnicalReportService.getSolicitationApproved()
-    .then((response) => {
-      setSolicitationOptions(response.data);
-      /* if(!id){
-        setTechnicalReport((technicalReport: TechnicalReport) => {
-            return {
-              ...technicalReport,
-              solicitation: response.data[0]
-            };
-        });
-      } */
-    })
-    .catch((erro) => {
-      setApiError('Falha ao carregar a opções')
-    })
-    if (id) {
+
+    if (id && id !== 'new') {
+      console.log('id', id)
       TechnicalReportService.findById(parseInt(id))
         .then((response) => {
           if (response.data) {
@@ -68,30 +61,50 @@ export function TechnicalReportForm() {
           setApiError('Falha ao carregar a instituição parceira')
         })
     }
+    if( auditId ){
+      console.log('audit',auditId)
+      SolicitacaoService.findById(parseInt(auditId))
+      .then((response) => {
+        console.log(response)
+        if (response.data) {
+          setTechnicalReport({
+            ...technicalReport,
+            solicitation: response.data
+          })
+          setApiError('')
+        } else {
+          setApiError('Falha ao carregar a solicitação')
+        }
+      })
+      .catch((erro) => {
+        setApiError('Falha ao carregar a solicitação')
+      })
+    }
   }, [])
 
-  const validationSchema = yup.object().shape({
-    description: yup.string().required("Descrição é obrigatório"),
-    price: yup.string().required("Preço é obrigatório"),
-    amountHours: yup.string().required("Quantidade de horas é obrigatório"),
-    amountSamples: yup.string().required("Quantidade de amostras é obrigatório"),
-  });
-
-  const onSubmit = (values: TechnicalReport) => {
-    console.log(values)
-    const data: TechnicalReport = {
-      ...values,
+  const onSubmit = () => {    
+    const report: TechnicalReport = {
       id: technicalReport.id,
-      description: values.description,
+      description: technicalReport.description,
       solicitation: technicalReport.solicitation,
       date: technicalReport.date,
-      price: values.price,
-      amountHours: values.amountHours,
-      amountSamples: values.amountSamples
+      price: technicalReport.price,
+      amountHours: technicalReport.amountHours,
+      amountSamples: technicalReport.amountSamples
     }
-    console.log(data)
+
+    const formData = new FormData();
+
+    formData.append('image', arquivo);
+
+    const blob = new Blob([JSON.stringify(report)], {
+      type: 'application/json'
+    })
+    formData.append('technical_report', blob);
+
     setPendingApiCall(true)
-    TechnicalReportService.save(data)
+
+    TechnicalReportService.saveUpload(formData)
       .then((response) => {
         console.log(response)
         toast.success("Sucesso ao salvar o resultado.");
@@ -100,7 +113,7 @@ export function TechnicalReportForm() {
       })
       .catch((error) => {
         toast.error('Falha ao salvar o resultado.');
-        if (error.response.data && error.response.data.validationErrors) {
+        if (error?.response.data && error.response.data.validationErrors) {
           setErrors(error.response.data.validationErrors)
         } else {
           setApiError('Falha ao salvar o resultado.')
@@ -109,117 +122,100 @@ export function TechnicalReportForm() {
       })
   }
 
-  const handleSolicitationChange = (event: SelectChangeEvent) => {
-    setTechnicalReport((technicalReport: TechnicalReport) => {
-      if (technicalReport) {
-        return {
-          ...technicalReport,
-          solicitation: event.target.value as any
-        };
-      }
-
-      return technicalReport;
-    });
-  };
+  const handleChangeArquivo = (event:ChangeEvent<HTMLInputElement>) => {
+    setArquivo(event.target.files ? event.target.files[0] : null);
+  }
 
   return (
     <>
       <div className={styles.container}>
         <h1 className={styles.title}>Resultado</h1>
-        <Formik
-          initialValues={technicalReport}
-          validationSchema={validationSchema}
-          onSubmit={onSubmit}
-          enableReinitialize={true}
-        >
-          {({ errors, touched, isSubmitting }) => (
-            <Form className={styles.form}>
               <div className={styles.inputs}>
                 <FormControl sx={{ m: 1, minWidth: 120 }} fullWidth={true}>
-                  <Field
-                    as={TextField}
+                  <TextField 
                     className={styles.textField}
                     label="Descrição"
                     name="description"
-                    error={touched.description && !!errors.description}
-                    helperText={touched.description && errors.description}
+                    value={technicalReport.description}
                     fullWidth
                     required
                     variant="outlined"
+                    error={errors.description}
                   />
                 </FormControl>
               </div>
               <div className={styles.inputs}>
                 <FormControl sx={{ m: 1, minWidth: 120 }} fullWidth={true}>
-                  <Field
-                    as={TextField}
+                  <TextField  
                     className={styles.textField}
                     label="Preço"
                     name="price"
-                    error={touched.price && !!errors.price}
-                    helperText={touched.price && errors.price}
+                    value={technicalReport.price}
                     fullWidth
                     required
                     variant="outlined"
+                    error={errors.price}
                   />
                 </FormControl>
 
                 <FormControl sx={{ m: 1, minWidth: 120 }} fullWidth={true}>
-                  <Field
-                    as={TextField}
+                  <TextField  
                     className={styles.textField}
                     label="Quantidade de Horas"
                     name="amountHours"
-                    error={touched.amountHours && !!errors.amountHours}
-                    helperText={touched.amountHours && errors.amountHours}
+                    value={technicalReport.amountHours}
                     fullWidth
                     required
                     variant="outlined"
+                    error={errors.amountHours}
                   />
                 </FormControl>
 
                 <FormControl sx={{ m: 1, minWidth: 120 }} fullWidth={true}>
-                  <Field
-                    as={TextField}
+                  <TextField  
                     className={styles.textField}
                     label="Quantidade de Amostras"
                     name="amountSamples"
-                    error={touched.amountSamples && !!errors.amountSamples}
-                    helperText={touched.amountSamples && errors.amountSamples}
+                    value={technicalReport.amountSamples}
                     fullWidth
                     required
                     variant="outlined"
+                    error={errors.amountSamples}
                   />
                 </FormControl>
               </div>
               <div className={styles.inputs}>
-              {solicitationOptions && solicitationOptions?.length > 0 &&
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="solicitation">Solicitação</InputLabel>
-                <Select
-                  autoFocus
-                  value={technicalReport.solicitation}
-                  onChange={handleSolicitationChange}
-                  label="Solicitação"
-                  labelId="solicitation"
-                >
-                  {solicitationOptions.map((option, index) => (
-                    <MenuItem key={index} value={option}>
-                    {option?.id}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              }
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <TextField  
+                    className={styles.textField}
+                    label="Solicitação"
+                    name="solicitation"
+                    fullWidth
+                    value={technicalReport.solicitation.id + ' - ' + technicalReport.solicitation.description}
+                    required
+                    disabled={true}
+                    variant="outlined"
+                    error={errors.solicitation}
+                  />
+                </FormControl>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <InputLabel id="multiPartFileLists">Arquivo</InputLabel>
+                  <Input 
+                    type="file"
+                    className={styles.textField}
+                    id="multiPartFileLists"
+                    name="multiPartFileLists"
+                    fullWidth
+                    required
+                    onChange={handleChangeArquivo}
+                  />
+                </FormControl>
               </div>
               <div className={styles.button_box}>
-                <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
+                <Button variant="contained" color="primary" type="button" onClick={onSubmit}>
                   Salvar
                 </Button>
               </div>
-            </Form>
-          )}
-        </Formik>
       </div>
     </>
   )

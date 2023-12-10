@@ -94,7 +94,7 @@ export function App() {
           <Route path="/domain-role/new" element={<DomainRolePage />} />
           <Route path="/domain-role/:id" element={<DomainRolePage />} />
           <Route path="/resultado" element={<TechnicalReportListPage />} />
-          <Route path="/resultado/new" element={<TechnicalReportPage />} />
+          <Route path="/resultado/new/:auditId" element={<TechnicalReportPage />} />
           <Route path="/resultado/:id" element={<TechnicalReportPage />} />
         </Route>
         <Route path="*" element={<NotFound />} />
