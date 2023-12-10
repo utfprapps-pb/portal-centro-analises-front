@@ -17,6 +17,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import dayjs from 'dayjs';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { ROLES } from '@/commons/roles';
+import { PostAdd } from '@material-ui/icons';
+import { useNavigate } from 'react-router-dom';
 
 export function Historico() {
   const { authenticatedUser } = useContext(AuthContext);
@@ -44,7 +46,7 @@ export function Historico() {
 
   const [status, setStatus] = useState(statusSolicitation.PENDING_ADVISOR);
   const [auditId, setAuditId] = useState<number>(0);
-
+  const navigate = useNavigate();
 
   const formataStatus = (valor: string) => {
     return selectOptions.find(item => item.value === valor)?.label;
@@ -151,6 +153,11 @@ export function Historico() {
          handleClose();
        })
   }
+
+  const handleVincularResultado = () => {
+    console.log(auditId)
+    navigate(`/resultado/new`);
+  } 
 
   return (
     <>
@@ -339,7 +346,18 @@ export function Historico() {
                     }
                     { status && status === statusSolicitation.PENDING_PAYMENT &&
                       <div className={styles.box}>
-                        <span>É necessário vincular o resultado da análise a solicitação.</span>
+                        <span>É necessário vincular o resultado da análise à solicitação.</span>
+                        <Tooltip title="Vincular">
+                          <IconButton
+                              color="primary"
+                              aria-label="vincular"
+                              onClick={() => {
+                                handleVincularResultado();
+                              }}
+                          >
+                            <PostAdd />
+                          </IconButton>    
+                        </Tooltip>
                       </div>
                     }               
                   </div>
