@@ -15,12 +15,17 @@ const page = (page: number, size: number, order: string, asc: boolean) => {
 
 const getSolicitationApproved = () => api.get('/solicitation/approved') 
 
+const validaVinculado = (id:number) => {
+  return api.post(`report/vinculado/${id}`);
+}
+
 const TechnicalReportService = {
   save,
   saveUpload,
   findById,
   page,
-  getSolicitationApproved
+  getSolicitationApproved,
+  validaVinculado
 }
 
 export default TechnicalReportService

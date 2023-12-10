@@ -19,6 +19,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { ROLES } from '@/commons/roles';
 import { PostAdd } from '@material-ui/icons';
 import { useNavigate } from 'react-router-dom';
+import TechnicalReportService from '@/services/api/technical-report/TechnicalReportService';
 
 export function Historico() {
   const { authenticatedUser } = useContext(AuthContext);
@@ -47,6 +48,7 @@ export function Historico() {
   const [status, setStatus] = useState(statusSolicitation.PENDING_ADVISOR);
   const [auditId, setAuditId] = useState<number>(0);
   const navigate = useNavigate();
+  const [desabilitado, setDesabilitado] = useState<boolean>(false);
 
   const formataStatus = (valor: string) => {
     return selectOptions.find(item => item.value === valor)?.label;
@@ -133,6 +135,21 @@ export function Historico() {
 
   const handleSelectChangeStatus = (event: SelectChangeEvent) => {
     setStatus(event?.target?.value);
+    if(event?.target?.value === 'PENDING_PAYMENT'){
+      setDesabilitado(true)
+      TechnicalReportService.validaVinculado(auditId)
+      .then((response) => {
+        if(response.data){
+          setDesabilitado(response.data)
+        }else{
+          setDesabilitado(false)
+        }
+      }).catch((responseError) => {
+        console.log('error', responseError)
+      })
+    }else{
+      setDesabilitado(false)
+    }
   }
 
   const handleChangeStatus = () => {
@@ -343,7 +360,7 @@ export function Historico() {
                       </LocalizationProvider>
                     </FormControl>
                     }
-                    { status && status === statusSolicitation.PENDING_PAYMENT &&
+                    { status && status === statusSolicitation.PENDING_PAYMENT && desabilitado &&
                       <div className={styles.box}>
                         <span>É necessário vincular o resultado da análise à solicitação.</span>
                         <Tooltip title="Vincular">
@@ -366,7 +383,7 @@ export function Historico() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>Cancelar</Button>
-            <Button onClick={handleChangeStatus}>Confirmar Alteração</Button>
+            <Button onClick={handleChangeStatus} disabled={desabilitado}>Confirmar Alteração</Button>
           </DialogActions>
         </Dialog>
       </div>

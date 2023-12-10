@@ -38,7 +38,6 @@ export function TechnicalReportForm() {
   useEffect(() => {
 
     if (id && id !== 'new') {
-      console.log('id', id)
       TechnicalReportService.findById(parseInt(id))
         .then((response) => {
           if (response.data) {
@@ -62,10 +61,8 @@ export function TechnicalReportForm() {
         })
     }
     if( auditId ){
-      console.log('audit',auditId)
       SolicitacaoService.findById(parseInt(auditId))
       .then((response) => {
-        console.log(response)
         if (response.data) {
           setTechnicalReport({
             ...technicalReport,
