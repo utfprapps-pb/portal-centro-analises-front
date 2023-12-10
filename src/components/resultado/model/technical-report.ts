@@ -8,5 +8,5 @@ export interface TechnicalReport {
     price:number;
     amountHours:number
     amountSamples:number
-    multiPartFileLists:any
+    multiPartFileLists?:any
 }

@@ -1,6 +1,7 @@
 import { api } from '@/libs'
 
-const save = (project: any) => api.post('/report', project)
+const save = (report: any) => api.post('/report', report)
+const saveUpload = (data: FormData) => api.post('/report/upload', data)
 
 const findById = (id: number) => api.post(`/report/${id}`)
 
@@ -12,6 +13,7 @@ const getSolicitationApproved = () => api.get('/solicitation/approved')
 
 const TechnicalReportService = {
   save,
+  saveUpload,
   findById,
   page,
   getSolicitationApproved
