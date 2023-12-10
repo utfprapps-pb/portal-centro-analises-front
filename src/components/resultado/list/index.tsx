@@ -14,7 +14,7 @@ import TableCell from "@material-ui/core/TableCell";
 import { useNavigate } from "react-router-dom";
 
 import styles from "./styles.module.scss";
-import { Button, Grid, TableFooter, TablePagination, TableSortLabel } from "@material-ui/core";
+import { TableFooter, TablePagination, TableSortLabel } from "@material-ui/core";
 import TablePaginationActions from "@material-ui/core/TablePagination/TablePaginationActions";
 import TechnicalReportService from "@/services/api/technical-report/TechnicalReportService";
 import { TechnicalReport } from "../model/technical-report";
@@ -35,11 +35,6 @@ export function TechnicalReportList() {
         { label: "Código", value: "id" },
         { label: "Nome", value: "name" },
         { label: "Preço", value: "price" }
-    ];
-
-    const status = [
-        { value: 'INACTIVE', label: 'Inativo' },
-        { value: 'ACTIVE', label: 'Ativo' },
     ];
 
     useEffect(() => {
@@ -79,17 +74,6 @@ export function TechnicalReportList() {
 
     return (
         <>
-            <Grid container justifyContent="flex-end">
-                <Button
-                    variant="outlined"
-                    className={styles.buttoncolor}
-                    onClick={() => {
-                        onEdit("/resultado/new");
-                    }}
-                >
-                    Inserir
-                </Button>
-            </Grid>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 700 }} aria-label="simple table">
                     <TableHead>
