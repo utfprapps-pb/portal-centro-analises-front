@@ -122,6 +122,26 @@ export function TechnicalReportForm() {
       })
   }
 
+  const onChange = (
+    event: ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
+    const { value, name } = event.target;
+    setTechnicalReport((previousForm) => {
+      return {
+        ...previousForm,
+        [name]: value,
+      };
+    });
+    setErrors((previousErrors) => {
+      return {
+        ...previousErrors,
+        [name]: undefined,
+      };
+    });
+  };
+
   const handleChangeArquivo = (event:ChangeEvent<HTMLInputElement>) => {
     setArquivo(event.target.files ? event.target.files[0] : null);
   }
@@ -141,6 +161,7 @@ export function TechnicalReportForm() {
                     required
                     variant="outlined"
                     error={errors.description}
+                    onChange={onChange}
                   />
                 </FormControl>
               </div>
@@ -155,6 +176,7 @@ export function TechnicalReportForm() {
                     required
                     variant="outlined"
                     error={errors.price}
+                    onChange={onChange}
                   />
                 </FormControl>
 
@@ -168,6 +190,7 @@ export function TechnicalReportForm() {
                     required
                     variant="outlined"
                     error={errors.amountHours}
+                    onChange={onChange}
                   />
                 </FormControl>
 
@@ -181,6 +204,7 @@ export function TechnicalReportForm() {
                     required
                     variant="outlined"
                     error={errors.amountSamples}
+                    onChange={onChange}
                   />
                 </FormControl>
               </div>
