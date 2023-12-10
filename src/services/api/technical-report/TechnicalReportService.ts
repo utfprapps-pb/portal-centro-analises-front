@@ -2,7 +2,9 @@ import { api } from '@/libs'
 
 const save = (report: any) => api.post('/report', report)
 const saveUpload = (data: FormData) => {
-  return api.post('/report/upload', data)
+  return api.post('/report/upload', data,{
+    headers: {"Content-Type":"multipart/form-data"}
+  })
 }
 
 const findById = (id: number) => api.post(`/report/${id}`)
