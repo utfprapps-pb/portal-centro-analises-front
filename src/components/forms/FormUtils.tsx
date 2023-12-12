@@ -6,7 +6,7 @@ export const sendSolicitationForm = async (payload: any, solicitation, id) => {
     if (id) {
       payload = {
         ...payload,
-        id: id,
+        id,
         createdBy: solicitation.createdBy,
         status: solicitation.status,
       }

@@ -91,7 +91,8 @@ export interface SolicitationAudit {
     projectNature: {
       content: string
     }
-    otherProjectNature?: string
+    otherProjectNature?: string;
+    rejectionReason?: string;
   }
 }
 

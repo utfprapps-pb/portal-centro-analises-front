@@ -7,6 +7,7 @@ import { api } from "../../libs/axiosBase";
 import { useHistory } from "@/hooks";
 import { useParams } from 'react-router-dom';
 import SolicitacaoService from '@/services/api/solicitacao/SolicitacaoService';
+import { RejectionReasonButtonView } from '@/components/solicitar/RejectionReasonButtonView';
 
 export function Solicitar() {
   const [haveTeacher, setHaveTeacher] = useState(false);
@@ -39,8 +40,8 @@ export function Solicitar() {
     { label: "Espectrofotômetro NIR - NIR", value: "NIR" },
     { label: "Análise Térmica Diferencial - DTA", value: "AT" },
     { label: "Espectroscopia na Região Ultravioleta-Visível - UV/VIS", value: "UVVIS" },
-    { label: "Atividade de água - Aw", value: "AAG" },
-    { label: "Fotômetro de chama", value: "FC" },
+    // { label: "Atividade de água - Aw", value: "AAG" }, TODO: verificar porque usa o equipamento 1 que já é do HPLC
+    // { label: "Fotômetro de chama", value: "FC" }, TODO: verificar porque usa o equipamento 1 que já é do HPLC
     { label: "Análise Colorimétrica - Colorímetro CR 400", value: "CR" },
   ];
 
@@ -70,59 +71,68 @@ export function Solicitar() {
         setIsLoading(false);
       }
     }
-
     getTeacher();
     getSelfUser();
 
     if (id) {
       SolicitacaoService.findOneById(Number.parseInt(id)).then(response => {
         const solicitation = response.data;
-
         setSolicitationById(solicitation);
-        switch (solicitation.equipment?.id) {
-          case 1:
-            setFormAndActive('HPLC');
-            break;
-
-          case 2:
-            setFormAndActive('GCMS');
-            break;
-
-          case 3:
-            setFormAndActive('AT');
-            break;
-
-          case 4:
-            setFormAndActive('CR');
-            break;
-
-          case 5:
-            setFormAndActive('MEV');
-            break;
-
-          case 6:
-            setFormAndActive('DRX');
-            break;
-
-          case 7:
-            setFormAndActive('NIR');
-            break;
-
-          case 8:
-            setFormAndActive('FTIR');
-            break;
-
-          case 9:
-            setFormAndActive('UVVIS');
-            break;
-
-          case 10:
-            setFormAndActive('AA');
-            break;
-        }
+        setActiveFormByEquipment(solicitation.equipment);
       })
+    } else {
+      clearSolicitationAndActiveForm();
     }
-  }, []);
+  }, [id]);
+
+  const setActiveFormByEquipment = (equipment) => {
+    switch (equipment?.id) {
+      case 1:
+        setFormAndActive('HPLC');
+        break;
+
+      case 2:
+        setFormAndActive('GCMS');
+        break;
+
+      case 3:
+        setFormAndActive('AT');
+        break;
+
+      case 4:
+        setFormAndActive('CR');
+        break;
+
+      case 5:
+        setFormAndActive('MEV');
+        break;
+
+      case 6:
+        setFormAndActive('DRX');
+        break;
+
+      case 7:
+        setFormAndActive('NIR');
+        break;
+
+      case 8:
+        setFormAndActive('FTIR');
+        break;
+
+      case 9:
+        setFormAndActive('UVVIS');
+        break;
+
+      case 10:
+        setFormAndActive('AA');
+        break;
+    }
+  }
+
+  const clearSolicitationAndActiveForm = () => {
+    setSolicitationById(undefined);
+    setFormAndActive('');
+  }
 
   const setFormAndActive = (form: string) => {
     setForm({ selected: form });
@@ -184,13 +194,14 @@ export function Solicitar() {
                 enableReinitialize={true}
               >
                 <Form className={styles.inputs_container}>
-                  <div className={styles.input_box}>
+                  <div className={styles.row_box}>
                     <Field
                       as="select"
                       name="selected"
                       multiple={false}
                       className={styles.input_form_select}
                       onChange={handleClickForm}
+                      disabled={id}
                     >
                       {options.map(({ label, value }) => (
                         <option key={value} value={value}>
@@ -198,6 +209,10 @@ export function Solicitar() {
                         </option>
                       ))}
                     </Field>
+                    <RejectionReasonButtonView
+                      visible={id && solicitationById?.rejectionReason}
+                      color={'#ff0000'}
+                      rejectionReason={solicitationById?.rejectionReason} />
                   </div>
                 </Form>
               </Formik>
