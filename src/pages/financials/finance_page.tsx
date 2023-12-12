@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styles from "./styles.module.scss";
 import { ErrorMessage, Field, Form, Formik, validateYupSchema } from "formik";
-import { CustomErrorMessage } from "../error-message";
+import { CustomErrorMessage } from "../../components/error-message";
 import * as yup from "yup";
-import { CustomButton } from "../custom-button";
+import { CustomButton } from "../../components/custom-button";
 import { api } from "@/libs/axiosBase";
 import { EditFinance, EditUser, User } from "@/commons/type";
-import DropdownMov from "../dropdownmov";
-import { Link, useSubmit } from 'react-router-dom';
+import DropdownMov from "../../components/dropdownmov";
+import { useNavigate } from 'react-router-dom'
+import { useLocation, useSubmit } from 'react-router-dom';
 import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination, TableSortLabel } from '@mui/material';
 
 import Table from '@mui/material/Table'
@@ -15,18 +16,20 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { useNavigate } from 'react-router-dom'
+
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
 import UserService from '@/services/api/user/UserService';
 import FinanceService from '@/services/api/finance/financeservice';
-import { Adjust } from "@material-ui/icons";
 
-export const FinancePanel: React.FC = () => {
-  const navigate = useNavigate()
+export const FinancePage: React.FC = () => {
   const [activePage, setActivePage] = useState(0);
   const [open, setOpen] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate()
+
+  const userSend = location.state?.user;
 
   const [user, setUser] = useState<User>();
   const [finance, setFinance] = useState<EditFinance>();
@@ -36,15 +39,15 @@ export const FinancePanel: React.FC = () => {
   const rowsPerPage = 10;
   const [total, setTotal] = useState(0);
   const [pages, setPages] = useState(0);
+  const [totalValue, setTotalValue] = useState(0);
 
   const [orderBy, setOrderBy] = useState("id");
   const [asc, setAsc] = useState(true);
 
   const listHeader = [
     { label: "Código", value: "id" },
-    { label: "Nome", value: "name" },
-    { label: "Tipo", value: "role" },
-    { label: "E-mail", value: "email" }
+    { label: "Descrição", value: "description" },
+    { label: "Valor", value: "value" },
   ];
 
   useEffect(() => {
@@ -52,14 +55,19 @@ export const FinancePanel: React.FC = () => {
   }, [orderBy, asc]);
 
   const loadData = (page: number) => {
-    UserService.pageRole(page, rowsPerPage, orderBy, asc, 'ROLE_PROFESSOR')
-      .then((response) => {
-        setData(response.data.content);
-        setTotal(response.data.totalElements);
-        setPages(response.data.totalPages);
-      })
-      .catch((responseError: any) => {
-      })
+    FinanceService.findByUserId(userSend.id).then((response) => {
+      setData(response.data);
+      setTotal(response.data.totalElements);
+      setPages(response.data.totalPages);
+
+      const value = response.data.reduce((accumulator, current) => {
+        return accumulator + (current.value || 0);
+      }, 0);
+
+      setTotalValue(value)
+      
+    }).catch((responseError: any) => {
+    })
   }
 
   const changePage = (index: number) => {
@@ -72,7 +80,7 @@ export const FinancePanel: React.FC = () => {
   }
 
   const handleClickOpen = (selected: User) => {
-    navigate('/financeiro', { state: { user: selected } })
+    setOpen(true);
   };
 
   const handleClose = () => {
@@ -85,16 +93,6 @@ export const FinancePanel: React.FC = () => {
   ) => {
     setPage(newPage);
     loadData(newPage)
-  };
-
-  const handleValue = (value: any) => {
-    let updatedFinance = { ...finance };
-    updatedFinance.value = value;
-  };
-
-  const handleDesc = (desc: string) => {
-    let updatedFinance = { ...finance };
-    updatedFinance.description = desc;
   };
 
   const handleTypeChange = (selectedValue: number) => {
@@ -122,7 +120,7 @@ export const FinancePanel: React.FC = () => {
 
     let updatedFinance = { ...finance };
     updatedFinance.user = {
-      id: user!.id,
+      id: userSend!.id,
       displayName: "",
       email: "",
       password: "",
@@ -178,6 +176,22 @@ export const FinancePanel: React.FC = () => {
                     <Form className={styles.inputs_container}>
                       <div className={styles.inputs_box}>
                         <div className={styles.row_box}>
+                          <div className={styles.field_box}>
+                            <p>Nome</p>
+                            <div className={styles.input_box}>
+                              <ErrorMessage
+                                component={CustomErrorMessage}
+                                name="nome"
+                                className={styles.form_error} />
+                              <Field
+                                name="nome"
+                                disabled
+                                value={user?.displayName ?? ''}
+                                placeholder=''
+                                className={styles.input_form} />
+                            </div>
+                          </div>
+
                           <div className={styles.field_box}>
                             <div className={styles.field_box}>
                               <p>Movimentação</p>
@@ -248,73 +262,80 @@ export const FinancePanel: React.FC = () => {
                   </Formik>
                 </DialogContent>
               </Dialog>
-              <h1 className={styles.title}>PAINEL FINANCEIRO</h1>
+              <h1 className={styles.title}>PAINEL FINANCEIRO - {userSend.name}</h1>
             </div>
           </div>
-          <TableContainer component={Paper}>
-            <Table sx={{ minWidth: 700 }} aria-label="customized table">
-              <TableHead>
-                <TableRow>
-                  {listHeader.map((head) => (
-                    <StyledTableCell align={head.value==="id" ?"left":"center"} key={head.value}>{head.label}
-                      <TableSortLabel active={orderBy === head.value}
-                        direction={asc ? 'asc' : 'desc'}
-                        onClick={() => handleSort(head.value)}
-                      >
-                      </TableSortLabel>
-                    </StyledTableCell>
+          <div className={styles.addButton}>
+            <CustomButton
+              onClick={() => getUser(userSend)}
+              text="Adicionar"
+              padding="0.5rem"
+              textColor="white"
+              backgroundColor="#006dac"
+              textColorHover="white"
+              backgroundColorHover="#00bbff"
+              letterSpacing="4px"
+              fontSize="12px"
+              fontWeight="100"
+              type="submit"
+            />
+          </div>
+          <div className={styles.table}>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    {listHeader.map((head) => (
+                      <StyledTableCell align={head.value==="id" ?"left":"center"} key={head.value}>{head.label}
+                        <TableSortLabel active={orderBy === head.value}
+                          direction={asc ? 'asc' : 'desc'}
+                          onClick={() => handleSort(head.value)}
+                        >
+                        </TableSortLabel>
+                      </StyledTableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  { data.map((finances: any) => (
+                    <StyledTableRow key={finances.id}>
+                      <StyledTableCell scope="row">
+                        {finances.id}
+                      </StyledTableCell>
+                      <StyledTableCell align="center">{finances.description}</StyledTableCell>
+                      <StyledTableCell align="center">
+                        {finances.value?.toLocaleString('pt-br', {
+                          style: 'currency',
+                          currency: 'BRL'
+                        })}
+                      </StyledTableCell>
+                    </StyledTableRow>
                   ))}
-                  <StyledTableCell align="center">Seleção</StyledTableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data.map((user: any) => (
-                  <StyledTableRow key={user.id}>
-                    <StyledTableCell scope="row">
-                      {user.id}
-                    </StyledTableCell>
-                    <StyledTableCell align="center">{user.name}</StyledTableCell>
-                    <StyledTableCell align="center">{user.role}</StyledTableCell>
-                    <StyledTableCell align="center">{user.email}</StyledTableCell>
-                    <StyledTableCell align="center">
-                      <CustomButton
-                        onClick={() => getUser(user)}
-                        text="Selecionar"
-                        padding="0.5rem"
-                        textColor="white"
-                        backgroundColor="#006dac"
-                        textColorHover="white"
-                        backgroundColorHover="#00bbff"
-                        letterSpacing="4px"
-                        fontSize="12px"
-                        fontWeight="200"
-                        type="submit"
-                      />
-                    </StyledTableCell>
-                  </StyledTableRow>
-                ))}
-              </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TablePagination
-                    labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
-                    colSpan={5}
-                    count={total}
-                    rowsPerPage={rowsPerPage}
-                    rowsPerPageOptions={[10]}
-                    page={page}
-                    SelectProps={{
-                      inputProps: {
-                        'aria-label': 'rows per page',
-                      },
-                      native: true,
-                    }}
-                    onPageChange={handleChangePage}
-                    ActionsComponent={TablePaginationActions} />
-                </TableRow>
-              </TableFooter>
-            </Table>
-          </TableContainer>
+                </TableBody>
+              </Table>
+              <div className={styles.totalValue}>
+                Valor Total: {totalValue?.toLocaleString('pt-br', {
+                                style: 'currency',
+                                currency: 'BRL'
+                              })}
+              </div>
+            </TableContainer>
+          </div>
+          <div className={styles.backButton}>
+          <CustomButton
+              onClick={() => navigate('/admin')}
+              text="Voltar"
+              padding="0.5rem"
+              textColor="white"
+              backgroundColor="#006dac"
+              textColorHover="white"
+              backgroundColorHover="#00bbff"
+              letterSpacing="4px"
+              fontSize="12px"
+              fontWeight="100"
+              type="submit"
+            />
+          </div>
         </>
       )}
     </>

@@ -25,6 +25,7 @@ import { RecoverPasswordPage } from '@/pages/recover-password'
 import { ConfigEmailPage } from '@/pages/config/email'
 import { DomainRolePage } from "@/pages/domain-role/form";
 import { DomainRoleListPage } from '@/pages/domain-role/list'
+import { FinancePage } from '@/pages/financials/finance_page'
 
 export function App() {
   return (
@@ -85,6 +86,7 @@ export function App() {
           <Route path="/equipamento" element={<EquipmentsPage />} />
           <Route path="/equipamento/form" element={<EquipmentPageForm />} />
           <Route path="/equipamento/form/:id" element={<EquipmentPageForm />} />
+          <Route path="/financeiro" element={<FinancePage />} />
           <Route path="/partner" element={<PartnerListPage />} />
           <Route path="/partner/new" element={<PartnerPage />} />
           <Route path="/partner/:id" element={<PartnerPage />} />
