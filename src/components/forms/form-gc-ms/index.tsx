@@ -25,8 +25,6 @@ export const FormGcMs: React.FC<FormProps> = (props: Readonly<FormProps>) => {
   }, []);
 
   const validationForm = yup.object().shape({
-    // nomeAluno: yup.string().required("Informe seu nome"),
-    // nomeOrientador: yup.string().required("Informe o nome do seu orientador"),
     descricao: yup.string().required("Informe a descrição"),
     coluna: yup.string().required("Informe a coluna"),
     gas: yup.string().required("Informe o gás"),
