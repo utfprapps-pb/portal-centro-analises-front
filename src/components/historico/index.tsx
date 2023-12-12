@@ -78,8 +78,18 @@ export function Historico() {
     }
   }
 
-  function getFile() {
-    console.log("get-file");
+  function getFile(reportId: number) {
+    /* TechnicalReportService.downloadById(reportId)
+    .then((response) => { */
+      const link = document.createElement("a");
+      link.download = `http://localhost:8085/api/report/download/${reportId}`
+      link.href = `http://localhost:8085/api/report/download/${reportId}`
+      link.click();
+    /* })
+    .catch((error) => {
+      console.log(error)
+    })
+    console.log("get-file"); */
   }
 
   useEffect(() => {
@@ -227,11 +237,11 @@ export function Historico() {
                   <TableCell scope="row">{h?.solicitation?.createdBy?.name}</TableCell>
                   <TableCell scope="row">{h?.solicitation?.project?.description}</TableCell>
                   <TableCell scope="row">
-                    {h.newStatus === 'FINISHED' && h?.solicitation?.fileUrl &&
+                    {h.newStatus === 'FINISHED' && h?.solicitation?.id &&
                     <DownloadFile
-                      url={h?.solicitation?.fileUrl}
                       type="submit"
-                      onClick={getFile} />}
+                      onClick={() => getFile(h!.solicitation!.id)}
+                      />}
                     <IconButton onClick={() => toggleDropdown(h?.id, h?.solicitation?.id, h?.newStatus)} aria-label="Histórico" color="info"> {(mostrarDropdown && (selectedSolicitation === h.id)) ? <ArrowUpward /> : <ArrowDownward />}</IconButton>
                     {authenticatedUser &&
                       authenticatedUser.role === ROLES.Admin &&

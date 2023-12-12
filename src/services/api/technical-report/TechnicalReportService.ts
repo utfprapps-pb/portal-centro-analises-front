@@ -19,13 +19,16 @@ const validaVinculado = (id:number) => {
   return api.post(`report/vinculado/${id}`);
 }
 
+const downloadById = (id:number) => { return api.get(`/report/download/${id}`); }
+
 const TechnicalReportService = {
   save,
   saveUpload,
   findById,
   page,
   getSolicitationApproved,
-  validaVinculado
+  validaVinculado,
+  downloadById
 }
 
 export default TechnicalReportService

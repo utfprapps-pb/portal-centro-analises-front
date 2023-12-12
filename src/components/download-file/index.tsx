@@ -4,13 +4,13 @@ import { CloudDownload } from '@material-ui/icons'
 
 
 interface DownloadFileProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  url: string;
+  //url: string;
   onClick?: () => void;
   type: "submit" | "reset" | "button";
 }
 
 export function DownloadFile({
-  url,
+  //url,
   onClick = () => null,
   type,
   ...rest
