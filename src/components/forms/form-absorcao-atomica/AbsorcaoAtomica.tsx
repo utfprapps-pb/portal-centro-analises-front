@@ -1,4 +1,4 @@
-import { BaseForm } from "@/components/forms/BaseForm";
+import { BASE_FORM_EMPTY, BaseForm } from "@/components/forms/BaseForm";
 
 export interface AbsorcaoAtomica extends BaseForm {
   limites: string;
@@ -9,12 +9,7 @@ export interface AbsorcaoAtomica extends BaseForm {
 }
 
 export const ABSORCAO_ATOMICA_EMPTY = {
-  nomeAluno: "",
-  nomeOrientador: "",
-  projeto: 1,
-  descricao: "",
-  natureza: "",
-  otherProjectNature: "",
+  ...BASE_FORM_EMPTY,
   limites: "",
   condicoes: "",
   elementos: "",

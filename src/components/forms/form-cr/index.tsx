@@ -1,23 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from "yup";
 import styles from "./styles.module.scss";
 import { CustomErrorMessage, FormFooter, FormHeader } from '@/components'
-import { api } from "../../../libs/axiosBase";
-import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
+import { FormProps } from '@/components/forms/FormProps';
+import { CR_EMPTY, Cr } from '@/components/forms/form-cr/Cr';
+import { useParams } from 'react-router-dom';
+import { loadFormBySolicitation, sendSolicitationForm } from '@/components/forms/FormUtils';
 
-export const FormCr: React.FC = () => {
+export const FormCr: React.FC<FormProps> = (props: Readonly<FormProps>) => {
   const { navigate } = useHistory();
-
   const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams();
+  const [cr, setCr] = useState<Cr>(CR_EMPTY);
 
-  function startButtonLoad() {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
+  useEffect(() => {
+    if (id) {
+      const form = loadFormBySolicitation(props.solicitation);
+      if (form) {
+        setCr(form);
+      }
+    }
+  }, []);
 
   const validationForm = yup.object().shape({
     nomeAluno: yup.string(),
@@ -29,44 +34,30 @@ export const FormCr: React.FC = () => {
     leitura: yup.string().required("Informe a leitura")
   });
 
-  async function handleClickForm(values: {
-    nomeAluno: string;
-    nomeOrientador: string;
-    projeto: number;
-    descricao: string;
-    natureza: string;
-    otherProjectNature?: string;
-    //
-    amostra: string;
-    numeroMedicao: string;
-    localizacao: string;
-    leitura: string;
-  }) {
-    try {
-      startButtonLoad();
-      const { amostra, numeroMedicao, localizacao, leitura } = values;
-      const fields = { amostra, numeroMedicao, localizacao, leitura };
-      const fieldsStr = JSON.stringify(fields);
+  async function handleClickForm(values: Cr) {
+    setIsLoading(true);
 
-      const payload = {
-        equipment: {"id": 4},
-        project: {"id": values.projeto},
-        description : values.descricao,
-        projectNature : values.natureza,
-        otherProjectNature : values.otherProjectNature,
-        status : 0,
-        fields: fieldsStr
-      }
-
-      await api.post("/solicitation", payload);
-      toast.success('Solicitação efetuada com sucesso!');
-      window.setTimeout(() => {
-        navigate("/");
-      }, 5000);
-    } catch (error) {
-      toast.error('Erro ao realizar solicitação');
-      console.error("error", error);
+    const { amostra, numeroMedicao, localizacao, leitura } = values;
+    const fields = { amostra, numeroMedicao, localizacao, leitura };
+    const fieldsStr = JSON.stringify(fields);
+    const payload = {
+      equipment: { id: 4 },
+      project: { id: values.projeto },
+      description: values.descricao,
+      projectNature: values.natureza,
+      otherProjectNature: values.otherProjectNature,
+      status: 0,
+      fields: fieldsStr
     }
+    await sendSolicitationForm(
+      payload,
+      props.solicitation,
+      id);
+    window.setTimeout(() => {
+      navigate(id ? '/historico' : '/');
+    }, 1000);
+
+    setIsLoading(false);
   }
 
   return (
@@ -74,20 +65,10 @@ export const FormCr: React.FC = () => {
       <h1 className={styles.title}>Colorímetro CR 400</h1>
       <div>
         <Formik
-          initialValues={{
-            nomeAluno: "NOMEALUNO",
-            nomeOrientador: "NOME",
-            projeto: 1,
-            descricao: "",
-            natureza: "",
-            otherProjectNature: "",
-            amostra: "",
-            numeroMedicao: "",
-            localizacao: "",
-            leitura: ""
-          }}
+          initialValues={cr}
           onSubmit={handleClickForm}
           validationSchema={validationForm}
+          enableReinitialize={true}
         >
           <Form className={styles.inputs_container}>
             <div className={styles.inputs_box}>

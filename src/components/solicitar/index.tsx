@@ -133,16 +133,16 @@ export function Solicitar() {
     switch (form.selected) {
       case 'AA': return <FormAbsorcaoAtomica solicitation={solicitationById} />;
       case 'GCMS': return <FormGcMs solicitation={solicitationById} />;
-      case 'DRX': return <FormDrx />;
-      case 'FTIR': return <FormFtir />;
-      case 'HPLC': return <FormHplc />;
-      case 'MEV': return <FormMev />;
-      case 'NIR': return <FormNir />;
-      case 'AT': return <FormAnaliseTermica />;
-      case 'UVVIS': return <FormUvVis />;
-      // case 'AAG': return <FormAtividadeAgua />; TODO: verificar porque usa o equipamento 1 que já é do HPLC
-      // case 'FC': return <FormFotometroChama />; TODO: verificar porque usa o equipamento 1 que já é do HPLC
-      case 'CR': return <FormCr />;
+      case 'DRX': return <FormDrx solicitation={solicitationById} />;
+      case 'FTIR': return <FormFtir solicitation={solicitationById} />;
+      case 'HPLC': return <FormHplc solicitation={solicitationById} />;
+      case 'MEV': return <FormMev solicitation={solicitationById} />;
+      case 'NIR': return <FormNir solicitation={solicitationById} />;
+      case 'AT': return <FormAnaliseTermica solicitation={solicitationById} />;
+      case 'UVVIS': return <FormUvVis solicitation={solicitationById} />;
+      // case 'AAG': return <FormAtividadeAgua solicitation={solicitationById} />; TODO: verificar porque usa o equipamento 1 que já é do HPLC
+      // case 'FC': return <FormFotometroChama solicitation={solicitationById} />; TODO: verificar porque usa o equipamento 1 que já é do HPLC
+      case 'CR': return <FormCr solicitation={solicitationById} />;
       default: return <>
         <h2 className={styles.sub_title}>IMPORTANTE</h2>
         <div className={styles.importante}>

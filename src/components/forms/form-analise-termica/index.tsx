@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from "yup";
 import styles from "./styles.module.scss";
@@ -11,23 +11,28 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Add } from '@material-ui/icons'
-import { api } from "../../../libs/axiosBase";
-import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
 import Button from '@material-ui/core/Button';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { FormProps } from '@/components/forms/FormProps';
+import { ANALISE_TERMICA_EMPTY, AnaliseTermica } from '@/components/forms/form-analise-termica/AnaliseTermica';
+import { loadFormBySolicitation, sendSolicitationForm } from '@/components/forms/FormUtils';
+import { useParams } from 'react-router-dom';
 
-export function FormAnaliseTermica() {
+export const FormAnaliseTermica: React.FC<FormProps> = (props: Readonly<FormProps>) => {
   const { navigate } = useHistory();
-
   const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams();
+  const [analiseTermica, setAnaliseTermica] = useState<AnaliseTermica>(ANALISE_TERMICA_EMPTY);
 
-  function startButtonLoad() {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
+  useEffect(() => {
+    if (id) {
+      const form = loadFormBySolicitation(props.solicitation);
+      if (form) {
+        setAnaliseTermica(form);
+      }
+    }
+  }, []);
 
   interface RowData {
     amostra: number;
@@ -103,45 +108,34 @@ export function FormAnaliseTermica() {
     intervaloTemperatura: string;
   };
 
-
   function handleRemoveRow(row: YourRowType) {
     const updatedRows = rows.filter((r) => r !== row);
     setRows(updatedRows);
   }
 
+  async function handleClickForm(values: AnaliseTermica) {
+    setIsLoading(true);
 
-  async function handleClickForm(values: {
-    nomeAluno: string;
-    nomeOrientador: string;
-    projeto: number;
-    descricao: string;
-    natureza: string;
-    otherProjectNature?: string;
-  }) {
-    try {
-      startButtonLoad();
-      const fields = { rows };
-      const fieldsStr = JSON.stringify(fields);
-
-      const payload = {
-        equipment: {"id": 3},
-        project: {"id": values.projeto},
-        description : values.descricao,
-        projectNature : values.natureza,
-        otherProjectNature : values.otherProjectNature,
-        status : 0,
-        fields: fieldsStr
-      }
-
-      await api.post("/solicitation", payload);
-      toast.success('Solicitação efetuada com sucesso!');
-      window.setTimeout(() => {
-        navigate("/");
-      }, 5000);
-    } catch (error) {
-      toast.error('Erro ao realizar solicitação');
-      console.error("error", error);
+    const fields = { rows };
+    const fieldsStr = JSON.stringify(fields);
+    const payload = {
+      equipment: { id: 3 },
+      project: { id: values.projeto },
+      description: values.descricao,
+      projectNature: values.natureza,
+      otherProjectNature: values.otherProjectNature,
+      status: 0,
+      fields: fieldsStr
     }
+    await sendSolicitationForm(
+      payload,
+      props.solicitation,
+      id);
+    window.setTimeout(() => {
+      navigate(id ? '/historico' : '/');
+    }, 1000);
+
+    setIsLoading(false);
   }
 
   return (
@@ -149,24 +143,10 @@ export function FormAnaliseTermica() {
       <h1 className={styles.title}>Análise Térmica</h1>
       <div>
         <Formik
-          initialValues={{
-            nomeAluno: "NOMEALUNO",
-            nomeOrientador: "NOME",
-            projeto: 1,
-            descricao: "",
-            natureza: "",
-            otherProjectNature: "",
-            amostra: 0,
-            identificacao: "",
-            caracteristicas: "",
-            massaAmostra: "",
-            tecnica: "",
-            atmosferaFluxo: "",
-            taxaAquecimento: "",
-            intervaloTemperatura: ""
-          }}
+          initialValues={analiseTermica}
           onSubmit={handleClickForm}
           validationSchema={validationForm}
+          enableReinitialize={true}
         >
           {({ values }: any) => (
             <Form className={styles.inputs_container}>

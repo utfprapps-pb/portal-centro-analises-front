@@ -1,23 +1,28 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from "yup";
 import styles from "./styles.module.scss";
 import { CustomErrorMessage, FormFooter, FormHeader } from '@/components'
-import { api } from "../../../libs/axiosBase";
-import { toast } from "react-hot-toast";
 import { useHistory } from "@/hooks";
+import { FormProps } from '@/components/forms/FormProps';
+import { FTIR_EMPTY, Ftir } from '@/components/forms/form-ftir/Ftir';
+import { loadFormBySolicitation, sendSolicitationForm } from '@/components/forms/FormUtils';
+import { useParams } from 'react-router-dom';
 
-export const FormFtir: React.FC = () => {
+export const FormFtir: React.FC<FormProps> = (props: Readonly<FormProps>) => {
   const { navigate } = useHistory();
-
   const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams();
+  const [ftir, setFtir] = useState<Ftir>(FTIR_EMPTY);
 
-  function startButtonLoad() {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
+  useEffect(() => {
+    if (id) {
+      const form = loadFormBySolicitation(props.solicitation);
+      if (form) {
+        setFtir(form);
+      }
+    }
+  }, []);
 
   const validationForm = yup.object().shape({
     nomeAluno: yup.string(),
@@ -26,41 +31,30 @@ export const FormFtir: React.FC = () => {
     solventeUtilizado: yup.string().required("Informe o solvente utilizado"),
   });
 
-  async function handleClickForm(values: {
-    nomeAluno: string;
-    nomeOrientador: string;
-    projeto: number;
-    descricao: string;
-    natureza: string;
-    otherProjectNature?: string;
-    //
-    solventeUtilizado: string
-  }) {
-    try {
-      startButtonLoad();
-      const { solventeUtilizado } = values;
-      const fields = { solventeUtilizado };
-      const fieldsStr = JSON.stringify(fields);
+  async function handleClickForm(values: Ftir) {
+    setIsLoading(true);
 
-      const payload = {
-        equipment: {"id": 8},
-        project: {"id": values.projeto},
-        description : values.descricao,
-        projectNature : values.natureza,
-        otherProjectNature : values.otherProjectNature,
-        status : 0,
-        fields: fieldsStr
-      }
-
-      await api.post("/solicitation", payload);
-      toast.success('Solicitação efetuada com sucesso!');
-      window.setTimeout(() => {
-        navigate("/");
-      }, 5000);
-    } catch (error) {
-      toast.error('Erro ao realizar solicitação');
-      console.error("error", error);
+    const { solventeUtilizado } = values;
+    const fields = { solventeUtilizado };
+    const fieldsStr = JSON.stringify(fields);
+    const payload = {
+      equipment: { id: 8 },
+      project: { id: values.projeto },
+      description: values.descricao,
+      projectNature: values.natureza,
+      otherProjectNature: values.otherProjectNature,
+      status: 0,
+      fields: fieldsStr
     }
+    await sendSolicitationForm(
+      payload,
+      props.solicitation,
+      id);
+    window.setTimeout(() => {
+      navigate(id ? '/historico' : '/');
+    }, 1000);
+
+    setIsLoading(false);
   }
 
   return (
@@ -68,18 +62,10 @@ export const FormFtir: React.FC = () => {
       <h1 className={styles.title}>Infravermelho-FTIR</h1>
       <div>
         <Formik
-          initialValues={{
-            nomeAluno: "NOMEALUNO",
-            nomeOrientador: "NOME",
-            projeto: 0,
-            descricao: "",
-            natureza: "",
-            otherProjectNature: "",
-            // CAMPOS ÚNICOS DO FORMULÁRIO
-            solventeUtilizado: ""
-          }}
+          initialValues={ftir}
           onSubmit={handleClickForm}
           validationSchema={validationForm}
+          enableReinitialize={true}
         >
           <Form className={styles.inputs_container}>
             <div className={styles.inputs_box}>
@@ -141,7 +127,7 @@ export const FormFtir: React.FC = () => {
                 </div>
                 <div className={styles.field_box}>
                   <label>
-                  Absorbância (T%)
+                    Absorbância (T%)
                     <Field type="checkbox" name="transmitancia " value="transmitancia" />
                   </label>
                 </div>

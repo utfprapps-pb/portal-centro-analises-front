@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from "yup";
 import styles from "./styles.module.scss";
@@ -11,14 +11,19 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Add } from '@material-ui/icons'
-import { api } from "../../../libs/axiosBase";
-import { toast } from "react-hot-toast";
-import { useHistory } from "@/hooks";
-import Button from '@material-ui/core/Button';
 import RemoveIcon from '@material-ui/icons/Remove';
+import { DRX_EMPTY, Drx } from '@/components/forms/form-drx/Drx';
+import { FormProps } from '@/components/forms/FormProps';
+import { loadFormBySolicitation, sendSolicitationForm } from '@/components/forms/FormUtils';
+import { useHistory } from '@/hooks';
+import { useParams } from 'react-router-dom';
+import { Button } from '@material-ui/core';
 
-export function FormDrx() {
+export const FormDrx: React.FC<FormProps> = (props: Readonly<FormProps>) => {
   const { navigate } = useHistory();
+  const [isLoading, setIsLoading] = useState(false);
+  const { id } = useParams();
+  const [drx, setDrx] = useState<Drx>(DRX_EMPTY);
 
   interface RowData {
     amostra: number;
@@ -30,14 +35,14 @@ export function FormDrx() {
     tempo: string;
   }
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  function startButtonLoad() {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  };
+  useEffect(() => {
+    if (id) {
+      const form = loadFormBySolicitation(props.solicitation);
+      if (form) {
+        setDrx(form);
+      }
+    }
+  }, []);
 
   const [rows, setRows] = useState<RowData[]>([]);
 
@@ -80,38 +85,29 @@ export function FormDrx() {
     setRows(updatedRows);
   }
 
-  async function handleClickForm(values: {
-    nomeAluno: string;
-    nomeOrientador: string;
-    projeto: number;
-    descricao: string;
-    natureza: string;
-    otherProjectNature?: string;
-  }) {
-    try {
-      startButtonLoad();
-      const fields = { rows };
-      const fieldsStr = JSON.stringify(fields);
+  async function handleClickForm(values: Drx) {
+    setIsLoading(true);
 
-      const payload = {
-        equipment: { "id": 6 },
-        project: { "id": values.projeto },
-        description: values.descricao,
-        projectNature : values.natureza,
-        otherProjectNature : values.otherProjectNature,
-        status: 0,
-        fields: fieldsStr
-      }
-
-      await api.post("/solicitation", payload);
-      toast.success('Solicitação efetuada com sucesso!');
-      window.setTimeout(() => {
-        navigate("/");
-      }, 5000);
-    } catch (error) {
-      toast.error('Erro ao realizar solicitação');
-      console.error("error", error);
+    const fields = { rows };
+    const fieldsStr = JSON.stringify(fields);
+    const payload = {
+      equipment: { id: 6 },
+      project: { id: values.projeto },
+      description: values.descricao,
+      projectNature: values.natureza,
+      otherProjectNature: values.otherProjectNature,
+      status: 0,
+      fields: fieldsStr
     }
+    await sendSolicitationForm(
+      payload,
+      props.solicitation,
+      id);
+    window.setTimeout(() => {
+      navigate(id ? '/historico' : '/');
+    }, 1000);
+
+    setIsLoading(false);
   }
 
   return (
@@ -119,23 +115,10 @@ export function FormDrx() {
       <h1 className={styles.title}>DRX</h1>
       <div>
         <Formik
-          initialValues={{
-            nomeAluno: "NOMEALUNO",
-            nomeOrientador: "NOME",
-            projeto: 1,
-            descricao: "",
-            natureza: "",
-            otherProjectNature: "",
-            amostra: 0,
-            identificacao: "",
-            modo: "",
-            faixa: "",
-            velocidade: "",
-            step: "",
-            tempo: ""
-          }}
+          initialValues={drx}
           onSubmit={handleClickForm}
           validationSchema={validationForm}
+          enableReinitialize={true}
         >
           {({ values }: any) => (
             <Form className={styles.inputs_container}>
@@ -269,7 +252,7 @@ export function FormDrx() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                    {rows.map((row) => (
+                      {rows.map((row) => (
                         <TableRow
                           key={Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)}
                           sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

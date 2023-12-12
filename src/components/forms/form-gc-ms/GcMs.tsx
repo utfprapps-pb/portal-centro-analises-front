@@ -1,4 +1,4 @@
-import { BaseForm } from "@/components/forms/BaseForm";
+import { BASE_FORM_EMPTY, BaseForm } from "@/components/forms/BaseForm";
 
 export interface GcMs extends BaseForm {
   coluna: string;
@@ -13,12 +13,7 @@ export interface GcMs extends BaseForm {
 }
 
 export const GC_MS_EMPTY = {
-  nomeAluno: "",
-  nomeOrientador: "",
-  projeto: 0,
-  descricao: "",
-  natureza: "",
-  otherProjectNature: "",
+  ...BASE_FORM_EMPTY,
   coluna: "",
   gas: "",
   fluxo: "",
