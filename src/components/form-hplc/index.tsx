@@ -17,7 +17,7 @@ export const FormHplc: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -59,8 +59,8 @@ export const FormHplc: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-      const { coluna, fluxo, tempoAnalise, volume, temperaturaForno, temperaturaRi, fluorescenciaEmissao, fluorescenciaExcitacao, comprimentoOnda, composicao, gradiente } = values;
-      const fields = { coluna, fluxo, tempoAnalise, volume, temperaturaForno, temperaturaRi, fluorescenciaEmissao, fluorescenciaExcitacao, comprimentoOnda, composicao, gradiente };
+      const { descricao, coluna, fluxo, tempoAnalise, volume, temperaturaForno, temperaturaRi, fluorescenciaEmissao, fluorescenciaExcitacao, comprimentoOnda, composicao, gradiente } = values;
+      const fields = { descricao, coluna, fluxo, tempoAnalise, volume, temperaturaForno, temperaturaRi, fluorescenciaEmissao, fluorescenciaExcitacao, comprimentoOnda, composicao, gradiente };
       const fieldsStr = JSON.stringify(fields);
 
       const payload = {

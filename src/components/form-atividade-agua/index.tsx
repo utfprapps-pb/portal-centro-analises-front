@@ -17,7 +17,7 @@ export const FormAtividadeAgua: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -36,6 +36,9 @@ export const FormAtividadeAgua: React.FC = () => {
   }) {
     try {
       startButtonLoad();
+      const { descricao } = values;
+      const field = { descricao };
+      const fieldStr = JSON.stringify(field);
 
       const payload = {
         equipment: {"id": 1},
@@ -44,7 +47,7 @@ export const FormAtividadeAgua: React.FC = () => {
         projectNature : values.natureza,
         otherProjectNature : values.otherProjectNature,
         status : 0,
-        fields: ""
+        fields: fieldStr
       }
   
       await api.post("/solicitation", payload);

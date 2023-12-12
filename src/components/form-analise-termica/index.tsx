@@ -27,7 +27,7 @@ export function FormAnaliseTermica() {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   interface RowData {
@@ -104,12 +104,10 @@ export function FormAnaliseTermica() {
     intervaloTemperatura: string;
   };
   
-
   function handleRemoveRow(row: YourRowType) {
     const updatedRows = rows.filter((r) => r !== row);
     setRows(updatedRows);
   }
-  
 
   async function handleClickForm(values: {
     nomeAluno: string;
@@ -118,10 +116,20 @@ export function FormAnaliseTermica() {
     descricao: string;
     natureza: string;
     otherProjectNature?: string;
+    //
+    amostra: number;
+    identificacao: string;
+    caracteristicas: string;
+    massaAmostra: string;
+    tecnica: string;
+    atmosferaFluxo: string;
+    taxaAquecimento: string;
+    intervaloTemperatura: string;
   }) {
     try {
       startButtonLoad();
-      const fields = { rows };
+      const { descricao, amostra, identificacao, caracteristicas, massaAmostra, tecnica, atmosferaFluxo, taxaAquecimento, intervaloTemperatura } = values;
+      const fields = { descricao, amostra, identificacao, caracteristicas, massaAmostra, tecnica, atmosferaFluxo, taxaAquecimento, intervaloTemperatura };
       const fieldsStr = JSON.stringify(fields);
   
       const payload = {

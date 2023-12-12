@@ -72,20 +72,7 @@ export const AprovacoesView = () => {
             onSubmit={() => navigate(`/aprovacoes`)}
             enableReinitialize={true}
           >
-            {({ errors, touched }) => (
               <Form className={styles.form}>
-                <Field
-                  as={TextField}
-                  className={styles.textField}
-                  label="Descrição"
-                  name="description"
-                  error={touched.description && !!errors.description}
-                  helperText={touched.description && errors.description}
-                  fullWidth
-                  required
-                  disabled
-                  variant="outlined"
-                />
                 {Object.entries(form.fields).map(([campo, valor]) => (
                   <Field
                     key={campo}
@@ -112,7 +99,6 @@ export const AprovacoesView = () => {
                   </Button>
                 </Box>
               </Form>
-            )}
           </Formik>
         </Paper>
       </div>

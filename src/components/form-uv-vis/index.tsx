@@ -17,7 +17,7 @@ export const FormUvVis: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -45,8 +45,8 @@ export const FormUvVis: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-      const { varredura, comprimento, cubeta, amostra } = values;
-      const fields = { varredura, comprimento, cubeta, amostra };
+      const { descricao, varredura, comprimento, cubeta, amostra } = values;
+      const fields = { descricao, varredura, comprimento, cubeta, amostra };
       const fieldsStr = JSON.stringify(fields);
 
       const payload = {

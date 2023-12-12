@@ -37,7 +37,7 @@ export function FormDrx() {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const [rows, setRows] = useState<RowData[]>([]);
@@ -88,10 +88,19 @@ export function FormDrx() {
     descricao: string;
     natureza: string;
     otherProjectNature?: string;
+    //
+    amostra: number;
+    identificacao: string;
+    modo: string;
+    faixa: string;
+    velocidade: string;
+    step: string;
+    tempo: string;
   }) {
     try {
       startButtonLoad();
-      const fields = { rows };
+      const { descricao, amostra, identificacao, modo, faixa, velocidade, step, tempo } = values;
+      const fields = { descricao, amostra, identificacao, modo, faixa, velocidade, step, tempo };
       const fieldsStr = JSON.stringify(fields);
 
       const payload = {

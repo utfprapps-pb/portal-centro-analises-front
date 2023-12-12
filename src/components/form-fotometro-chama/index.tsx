@@ -17,7 +17,7 @@ export const FormFotometroChama: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -43,8 +43,8 @@ export const FormFotometroChama: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-      const { limites, elementosAnalisados, concentracoes } = values;
-      const fields = { limites, elementosAnalisados, concentracoes };
+      const { descricao, limites, elementosAnalisados, concentracoes } = values;
+      const fields = { descricao, limites, elementosAnalisados, concentracoes };
       const fieldsStr = JSON.stringify(fields);
 
       const payload = {

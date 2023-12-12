@@ -17,7 +17,7 @@ export const FormFtir: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -39,8 +39,8 @@ export const FormFtir: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-      const { solventeUtilizado } = values;
-      const fields = { solventeUtilizado };
+      const { descricao, solventeUtilizado } = values;
+      const fields = { descricao, solventeUtilizado };
       const fieldsStr = JSON.stringify(fields);
 
       const payload = {

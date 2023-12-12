@@ -17,7 +17,7 @@ export const FormCr: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -45,8 +45,8 @@ export const FormCr: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-      const { amostra, numeroMedicao, localizacao, leitura } = values;
-      const fields = { amostra, numeroMedicao, localizacao, leitura };
+      const { descricao, amostra, numeroMedicao, localizacao, leitura } = values;
+      const fields = { descricao, amostra, numeroMedicao, localizacao, leitura };
       const fieldsStr = JSON.stringify(fields);
   
       const payload = {

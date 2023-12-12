@@ -17,7 +17,7 @@ export const FormNir: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -49,8 +49,8 @@ export const FormNir: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-      const { onda, resolucao, acumulacao, parametro, amostra, solvente } = values;
-      const fields = { onda, resolucao, acumulacao, parametro, amostra, solvente };
+      const { descricao, onda, resolucao, acumulacao, parametro, amostra, solvente } = values;
+      const fields = { descricao, onda, resolucao, acumulacao, parametro, amostra, solvente };
       const fieldsStr = JSON.stringify(fields);
   
       const payload = {

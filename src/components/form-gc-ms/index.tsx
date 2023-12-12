@@ -17,7 +17,7 @@ export const FormGcMs: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -55,8 +55,8 @@ export const FormGcMs: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-      const { coluna, gas, fluxo, volume, temperatura, tempo, aquecimento, injecao, quantidade } = values;
-      const fields = { coluna, gas, fluxo, volume, temperatura, tempo, aquecimento, injecao, quantidade };
+      const { descricao, coluna, gas, fluxo, volume, temperatura, tempo, aquecimento, injecao, quantidade } = values;
+      const fields = { descricao, coluna, gas, fluxo, volume, temperatura, tempo, aquecimento, injecao, quantidade };
       const fieldsStr = JSON.stringify(fields);
   
       const payload = {
@@ -227,7 +227,7 @@ export const FormGcMs: React.FC = () => {
                       Split
                     </label>
                     <label>
-                      <Field type="radio" name="injecao" value="geradorHidretos" />
+                      <Field type="radio" name="injecao" value="gerador hidretos" />
                       Splitless
                     </label>
                   </div>

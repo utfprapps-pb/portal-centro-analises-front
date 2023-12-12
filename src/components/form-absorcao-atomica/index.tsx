@@ -17,7 +17,7 @@ export const FormAbsorcaoAtomica: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -47,8 +47,8 @@ export const FormAbsorcaoAtomica: React.FC = () => {
     
     try {
       startButtonLoad();
-      const { limites, condicoes, elementos, concentracao, observacoes } = values;
-      const fields = { limites, condicoes, elementos, concentracao, observacoes };
+      const { descricao, limites, condicoes, elementos, concentracao, observacoes } = values;
+      const fields = { descricao, limites, condicoes, elementos, concentracao, observacoes };
       const fieldsStr = JSON.stringify(fields);
   
       const payload = {
@@ -125,11 +125,11 @@ export const FormAbsorcaoAtomica: React.FC = () => {
                   Chama
                 </label>
                 <label>
-                  <Field type="radio" name="condicoes" value="geradorHidretos" />
+                  <Field type="radio" name="condicoes" value="gerador de hidretos" />
                   Gerador de Hidretos
                 </label>
                 <label>
-                  <Field type="radio" name="condicoes" value="fornoGrafite" />
+                  <Field type="radio" name="condicoes" value="forno de grafite" />
                   Forno de Grafite
                 </label>
               </div>

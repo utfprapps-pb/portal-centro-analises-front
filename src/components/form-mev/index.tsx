@@ -17,7 +17,7 @@ export const FormMev: React.FC = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+    }, 10000);
   };
 
   const validationForm = yup.object().shape({
@@ -47,8 +47,8 @@ export const FormMev: React.FC = () => {
   }) {
     try {
       startButtonLoad();
-      const { aproximacao, tipoMaterial, cuidadosEspeciais, qtdFotos } = values;
-      const fields = { aproximacao, tipoMaterial, cuidadosEspeciais, qtdFotos };
+      const { descricao, aproximacao, tipoMaterial, cuidadosEspeciais, qtdFotos } = values;
+      const fields = { descricao, aproximacao, tipoMaterial, cuidadosEspeciais, qtdFotos };
       const fieldsStr = JSON.stringify(fields);
 
       const payload = {
