@@ -72,6 +72,7 @@ export interface SolicitationAudit {
     id: number
     newStatus: string
     createdBy: {
+      id: number
       name: string
     }
     equipment: {
@@ -90,7 +91,8 @@ export interface SolicitationAudit {
     projectNature: {
       content: string
     }
-    otherProjectNature?: string
+    otherProjectNature?: string;
+    rejectionReason?: string;
   }
 }
 
