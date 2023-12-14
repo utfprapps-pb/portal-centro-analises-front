@@ -79,17 +79,10 @@ export function Historico() {
   }
 
   function getFile(reportId: number) {
-    /* TechnicalReportService.downloadById(reportId)
-    .then((response) => { */
       const link = document.createElement("a");
       link.download = `http://localhost:8085/api/report/download/${reportId}`
       link.href = `http://localhost:8085/api/report/download/${reportId}`
       link.click();
-    /* })
-    .catch((error) => {
-      console.log(error)
-    })
-    console.log("get-file"); */
   }
 
   useEffect(() => {
