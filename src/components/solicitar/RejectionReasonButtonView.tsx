@@ -1,7 +1,7 @@
 import React from 'react'
 import { OkDialogActions } from "@/components/dialog/actions/ok-dialog-actions";
 import { useDialog } from "@/components/dialog/dialog-context";
-import { IconButton, Tooltip } from "@material-ui/core";
+import { IconButton, Tooltip } from "@mui/material";
 import { Warning } from "@material-ui/icons";
 
 interface RejectionReasonButtonViewProps {
