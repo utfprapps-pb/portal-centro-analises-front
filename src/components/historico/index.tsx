@@ -20,6 +20,8 @@ import { ROLES } from '@/commons/roles';
 import EditIcon from '@material-ui/icons/Edit';
 import { useNavigate } from 'react-router-dom';
 import { RejectionReasonButtonView } from '@/components/solicitar/RejectionReasonButtonView';
+import { PostAdd } from '@material-ui/icons';
+import TechnicalReportService from '@/services/api/technical-report/TechnicalReportService';
 
 export function Historico() {
   const { authenticatedUser } = useContext(AuthContext);
@@ -47,8 +49,8 @@ export function Historico() {
 
   const [status, setStatus] = useState(statusSolicitation.PENDING_ADVISOR);
   const [auditId, setAuditId] = useState<number>(0);
-
   const navigate = useNavigate();
+  const [desabilitado, setDesabilitado] = useState<boolean>(false);
 
   const formataStatus = (valor: string) => {
     return selectOptions.find(item => item.value === valor)?.label;
@@ -78,8 +80,11 @@ export function Historico() {
     }
   }
 
-  function getFile() {
-    console.log("get-file");
+  function getFile(reportId: number) {
+      const link = document.createElement("a");
+      link.download = `http://localhost:8085/api/report/download/${reportId}`
+      link.href = `http://localhost:8085/api/report/download/${reportId}`
+      link.click();
   }
 
   useEffect(() => {
@@ -135,6 +140,21 @@ export function Historico() {
 
   const handleSelectChangeStatus = (event: SelectChangeEvent) => {
     setStatus(event?.target?.value);
+    if(event?.target?.value === 'PENDING_PAYMENT'){
+      setDesabilitado(true)
+      TechnicalReportService.validaVinculado(auditId)
+      .then((response) => {
+        if(response.data){
+          setDesabilitado(response.data)
+        }else{
+          setDesabilitado(false)
+        }
+      }).catch((responseError) => {
+        console.log('error', responseError)
+      })
+    }else{
+      setDesabilitado(false)
+    }
   }
 
   const handleChangeStatus = () => {
@@ -155,6 +175,10 @@ export function Historico() {
         handleClose();
       })
   }
+
+  const handleVincularResultado = () => {
+    navigate(`/resultado/new/${auditId}`);
+  } 
 
   return (
     <div className={styles.container}>
@@ -208,11 +232,11 @@ export function Historico() {
                 <TableCell scope="row">{h?.solicitation?.createdBy?.name}</TableCell>
                 <TableCell scope="row">{h?.solicitation?.project?.description}</TableCell>
                 <TableCell scope="row" width={200} align={'right'}>
-                  {h.newStatus === 'FINISHED' && h?.solicitation?.fileUrl &&
+                  {h.newStatus === 'FINISHED' && h?.solicitation?.id &&
                     <DownloadFile
-                      url={h?.solicitation?.fileUrl}
                       type="submit"
-                      onClick={getFile} />}
+                      onClick={() => getFile(h!.solicitation!.id)}
+                      />}
 
                   {authenticatedUser &&
                     authenticatedUser.role === ROLES.Admin &&
@@ -365,9 +389,20 @@ export function Historico() {
                       </LocalizationProvider>
                     </FormControl>
                   }
-                  {status && status === statusSolicitation.PENDING_PAYMENT &&
+                  {status && status === statusSolicitation.PENDING_PAYMENT && desabilitado &&
                     <div className={styles.box}>
-                      <span>É necessário vincular o resultado da análise a solicitação.</span>
+                      <span>É necessário vincular o resultado da análise à solicitação.</span>
+                        <Tooltip title="Vincular">
+                          <IconButton
+                              color="primary"
+                              aria-label="vincular"
+                              onClick={() => {
+                                handleVincularResultado();
+                              }}
+                          >
+                            <PostAdd />
+                          </IconButton>    
+                        </Tooltip>
                     </div>
                   }
                 </div>
@@ -377,7 +412,7 @@ export function Historico() {
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancelar</Button>
-          <Button onClick={handleChangeStatus}>Confirmar Alteração</Button>
+          <Button onClick={handleChangeStatus} disabled={desabilitado}>Confirmar Alteração</Button>
         </DialogActions>
       </Dialog>
     </div>
