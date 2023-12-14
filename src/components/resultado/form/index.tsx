@@ -61,7 +61,7 @@ export function TechnicalReportForm() {
         })
     }
     if( auditId ){
-      SolicitacaoService.findById(parseInt(auditId))
+      SolicitacaoService.findOneById(parseInt(auditId))
       .then((response) => {
         if (response.data) {
           setTechnicalReport({
