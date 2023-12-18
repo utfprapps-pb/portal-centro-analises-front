@@ -1,46 +1,48 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Field, ErrorMessage, useFormikContext } from 'formik';
+import { Field, ErrorMessage, useFormikContext } from 'formik'
 import { CustomErrorMessage } from '@/components'
-import styles from "./styles.module.scss";
-import { api } from "../../../libs/axiosBase";
-import { Project, Teacher } from '@/commons/type';
-import { AuthContext } from '@/contexts';
-import { ROLES } from '@/commons/roles';
-import { natures } from '@/commons/natureProject';
+import styles from './styles.module.scss'
+import { api } from '../../../libs/axiosBase'
+import { Project, Teacher } from '@/commons/type'
+import { AuthContext } from '@/contexts'
+import { ROLES } from '@/commons/roles'
+import { natures } from '@/commons/natureProject'
 
 export function FormHeader() {
-  const [isLoading, setIsLoading] = useState(true);
-  const [teacher, setTeacher] = useState<Teacher | undefined>();
-  const [projects, setProjects] = useState<Array<Project>>();
-  const [studentFields, setStudentFields] = useState(true);
-  const [professorFields, setProfessorFields] = useState(false);
-  const { authenticatedUser } = useContext(AuthContext);
-  const [utfprFields, setUtfprFields] = useState(false);
-  const [outraNatureza, setOutraNatureza] = useState(false);
-  const [projectNature, setProjectNature] = useState('');
-  const { setFieldValue, values } = useFormikContext<any>();
+  const [isLoading, setIsLoading] = useState(true)
+  const [teacher, setTeacher] = useState<Teacher | undefined>()
+  const [projects, setProjects] = useState<Array<Project>>()
+  const [studentFields, setStudentFields] = useState(true)
+  const [professorFields, setProfessorFields] = useState(false)
+  const { authenticatedUser } = useContext(AuthContext)
+  const [utfprFields, setUtfprFields] = useState(false)
+  const [outraNatureza, setOutraNatureza] = useState(false)
+  const [projectNature, setProjectNature] = useState('')
+  const { setFieldValue, values } = useFormikContext<any>()
 
-  var t: any = localStorage.getItem("user");
-  var infoArray = JSON.parse(t);
-  var studentName = infoArray.displayName.toString();
-  var userRole = infoArray.role.toString();
+  const t: any = localStorage.getItem('user')
+  const infoArray = JSON.parse(t)
+  const studentName = infoArray.displayName.toString()
+  const userRole = infoArray.role.toString()
 
   useEffect(() => {
-    if (userRole == 'STUDENT') {
-      setStudentFields(true);
-      setUtfprFields(true);
-    } else if (userRole == 'ROLE_PROFESSOR') {
-      setProfessorFields(true);
-      setStudentFields(false);
-      setUtfprFields(true);
+    console.log(userRole)
+    if (userRole === 'ROLE_STUDENT') {
+      setStudentFields(true)
+      setUtfprFields(true)
+      setProfessorFields(false)
+    } else if (userRole === 'ROLE_PROFESSOR') {
+      setProfessorFields(true)
+      setStudentFields(false)
+      setUtfprFields(true)
     } else {
-      setProfessorFields(false);
-      setStudentFields(false);
-      setUtfprFields(false);
+      setProfessorFields(false)
+      setStudentFields(false)
+      setUtfprFields(false)
     }
     async function getProject() {
-      if (authenticatedUser?.role == ROLES.Professor) {
-        const teacherProject = await api.get("/project");
+      if (authenticatedUser?.role === ROLES.Professor) {
+        const teacherProject = await api.get('/project')
         setProjects(teacherProject.data)
 
         const teacher: Teacher = {
@@ -50,28 +52,28 @@ export function FormHeader() {
         }
 
         setTeacher(teacher)
-        setIsLoading(false);
+        setIsLoading(false)
       } else {
-        const teacherProject = await api.get("/project/all");
+        const teacherProject = await api.get('/project/all')
         setProjects(teacherProject.data.projectDTOS)
         setTeacher(teacherProject.data.teacherDTO)
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
-    getProject();
-  }, []);
+    getProject()
+  }, [])
 
   const handlerOtherNature = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const naturezaSelec = event.target.value;
-    setProjectNature(naturezaSelec);
-    setFieldValue(event.target.name, naturezaSelec);
+    const naturezaSelec = event.target.value
+    setProjectNature(naturezaSelec)
+    setFieldValue(event.target.name, naturezaSelec)
 
     if (naturezaSelec === 'OTHER') {
-      setOutraNatureza(true);
+      setOutraNatureza(true)
     } else {
-      setOutraNatureza(false);
+      setOutraNatureza(false)
     }
-  };
+  }
 
   return (
     <>
@@ -90,7 +92,6 @@ export function FormHeader() {
                 <Field
                   name="nomeAluno"
                   value={(values.nomeAluno && values.nomeAluno !== '') ? values.nomeAluno : studentName}
-                  // placeholder={values.nomeAluno ?? studentName}
                   disabled
                   className={styles.input_form_disable}
                 />
@@ -109,7 +110,6 @@ export function FormHeader() {
                 <Field
                   name="nomeOrientador"
                   value={(values.nomeOrientador && values.nomeOrientador !== '') ? values.nomeOrientador : teacher?.name}
-                  // placeholder={teacher?.name ?? ''}
                   disabled
                   className={styles.input_form_disable}
                 />
@@ -127,7 +127,7 @@ export function FormHeader() {
                   multiple={false}
                   className={styles.select_box}
                 >
-                  {projects && projects.map(({ id, description }) => (
+                  {projects?.map(({ id, description }) => (
                     <option key={id} value={id}>
                       {description}
                     </option>
@@ -150,7 +150,7 @@ export function FormHeader() {
                   <option key='0' value='0'>
                     Selecione um projeto
                   </option>
-                  {projects && projects.map(({ id, description }) => (
+                  {projects?.map(({ id, description }) => (
                     <option key={id} value={id}>
                       {description}
                     </option>
