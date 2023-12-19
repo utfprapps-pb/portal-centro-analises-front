@@ -116,8 +116,10 @@ export const FormAnaliseTermica: React.FC<FormProps> = (props: Readonly<FormProp
   async function handleClickForm(values: AnaliseTermica) {
     setIsLoading(true);
 
-    const fields = { rows };
+    const { amostra, identificacao, caracteristicas, massaAmostra, tecnica, atmosferaFluxo, taxaAquecimento, intervaloTemperatura } = values;
+    const fields = { amostra, identificacao, caracteristicas, massaAmostra, tecnica, atmosferaFluxo, taxaAquecimento, intervaloTemperatura };
     const fieldsStr = JSON.stringify(fields);
+
     const payload = {
       equipment: { id: 3 },
       project: { id: values.projeto },

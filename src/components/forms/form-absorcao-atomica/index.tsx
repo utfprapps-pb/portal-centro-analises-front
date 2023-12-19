@@ -102,11 +102,11 @@ export const FormAbsorcaoAtomica: React.FC<FormProps> = (props: Readonly<FormPro
                     Chama
                   </label>
                   <label>
-                    <Field type="radio" name="condicoes" value="geradorHidretos" />
+                    <Field type="radio" name="condicoes" value="gerador de hidretos" />
                     Gerador de Hidretos
                   </label>
                   <label>
-                    <Field type="radio" name="condicoes" value="fornoGrafite" />
+                    <Field type="radio" name="condicoes" value="forno de grafite" />
                     Forno de Grafite
                   </label>
                 </div>
