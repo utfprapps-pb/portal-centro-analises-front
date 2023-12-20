@@ -22,8 +22,8 @@ const page = async (
 const FinanceService = {
   save,
   findAll,
-  remove,
   findById,
+  remove,
   page
 }
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
-import { CustomStatus, DownloadFile } from '@/components'
+
 import { SolicitationAudit } from '@/commons/type'
 import { ArrowUpward, ArrowDownward } from '@material-ui/icons'
 import {
@@ -19,6 +19,8 @@ import {
 } from '@mui/material'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
 import HistoryService from '../../services/api/history/HistoryService'
+import { CustomStatus } from '../custom-status'
+import { DownloadFile } from '../download-file'
 
 const rowsPerPage = 10
 
@@ -154,20 +156,20 @@ export function Historico() {
                       })}
                     </TableCell>
                     <TableCell scope="row">
-                      {h.solicitation.equipment?.name}
+                      {h?.solicitation?.equipment?.name}
                     </TableCell>
-                    <TableCell scope="row">{h.solicitation.value}</TableCell>
+                    <TableCell scope="row">{h?.solicitation?.value}</TableCell>
                     <TableCell scope="row">
-                      {h.solicitation.createdBy?.name}
+                      {h?.solicitation?.createdBy?.name}
                     </TableCell>
                     <TableCell scope="row">
-                      {h.solicitation.project?.description}
+                      {h?.solicitation?.project?.description}
                     </TableCell>
                     <TableCell scope="row">
                       {' '}
                       {h.newStatus === 'FINISHED' && (
                         <DownloadFile
-                          url={h.solicitation.fileUrl}
+                          url={h?.solicitation?.fileUrl || ''}
                           type="submit"
                         />
                       )}
@@ -177,7 +179,7 @@ export function Historico() {
                       <button
                         key={h.id}
                         onClick={() => {
-                          toggleDropdown(h.id, h.solicitation.id, h.newStatus)
+                          toggleDropdown(h.id, h?.solicitation?.id, h.newStatus)
                         }}
                       >
                         {mostrarDropdown && selectedSolicitation === h.id ? (

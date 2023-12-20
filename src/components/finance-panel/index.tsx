@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './styles.module.scss'
 import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { CustomErrorMessage } from '../error-message'
@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { CustomButton } from '../custom-button'
 import { EditFinance, User } from '@/commons/type'
 import DropdownMov from '../dropdownmov'
+import { useNavigate } from 'react-router-dom'
 import {
   Dialog,
   DialogContent,
@@ -21,23 +22,26 @@ import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
 import UserService from '@/services/api/user/UserService'
 import FinanceService from '@/services/api/finance/financeservice'
 
-const rowsPerPage = 10
-
 export const FinancePanel: React.FC = () => {
+  const navigate = useNavigate()
+  const [activePage, setActivePage] = useState(0)
   const [open, setOpen] = useState(false)
+
   const [user, setUser] = useState<User>()
-  const [isLoading, setIsLoading] = useState(false)
-  const [finance, setFinance] = useState<EditFinance | undefined>()
+  const [finance, setFinance] = useState<EditFinance>()
+
   const [data, setData] = useState([])
   const [page, setPage] = useState(0)
+  const rowsPerPage = 10
   const [total, setTotal] = useState(0)
+  const [pages, setPages] = useState(0)
+
   const [orderBy, setOrderBy] = useState('id')
   const [asc, setAsc] = useState(true)
 
@@ -53,26 +57,26 @@ export const FinancePanel: React.FC = () => {
   }, [orderBy, asc])
 
   const loadData = (page: number) => {
-    setIsLoading(true)
-
     UserService.pageRole(page, rowsPerPage, orderBy, asc, 'ROLE_PROFESSOR')
       .then((response) => {
         setData(response.data.content)
         setTotal(response.data.totalElements)
+        setPages(response.data.totalPages)
       })
       .catch((responseError: any) => {})
-      .finally(() => {
-        setIsLoading(false)
-      })
+  }
+
+  const changePage = (index: number) => {
+    setActivePage(index)
   }
 
   function getUser(selected: User): void | undefined {
     setUser(selected)
-    handleClickOpen()
+    handleClickOpen(selected)
   }
 
-  const handleClickOpen = () => {
-    setOpen(true)
+  const handleClickOpen = (selected: User) => {
+    navigate('/financeiro', { state: { user: selected } })
   }
 
   const handleClose = () => {
@@ -87,22 +91,38 @@ export const FinancePanel: React.FC = () => {
     loadData(newPage)
   }
 
+  const handleValue = (value: any) => {
+    const updatedFinance = { ...finance }
+    updatedFinance.value = value
+  }
+
+  const handleDesc = (desc: string) => {
+    const updatedFinance = { ...finance }
+    updatedFinance.description = desc
+  }
+
   const handleTypeChange = (selectedValue: number) => {
     setFinance((financeInformation) => {
-      return {
-        ...financeInformation,
-        type: selectedValue,
-        user
-      } as EditFinance
+      if (financeInformation && user) {
+        return {
+          ...financeInformation,
+          type: selectedValue,
+          user
+        }
+      }
+
+      return financeInformation
     })
   }
+
+  const [isLoading, setIsLoading] = useState(false)
 
   const validationForm = yup.object().shape({
     nome: yup.string()
   })
 
   const handleClickForm = (values: any) => {
-    const { valor, description } = values
+    const { nome, type, valor, description } = values
 
     const updatedFinance = { ...finance }
     updatedFinance.user = {
@@ -113,11 +133,13 @@ export const FinancePanel: React.FC = () => {
       role: ''
     }
 
+    updatedFinance.type = type
     updatedFinance.description = description
     updatedFinance.value = valor
 
     if (
-      updatedFinance?.user &&
+      updatedFinance &&
+      updatedFinance.user &&
       updatedFinance.type != null &&
       updatedFinance.value
     ) {
@@ -172,8 +194,8 @@ export const FinancePanel: React.FC = () => {
                             <div className={styles.field_box}>
                               <p>Movimentação</p>
                               <DropdownMov
-                                nome={'type'}
-                                value={finance?.type || 0}
+                                nome={'nome'}
+                                value={0}
                                 onChange={handleTypeChange}
                               />
                             </div>

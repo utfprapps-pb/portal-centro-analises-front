@@ -26,6 +26,7 @@ import { ConfigEmailPage } from '@/pages/config/email'
 import { DomainRolePage } from '@/pages/domain-role/form'
 import { DomainRoleListPage } from '@/pages/domain-role/list'
 import { TeacherFinancesPage } from './pages/teacher-finances'
+import { FinancePage } from '@/pages/financials/finance_page'
 
 export function App() {
   return (
@@ -57,6 +58,7 @@ export function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/historico" element={<HistoricoPage />} />
           <Route path="/solicitar" element={<SolicitarPage />} />
+          <Route path="/solicitar/:id" element={<SolicitarPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/financeiro" element={<TeacherFinancesPage />} />
         </Route>
@@ -84,6 +86,7 @@ export function App() {
           <Route path="/equipamento" element={<EquipmentsPage />} />
           <Route path="/equipamento/form" element={<EquipmentPageForm />} />
           <Route path="/equipamento/form/:id" element={<EquipmentPageForm />} />
+          <Route path="/financeiro" element={<FinancePage />} />
           <Route path="/partner" element={<PartnerListPage />} />
           <Route path="/partner/new" element={<PartnerPage />} />
           <Route path="/partner/:id" element={<PartnerPage />} />
