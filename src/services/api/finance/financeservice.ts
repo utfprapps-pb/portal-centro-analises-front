@@ -19,11 +19,15 @@ const page = async (
   )
 }
 
+const findByUserId = async (userId: number) =>
+  await api.get(`transaction/user/${userId}`)
+
 const FinanceService = {
   save,
   findAll,
-  findById,
+  findByUserId,
   remove,
+  findById,
   page
 }
 
