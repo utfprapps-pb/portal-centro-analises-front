@@ -1,101 +1,105 @@
-import React, { useEffect, useState } from "react";
-import styles from "./styles.module.scss";
-import { ErrorMessage, Field, Form, Formik, validateYupSchema } from "formik";
-import { CustomErrorMessage } from "../error-message";
-import * as yup from "yup";
-import { CustomButton } from "../custom-button";
-import { api } from "@/libs/axiosBase";
-import { EditFinance, EditUser, User } from "@/commons/type";
-import DropdownMov from "../dropdownmov";
-import { Link, useSubmit } from 'react-router-dom';
-import { Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableFooter, TablePagination, TableSortLabel } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+import styles from './styles.module.scss'
+import { ErrorMessage, Field, Form, Formik } from 'formik'
+import { CustomErrorMessage } from '../error-message'
+import * as yup from 'yup'
+import { CustomButton } from '../custom-button'
+import { EditFinance, User } from '@/commons/type'
+import DropdownMov from '../dropdownmov'
+import { useNavigate } from 'react-router-dom'
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Paper,
+  TableFooter,
+  TablePagination,
+  TableSortLabel
+} from '@mui/material'
 
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
-import { useNavigate } from 'react-router-dom'
 import { StyledTableCell } from '@/layouts/StyldeTableCell'
 import { StyledTableRow } from '@/layouts/StyledTableRow'
 import TablePaginationActions from '@mui/material/TablePagination/TablePaginationActions'
-import UserService from '@/services/api/user/UserService';
-import FinanceService from '@/services/api/finance/financeservice';
-import { Adjust } from "@material-ui/icons";
+import UserService from '@/services/api/user/UserService'
+import FinanceService from '@/services/api/finance/financeservice'
 
 export const FinancePanel: React.FC = () => {
   const navigate = useNavigate()
-  const [activePage, setActivePage] = useState(0);
-  const [open, setOpen] = useState(false);
+  const [activePage, setActivePage] = useState(0)
+  const [open, setOpen] = useState(false)
 
-  const [user, setUser] = useState<User>();
-  const [finance, setFinance] = useState<EditFinance>();
+  const [user, setUser] = useState<User>()
+  const [finance, setFinance] = useState<EditFinance>()
 
   const [data, setData] = useState([])
-  const [page, setPage] = useState(0);
-  const rowsPerPage = 10;
-  const [total, setTotal] = useState(0);
-  const [pages, setPages] = useState(0);
+  const [page, setPage] = useState(0)
+  const rowsPerPage = 10
+  const [total, setTotal] = useState(0)
+  const [pages, setPages] = useState(0)
 
-  const [orderBy, setOrderBy] = useState("id");
-  const [asc, setAsc] = useState(true);
+  const [orderBy, setOrderBy] = useState('id')
+  const [asc, setAsc] = useState(true)
 
   const listHeader = [
-    { label: "Código", value: "id" },
-    { label: "Nome", value: "name" },
-    { label: "Tipo", value: "role" },
-    { label: "E-mail", value: "email" }
-  ];
+    { label: 'Código', value: 'id' },
+    { label: 'Nome', value: 'name' },
+    { label: 'Tipo', value: 'role' },
+    { label: 'E-mail', value: 'email' }
+  ]
 
   useEffect(() => {
     loadData(0)
-  }, [orderBy, asc]);
+  }, [orderBy, asc])
 
   const loadData = (page: number) => {
     UserService.pageRole(page, rowsPerPage, orderBy, asc, 'ROLE_PROFESSOR')
       .then((response) => {
-        setData(response.data.content);
-        setTotal(response.data.totalElements);
-        setPages(response.data.totalPages);
+        setData(response.data.content)
+        setTotal(response.data.totalElements)
+        setPages(response.data.totalPages)
       })
-      .catch((responseError: any) => {
-      })
+      .catch((responseError: any) => {})
   }
 
   const changePage = (index: number) => {
-    setActivePage(index);
-  };
+    setActivePage(index)
+  }
 
   function getUser(selected: User): void | undefined {
-    setUser(selected);
-    handleClickOpen(selected);
+    setUser(selected)
+    handleClickOpen(selected)
   }
 
   const handleClickOpen = (selected: User) => {
     navigate('/financeiro', { state: { user: selected } })
-  };
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number,
+    newPage: number
   ) => {
-    setPage(newPage);
+    setPage(newPage)
     loadData(newPage)
-  };
+  }
 
   const handleValue = (value: any) => {
-    let updatedFinance = { ...finance };
-    updatedFinance.value = value;
-  };
+    const updatedFinance = { ...finance }
+    updatedFinance.value = value
+  }
 
   const handleDesc = (desc: string) => {
-    let updatedFinance = { ...finance };
-    updatedFinance.description = desc;
-  };
+    const updatedFinance = { ...finance }
+    updatedFinance.description = desc
+  }
 
   const handleTypeChange = (selectedValue: number) => {
     setFinance((financeInformation) => {
@@ -103,55 +107,59 @@ export const FinancePanel: React.FC = () => {
         return {
           ...financeInformation,
           type: selectedValue,
-          user: user,
-        };
+          user
+        }
       }
 
-      return financeInformation;
-    });
-  };
+      return financeInformation
+    })
+  }
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
 
   const validationForm = yup.object().shape({
-    nome: yup.string(),
-  });
+    nome: yup.string()
+  })
 
   const handleClickForm = (values: any) => {
-    const { nome, type, valor, description } = values;
+    const { nome, type, valor, description } = values
 
-    let updatedFinance = { ...finance };
+    const updatedFinance = { ...finance }
     updatedFinance.user = {
       id: user!.id,
-      displayName: "",
-      email: "",
-      password: "",
-      role: "",
-    };
+      displayName: '',
+      email: '',
+      password: '',
+      role: ''
+    }
 
-    updatedFinance.type = type;
-    updatedFinance.description = description;
-    updatedFinance.value = valor;
+    updatedFinance.type = type
+    updatedFinance.description = description
+    updatedFinance.value = valor
 
-    if (updatedFinance && updatedFinance.user
-      && updatedFinance.type != null && updatedFinance.value) {
+    if (
+      updatedFinance &&
+      updatedFinance.user &&
+      updatedFinance.type != null &&
+      updatedFinance.value
+    ) {
       FinanceService.save({
-        "value": updatedFinance.value,
-        "user": {
-          "id": updatedFinance.user.id
+        value: updatedFinance.value,
+        user: {
+          id: updatedFinance.user.id
         },
-        "type": updatedFinance.type,
-        "description": updatedFinance.description
+        type: updatedFinance.type,
+        description: updatedFinance.description
       }).then((response) => {
-        handleClose();
+        handleClose()
         handleChangePage(null, 0)
-      });
+      })
     }
   }
 
   const handleSort = (id: any) => {
-    setOrderBy(id);
-    setAsc(!asc);
+    setOrderBy(id)
+    setAsc(!asc)
   }
 
   return (
@@ -162,15 +170,19 @@ export const FinancePanel: React.FC = () => {
         <>
           <div className={styles.inputs_box}>
             <div className={styles.container}>
-              <Dialog open={open} onClose={handleClose} style={{ overflowY: 'visible' }}>
+              <Dialog
+                open={open}
+                onClose={handleClose}
+                style={{ overflowY: 'visible' }}
+              >
                 <DialogTitle>Movimentação</DialogTitle>
                 <DialogContent style={{ overflowY: 'visible' }}>
                   <Formik
                     initialValues={{
-                      nome: "",
+                      nome: '',
                       type: 0,
-                      valor: "",
-                      description: "",
+                      valor: '',
+                      description: ''
                     }}
                     onSubmit={handleClickForm}
                     validationSchema={validationForm}
@@ -181,7 +193,11 @@ export const FinancePanel: React.FC = () => {
                           <div className={styles.field_box}>
                             <div className={styles.field_box}>
                               <p>Movimentação</p>
-                              <DropdownMov nome={"nome"} value={0} onChange={handleTypeChange} />
+                              <DropdownMov
+                                nome={'nome'}
+                                value={0}
+                                onChange={handleTypeChange}
+                              />
                             </div>
                           </div>
                         </div>
@@ -192,11 +208,13 @@ export const FinancePanel: React.FC = () => {
                               <ErrorMessage
                                 component={CustomErrorMessage}
                                 name="valor"
-                                className={styles.form_error} />
+                                className={styles.form_error}
+                              />
                               <Field
                                 name="valor"
-                                placeholder=''
-                                className={styles.input_form} />
+                                placeholder=""
+                                className={styles.input_form}
+                              />
                             </div>
                           </div>
 
@@ -206,18 +224,22 @@ export const FinancePanel: React.FC = () => {
                               <ErrorMessage
                                 component={CustomErrorMessage}
                                 name="description"
-                                className={styles.form_error} />
+                                className={styles.form_error}
+                              />
                               <Field
                                 name="description"
-                                placeholder=''
-                                className={styles.input_form} />
+                                placeholder=""
+                                className={styles.input_form}
+                              />
                             </div>
                           </div>
                         </div>
                         <div className={styles.row_box}>
                           <div className={styles.button_box}>
                             <CustomButton
-                              onClick={() => handleClose()}
+                              onClick={() => {
+                                handleClose()
+                              }}
                               text="Cancelar"
                               padding="1rem"
                               textColor="white"
@@ -227,7 +249,8 @@ export const FinancePanel: React.FC = () => {
                               letterSpacing="4px"
                               fontSize="16px"
                               fontWeight="400"
-                              type="submit" />
+                              type="submit"
+                            />
                           </div>
                           <div className={styles.button_box}>
                             <CustomButton
@@ -240,7 +263,8 @@ export const FinancePanel: React.FC = () => {
                               letterSpacing="4px"
                               fontSize="16px"
                               fontWeight="400"
-                              type="submit" />
+                              type="submit"
+                            />
                           </div>
                         </div>
                       </div>
@@ -256,12 +280,18 @@ export const FinancePanel: React.FC = () => {
               <TableHead>
                 <TableRow>
                   {listHeader.map((head) => (
-                    <StyledTableCell align={head.value==="id" ?"left":"center"} key={head.value}>{head.label}
-                      <TableSortLabel active={orderBy === head.value}
+                    <StyledTableCell
+                      align={head.value === 'id' ? 'left' : 'center'}
+                      key={head.value}
+                    >
+                      {head.label}
+                      <TableSortLabel
+                        active={orderBy === head.value}
                         direction={asc ? 'asc' : 'desc'}
-                        onClick={() => handleSort(head.value)}
-                      >
-                      </TableSortLabel>
+                        onClick={() => {
+                          handleSort(head.value)
+                        }}
+                      ></TableSortLabel>
                     </StyledTableCell>
                   ))}
                   <StyledTableCell align="center">Seleção</StyledTableCell>
@@ -270,12 +300,16 @@ export const FinancePanel: React.FC = () => {
               <TableBody>
                 {data.map((user: any) => (
                   <StyledTableRow key={user.id}>
-                    <StyledTableCell scope="row">
-                      {user.id}
+                    <StyledTableCell scope="row">{user.id}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {user.name}
                     </StyledTableCell>
-                    <StyledTableCell align="center">{user.name}</StyledTableCell>
-                    <StyledTableCell align="center">{user.role}</StyledTableCell>
-                    <StyledTableCell align="center">{user.email}</StyledTableCell>
+                    <StyledTableCell align="center">
+                      {user.role}
+                    </StyledTableCell>
+                    <StyledTableCell align="center">
+                      {user.email}
+                    </StyledTableCell>
                     <StyledTableCell align="center">
                       <CustomButton
                         onClick={() => getUser(user)}
@@ -297,7 +331,9 @@ export const FinancePanel: React.FC = () => {
               <TableFooter>
                 <TableRow>
                   <TablePagination
-                    labelDisplayedRows={({ from, to, count }) => `${from}-${to} de ${count}`}
+                    labelDisplayedRows={({ from, to, count }) =>
+                      `${from}-${to} de ${count}`
+                    }
                     colSpan={5}
                     count={total}
                     rowsPerPage={rowsPerPage}
@@ -305,12 +341,13 @@ export const FinancePanel: React.FC = () => {
                     page={page}
                     SelectProps={{
                       inputProps: {
-                        'aria-label': 'rows per page',
+                        'aria-label': 'rows per page'
                       },
-                      native: true,
+                      native: true
                     }}
                     onPageChange={handleChangePage}
-                    ActionsComponent={TablePaginationActions} />
+                    ActionsComponent={TablePaginationActions}
+                  />
                 </TableRow>
               </TableFooter>
             </Table>
@@ -318,5 +355,5 @@ export const FinancePanel: React.FC = () => {
         </>
       )}
     </>
-  );
-};
+  )
+}
