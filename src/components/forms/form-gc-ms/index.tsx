@@ -195,7 +195,7 @@ export const FormGcMs: React.FC<FormProps> = (props: Readonly<FormProps>) => {
                       Split
                     </label>
                     <label>
-                      <Field type="radio" name="injecao" value="geradorHidretos" />
+                      <Field type="radio" name="injecao" value="gerador hidretos" />
                       Splitless
                     </label>
                   </div>

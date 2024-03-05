@@ -88,8 +88,10 @@ export const FormDrx: React.FC<FormProps> = (props: Readonly<FormProps>) => {
   async function handleClickForm(values: Drx) {
     setIsLoading(true);
 
-    const fields = { rows };
+    const { amostra, identificacao, modo, faixa, velocidade, step, tempo } = values;
+    const fields = { amostra, identificacao, modo, faixa, velocidade, step, tempo };
     const fieldsStr = JSON.stringify(fields);
+
     const payload = {
       equipment: { id: 6 },
       project: { id: values.projeto },
